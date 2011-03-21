@@ -32,7 +32,7 @@ public:
 template <TEMPLATE_TYPENAME T> static void test_assert_scaler( const char *description, const char *type, T benchmark, T value )
 {
     std::ostringstream full_description;
-    full_description << description << ": " << type << " benchmark=" << benchmark << " " << type << " value=" << value << std::ends;
+    full_description << description << ": " << type << " benchmark=" << benchmark << " " << type << " value=" << value;
 
     if( benchmark != value )
     {
