@@ -40,7 +40,6 @@
 namespace Py
 {
 bool _CFunction_Check( PyObject *op )   { return op->ob_type == _CFunction_Type(); }
-bool _CObject_Check( PyObject *op )     { return op->ob_type == _CObject_Type(); }
 bool _Complex_Check( PyObject *op )     { return op->ob_type == _Complex_Type(); }
 bool _Dict_Check( PyObject *op )        { return op->ob_type == _Dict_Type(); }
 bool _Float_Check( PyObject *op )       { return op->ob_type == _Float_Type(); }
@@ -59,6 +58,7 @@ bool _Unicode_Check( PyObject *op )     { return op->ob_type == _Unicode_Type();
 #if PY_MAJOR_VERSION == 2
 bool _String_Check( PyObject *op )      { return op->ob_type == _String_Type(); }
 bool _Int_Check( PyObject *op )         { return op->ob_type == _Int_Type(); }
+bool _CObject_Check( PyObject *op )     { return op->ob_type == _CObject_Type(); }
 #endif
 #if PY_MAJOR_VERSION >= 3
 bool _Bytes_Check( PyObject *op )       { return op->ob_type == _Bytes_Type(); }
@@ -111,7 +111,6 @@ static PyObject *ptr__PyNone = NULL;
 static PyObject *ptr__PyFalse = NULL;
 static PyObject *ptr__PyTrue = NULL;
 static PyTypeObject *ptr__CFunction_Type = NULL;
-static PyTypeObject *ptr__CObject_Type = NULL;
 static PyTypeObject *ptr__Complex_Type = NULL;
 static PyTypeObject *ptr__Dict_Type = NULL;
 static PyTypeObject *ptr__Float_Type = NULL;
@@ -129,6 +128,7 @@ static PyTypeObject *ptr__Type_Type = NULL;
 #if PY_MAJOR_VERSION == 2
 static PyTypeObject *ptr__Int_Type = NULL;
 static PyTypeObject *ptr__String_Type = NULL;
+static PyTypeObject *ptr__CObject_Type = NULL;
 #endif
 #if PY_MAJOR_VERSION >= 3
 static PyTypeObject *ptr__Bytes_Type = NULL;
@@ -284,7 +284,6 @@ bool InitialisePythonIndirectInterface()
     ptr__PyTrue                 = GetPyObject_As_PyObjectPointer( "_Py_TrueStruct" );
 
     ptr__CFunction_Type         = GetPyTypeObject_As_PyTypeObjectPointer( "PyCFunction_Type" );
-    ptr__CObject_Type           = GetPyTypeObject_As_PyTypeObjectPointer( "PyCObject_Type" );
     ptr__Complex_Type           = GetPyTypeObject_As_PyTypeObjectPointer( "PyComplex_Type" );
     ptr__Dict_Type              = GetPyTypeObject_As_PyTypeObjectPointer( "PyDict_Type" );
     ptr__Float_Type             = GetPyTypeObject_As_PyTypeObjectPointer( "PyFloat_Type" );
@@ -303,6 +302,7 @@ bool InitialisePythonIndirectInterface()
 #if PY_MAJOR_VERSION == 2
     ptr__String_Type            = GetPyTypeObject_As_PyTypeObjectPointer( "PyString_Type" );
     ptr__Int_Type               = GetPyTypeObject_As_PyTypeObjectPointer( "PyInt_Type" );
+    ptr__CObject_Type           = GetPyTypeObject_As_PyTypeObjectPointer( "PyCObject_Type" );
 #endif
 #if PY_MAJOR_VERSION >= 3
     ptr__Bytes_Type             = GetPyTypeObject_As_PyTypeObjectPointer( "PyBytes_Type" );
@@ -367,7 +367,6 @@ PyObject *_False()                      { return ptr__PyFalse; }
 PyObject *_True()                       { return ptr__PyTrue; }
 
 PyTypeObject *_CFunction_Type()         { return ptr__CFunction_Type; }
-PyTypeObject *_CObject_Type()           { return ptr__CObject_Type; }
 PyTypeObject *_Complex_Type()           { return ptr__Complex_Type; }
 PyTypeObject *_Dict_Type()              { return ptr__Dict_Type; }
 PyTypeObject *_Float_Type()             { return ptr__Float_Type; }
@@ -386,6 +385,7 @@ PyTypeObject *_Unicode_Type()           { return ptr__Unicode_Type; }
 #if PY_MAJOR_VERSION == 2
 PyTypeObject *_String_Type()            { return ptr__String_Type; }
 PyTypeObject *_Int_Type()               { return ptr__Int_Type; }
+PyTypeObject *_CObject_Type()           { return ptr__CObject_Type; }
 #endif
 #if PY_MAJOR_VERSION >= 3
 PyTypeObject *_Bytes_Type()             { return ptr__Bytes_Type; }
@@ -506,7 +506,6 @@ PyObject *_False()                      { return Py_False; }
 PyObject *_True()                       { return Py_True; }
 
 PyTypeObject *_CFunction_Type()         { return &PyCFunction_Type; }
-PyTypeObject *_CObject_Type()           { return &PyCObject_Type; }
 PyTypeObject *_Complex_Type()           { return &PyComplex_Type; }
 PyTypeObject *_Dict_Type()              { return &PyDict_Type; }
 PyTypeObject *_Float_Type()             { return &PyFloat_Type; }
@@ -525,6 +524,7 @@ PyTypeObject *_Unicode_Type()           { return &PyUnicode_Type; }
 #if PY_MAJOR_VERSION == 2
 PyTypeObject *_String_Type()            { return &PyString_Type; }
 PyTypeObject *_Int_Type()               { return &PyInt_Type; }
+PyTypeObject *_CObject_Type()           { return &PyCObject_Type; }
 #endif
 #if PY_MAJOR_VERSION >= 3
 PyTypeObject *_Bytes_Type()             { return &PyBytes_Type; }

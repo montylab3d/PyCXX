@@ -1471,13 +1471,13 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
         Tuple self_and_name_tuple( _self_and_name_tuple );
 
         PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
+        void *self_as_void = PyCapsule_GetPointer( self_in_cobject, NULL );
         if( self_as_void == NULL )
             return NULL;
 
         ExtensionModuleBase *self = static_cast<ExtensionModuleBase *>( self_as_void );
 
-        Object result( self->invoke_method_noargs( PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ) ) );
+        Object result( self->invoke_method_noargs( PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ) ) );
 
         return new_reference_to( result.ptr() );
     }
@@ -1494,7 +1494,7 @@ extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple
         Tuple self_and_name_tuple( _self_and_name_tuple );
 
         PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
+        void *self_as_void = PyCapsule_GetPointer( self_in_cobject, NULL );
         if( self_as_void == NULL )
             return NULL;
 
@@ -1504,7 +1504,7 @@ extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple
                 (
                 self->invoke_method_varargs
                     (
-                    PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ),
+                    PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ),
                     args
                     )
                 );
@@ -1524,7 +1524,7 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
         Tuple self_and_name_tuple( _self_and_name_tuple );
 
         PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
+        void *self_as_void = PyCapsule_GetPointer( self_in_cobject, NULL );
         if( self_as_void == NULL )
             return NULL;
 
@@ -1540,7 +1540,7 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
                 (
                 self->invoke_method_keyword
                     (
-                    PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ),
+                    PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ),
                     args,
                     keywords
                     )
@@ -1556,7 +1556,7 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
                     (
                     self->invoke_method_keyword
                         (
-                        PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() ),
+                        PyCapsule_GetPointer( self_and_name_tuple[1].ptr(), NULL ),
                         args,
                         keywords
                         )
@@ -1570,9 +1570,6 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
         return 0;
     }
 }
-
-extern "C" void do_not_dealloc( void * )
-{}
 
 
 //--------------------------------------------------------------------------------
