@@ -276,7 +276,7 @@ class Win32CompilerMSVC90(Compiler):
         rules = []
         rules.append( 'test:: %s %s' % (python_test.getTargetFilename(), python_test.python_extension.getTargetFilename()) )
         rules.append( '\tset PYTHONPATH=obj' )
-        rules.append( '\t%%(PYTHON)s %s' % (python_test.getTargetFilename(),) )
+        rules.append( '\t%%(PYTHON)s -W default %s' % (python_test.getTargetFilename(),) )
         rules.append( '' )
 
         self.makePrint( self.expand( '\n'.join( rules ) ) )
@@ -374,7 +374,7 @@ class CompilerGCC(Compiler):
     def ruleTest( self, python_test ):
         rules = []
         rules.append( 'test:: %s %s' % (python_test.getTargetFilename(), python_test.python_extension.getTargetFilename()) )
-        rules.append( '\tPYTHONPATH=obj %%(PYTHON)s %s' % (python_test.getTargetFilename(),) )
+        rules.append( '\tPYTHONPATH=obj %%(PYTHON)s -W default %s' % (python_test.getTargetFilename(),) )
         rules.append( '' )
 
         self.makePrint( self.expand( '\n'.join( rules ) ) )

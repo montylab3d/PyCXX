@@ -7,7 +7,9 @@ for PYTHON in \
     python2.5 \
     python2.6 \
     python2.7 \
-    python3.1
+    python3.1 \
+    python3.2 \
+    ;
 do
     if which $PYTHON >/dev/null
     then
