@@ -139,8 +139,8 @@ namespace Py
                 static PyObject *self = PyCObject_FromVoidPtr( this, do_not_dealloc );
 
                 Tuple args( 2 );
-                args[0] = Object( self );
-                args[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ) );
+                args[0] = Object( self, true );
+                args[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ), true );
 
                 PyObject *func = PyCFunction_New
                                     (
