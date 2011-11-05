@@ -3,6 +3,9 @@
 #
 import os
 import sys
+import distutils
+import distutils.sysconfig
+import distutils.util
 
 _debug = False
 
@@ -421,7 +424,7 @@ class LinuxCompilerGCC(CompilerGCC):
         self._addVar( 'DEMO_DIR',       'Demo/Python%d' % (sys.version_info[0],) )
 
         self._addVar( 'PYTHON_VERSION', '%d.%d' % (sys.version_info[0], sys.version_info[1]) )
-        self._addVar( 'PYTHON_INCLUDE', '%s/include/python%%(PYTHON_VERSION)s' % (sys.exec_prefix,) )
+        self._addVar( 'PYTHON_INCLUDE', distutils.sysconfig.get_python_inc() )
         self._addVar( 'CCCFLAGS',
                                         '-g '
                                         '-Wall -fPIC -fexceptions -frtti '
