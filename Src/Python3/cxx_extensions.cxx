@@ -225,7 +225,7 @@ extern "C"
     static PyObject *rich_compare_handler( PyObject *, PyObject *, int );
     static PyObject *repr_handler( PyObject * );
     static PyObject *str_handler( PyObject * );
-    static long hash_handler( PyObject * );
+    static Py_hash_t hash_handler( PyObject * );
     static PyObject *call_handler( PyObject *, PyObject *, PyObject * );
     static PyObject *iter_handler( PyObject * );
     static PyObject *iternext_handler( PyObject * );
@@ -714,7 +714,7 @@ extern "C" PyObject *str_handler( PyObject *self )
     }
 }
 
-extern "C" long hash_handler( PyObject *self )
+extern "C" Py_hash_t hash_handler( PyObject *self )
 {
     try
     {
