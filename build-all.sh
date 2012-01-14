@@ -14,7 +14,7 @@ do
     if which $PYTHON >/dev/null
     then
         ${PYTHON} setup_makefile.py ${OS} tmp-$PYTHON.mak
-        make -f tmp-$PYTHON.mak clean
-        make -f tmp-$PYTHON.mak test
+        make -f tmp-$PYTHON.mak clean 2>&1 | tee tmp-$PYTHON.log
+        make -f tmp-$PYTHON.mak test 2>&1 | tee -a tmp-$PYTHON.log
     fi
 done
