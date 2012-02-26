@@ -365,7 +365,7 @@ PythonType::PythonType( size_t basic_size, int itemsize, const char *default_nam
 
     memset( table, 0, sizeof( PyTypeObject ) );   // ensure new fields are 0
     *reinterpret_cast<PyObject *>( table ) = py_object_initializer;
-    // QQQ table->ob_type = _Type_Type();
+    reinterpret_cast<PyObject *>( table )->ob_type = _Type_Type();
     // QQQ table->ob_size = 0;
     table->tp_name = const_cast<char *>( default_name );
     table->tp_basicsize = basic_size;

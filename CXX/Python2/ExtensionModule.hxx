@@ -66,9 +66,6 @@ namespace Py
         const std::string m_module_name;
         const std::string m_full_module_name;
         MethodTable m_method_table;
-#if PY3
-        PyModuleDef m_module_def;
-#endif
         PyObject *m_module;
 
     private:
