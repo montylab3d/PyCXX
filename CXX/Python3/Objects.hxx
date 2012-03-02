@@ -413,7 +413,7 @@ namespace Py
         {
         }
 
-        bool accepts( PyObject *pyob )
+        virtual bool accepts( PyObject *pyob )
         {
             return pyob == NULL;
         }
@@ -1519,7 +1519,7 @@ namespace Py
 
             int operator-( const iterator &other ) const
             {
-                if( seq.ptr() != other.seq.ptr() )
+                if( seq->ptr() != other.seq->ptr() )
                     throw RuntimeError( "SeqBase<T>::iterator comparison error" );
 
                 return count - other.count;
