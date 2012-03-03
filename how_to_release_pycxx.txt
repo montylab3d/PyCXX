@@ -11,7 +11,7 @@ How to release PyCXX
     3. Select File
     4. Create New Folder
     5. Name the Folder PyCXX V<maj>.<min>.<patch> e.g. PyCXX V6.1.1
-    7. Upload the source kit and its PyCXX-Release-Notes-readme.txt
+    7. Upload the source kit and its PyCXX-Release-Notes-readme.txt (as README.txt)
     9. Click on the source kit (i) icon and choose Select All platforms
 4.  Add news about release
     1. Click Develop
