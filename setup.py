@@ -12,18 +12,18 @@ sources = (glob( os.path.join( "Src", "*.cxx" ) )
 class my_install (install):
 
     def finalize_options (self):
-	if not self.install_data or (len(self.install_data) < 8) :
-	    self.install_data = "$base/share/python$py_version_short"
+        if not self.install_data or (len(self.install_data) < 8) :
+            self.install_data = "$base/share/python$py_version_short"
         install.finalize_options (self)
 
     def run (self):
-	self.distribution.data_files = [("CXX", sources)]
-	self.distribution.headers = headers
+        self.distribution.data_files = [("CXX", sources)]
+        self.distribution.headers = headers
         install.run (self)
 
 
 setup (name             = "CXX",
-       version          = "6.2.0",
+       version          = "6.2.4",
        maintainer       = "Barry Scott",
        maintainer_email = "barry-scott@users.sourceforge.net",
        description      = "Facility for extending Python with C++",
