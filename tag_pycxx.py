@@ -64,8 +64,8 @@ def main():
         return
 
     version = sys.argv[1]
-    from_url = 'https://cxx.svn.sourceforge.net/svnroot/cxx/trunk/CXX'
-    tag_base_url = 'https://cxx.svn.sourceforge.net/svnroot/cxx/tags'
+    from_url = 'https://svn.code.sf.net/p/cxx/code/trunk/CXX'
+    tag_base_url = 'https://svn.code.sf.net/p/cxx/code/tags'
 
     make_tag( from_url, tag_base_url, version )
 
