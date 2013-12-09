@@ -1105,7 +1105,7 @@ namespace Py
         // TMM: added this seqref ctor for use with STL algorithms
         seqref( Object &obj )
         : s( dynamic_cast< SeqBase<T>&>( obj ) )
-        , offset( NULL )
+        , offset( 0 )
         , the_item( s.getItem( offset ) )
         {}
 
