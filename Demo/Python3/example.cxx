@@ -124,8 +124,6 @@ void test_String()
 
 void test_boolean()
 {
-    bool passed = true;
-
     Py::Object o;
     Py::Boolean pb1;
     Py::Boolean pb2;
@@ -783,10 +781,11 @@ private:
         }
         catch( Py::TypeError &e )
         {
+            e.clear();
+
             std::cout << "PASSED: Correctly caught " << Py::type(e) << std::endl;
             std::cout << "PASSED:   Py::Exception value: " << Py::value(e) << std::endl;
             std::cout << "PASSED:   Py::Exception traceback: " << Py::trace(e) << std::endl;
-            e.clear();
         }
 
         try
