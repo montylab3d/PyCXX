@@ -3,12 +3,11 @@ set -e
 OS=${1:-macosx}
 
 for PYTHON in \
-    python2.4 \
-    python2.5 \
     python2.6 \
     python2.7 \
     python3.2 \
     python3.3 \
+    python3.4 \
     ;
 do
     if which $PYTHON >/dev/null
