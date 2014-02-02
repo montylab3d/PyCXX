@@ -413,7 +413,7 @@ namespace Py
         {
         }
 
-        virtual bool accepts( PyObject *pyob )
+        virtual bool accepts( PyObject *pyob ) const
         {
             return pyob == NULL;
         }
