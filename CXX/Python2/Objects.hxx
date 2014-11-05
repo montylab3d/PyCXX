@@ -2909,7 +2909,8 @@ namespace Py
         // Queries
         List keys () const
         {
-            return List(PyMapping_Keys(ptr()), true);
+            static char keys[] = {'k', 'e', 'y', 's', 0};
+            return List(PyObject_CallMethod( ptr(), keys, NULL ), true );
         }
 
         List values () const
