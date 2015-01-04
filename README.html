@@ -31,22 +31,22 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 
 <h3>Windows Installation and Demo</h3>
 <ol>
-    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-6.2.5.tar.gz">
-    http://prdownloads.sourceforge.net/cxx/pycxx-6.2.5.tar.gz</a></li>
+    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-6.2.6.tar.gz">
+    http://prdownloads.sourceforge.net/cxx/pycxx-6.2.6.tar.gz</a></li>
     <li>Expand the archive into a directory of your choosing C:\ for example.
     Note: WinZip can expand .tar.gz files.</li>
 
     <li>Install the PyCXX files:
         <ol>
-        <li><pre>C:> cd \pycxx-6.2.5</pre></li>
-        <li><pre>C:\pycxx-6.2.5> python setup.py install</pre></li>
+        <li><pre>C:> cd \pycxx-6.2.6</pre></li>
+        <li><pre>C:\pycxx-6.2.6> python setup.py install</pre></li>
         </ol>
     </li>
     <li>Build and run the demo extensions:
         <ol>
-        <li><pre>C:> cd \pycxx-6.2.5</pre></li>
-        <li><pre>C:\pycxx-6.2.5> python setup_makefile.py win32 win32.mak </pre></li>
-        <li><pre>C:\pycxx-6.2.5> nmake -f win32.mak clean test</pre></li>
+        <li><pre>C:> cd \pycxx-6.2.6</pre></li>
+        <li><pre>C:\pycxx-6.2.6> python setup_makefile.py win32 win32.mak </pre></li>
+        <li><pre>C:\pycxx-6.2.6> nmake -f win32.mak clean test</pre></li>
         </ol>
     </li>
 </ol>
@@ -56,18 +56,18 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 <p>Note: distutils is not available for Python 1.5.2</p>
 
 <ol>
-    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-6.2.5.tar.gz">
-    http://prdownloads.sourceforge.net/cxx/pycxx-6.2.5.tar.gz</a>
+    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-6.2.6.tar.gz">
+    http://prdownloads.sourceforge.net/cxx/pycxx-6.2.6.tar.gz</a>
     <li>Login as root. root access is typically needed on Unix systems to install the PyCXX files into the Python directories.
     <li>Expand the archive into a directory of your choosing ~\ for example.
     <li>Install the PyCXX files:
         <ol>
-        <li><pre># cd ~\pycxx-6.2.5</pre>
+        <li><pre># cd ~\pycxx-6.2.6</pre>
         <li><pre># python setup.py install</pre>
         </ol>
     <li>Build and run the demo extensions:
         <ol>
-        <li><pre># cd ~\pycxx-6.2.5\Demo\Python2</pre></li>
+        <li><pre># cd ~\pycxx-6.2.6\Demo\Python2</pre></li>
         <li><pre># python setup_makefile.py linux linux.mak</pre></li>
         <li><pre># make -f linux.mak clean test</pre></li>
         </ol>
@@ -76,7 +76,7 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 
 <h2>Revision History</h2>
 
-<h3>Version 6.2.5 (18-Aug-2013)</h3>
+<h3>Version 6.2.6 (18-Aug-2013)</h3>
 <p>Fix build issue with GCC 4.2.1 on FreeBSD and Mac OS X (stop python defining isspace as a macro).</p>
 <p>Remove support for python 3.1 (API's are unstable).</p>
 <p>Add Python 3.3 support.</p>
