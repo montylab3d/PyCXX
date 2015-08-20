@@ -371,7 +371,7 @@ namespace Py
         void setAttr (const std::string& s, const Object& value)
         {
             if(PyObject_SetAttrString (p, const_cast<char*>(s.c_str()), *value) == -1)
-            throw AttributeError ("getAttr failed.");
+            throw AttributeError ("setAttr failed.");
         }
 
         void delAttr (const std::string& s)
