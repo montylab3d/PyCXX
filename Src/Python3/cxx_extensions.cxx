@@ -205,6 +205,11 @@ Py::Dict ExtensionModuleBase::moduleDictionary( void ) const
     return module().getDict();
 }
 
+Object ExtensionModuleBase::moduleObject( void ) const
+{
+    return Object( m_module );
+}
+
 //================================================================================
 //
 //    Implementation of PythonType
