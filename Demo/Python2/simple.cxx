@@ -283,7 +283,7 @@ private:
 #define EXPORT_SYMBOL
 #endif
 
-#if defined( PY3 )
+#if PY_MAJOR_VERSION == 3
 static simple_module *simple;
 
 extern "C" EXPORT_SYMBOL PyObject *PyInit_simple()
