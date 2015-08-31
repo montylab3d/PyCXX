@@ -228,10 +228,12 @@ test_List_iterators (const Py::List& x, Py::List& y)
     int caught_it = 0;
     try
     {
+        std::cout << "About to raise exception int(\"Howdy\")" << std::endl;
         o2 = o1;
     } 
-    catch (Py::Exception& e)
+    catch (Py::Exception &e)
     {
+        std::cout << "Catch o.k." << std::endl;
         caught_it = 1;
         e.clear();
     }
@@ -589,6 +591,20 @@ private:
         debug_check_ref_queue();
 
         std::cout << "Example Test starting" << std::endl;
+        try
+        {
+            // cannot create from NULL
+            Py::Object obj( NULL );
+            std::cout << "FAILED Py::Object( NULL )" << std::endl;
+        }
+        catch (Py::TypeError& e)
+        {
+            std::cout << "Correctly caught " << Py::type(e) << std::endl;
+            std::cout << "  Py::Exception value: " << Py::value(e) << std::endl;
+            std::cout << "  Py::Exception traceback: " << Py::trace(e) << std::endl;
+            e.clear();
+        }
+
         try
         {
             PyObject *p = NULL;

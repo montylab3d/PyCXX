@@ -226,9 +226,10 @@ namespace Py
         {
             // not allowed to commit suicide, however
             if(reference_count() == 1)
-            throw RuntimeError("Object::decrement_reference_count error.");
+                throw RuntimeError("Object::decrement_reference_count error.");
             Py::_XDECREF(p);
         }
+
         // Would like to call this pointer() but messes up STL in SeqBase<T>
         PyObject* ptr () const
         {
@@ -371,13 +372,13 @@ namespace Py
         void setAttr (const std::string& s, const Object& value)
         {
             if(PyObject_SetAttrString (p, const_cast<char*>(s.c_str()), *value) == -1)
-            throw AttributeError ("setAttr failed.");
+                throw AttributeError ("setAttr failed.");
         }
 
         void delAttr (const std::string& s)
         {
             if(PyObject_DelAttrString (p, const_cast<char*>(s.c_str())) == -1)
-            throw AttributeError ("delAttr failed.");
+                throw AttributeError ("delAttr failed.");
         }
 
         // PyObject_SetItem is too weird to be using from C++
@@ -385,9 +386,9 @@ namespace Py
 
         void delItem (const Object& key)
         {
-            //if(PyObject_DelItem(p, *key) == -1)
-            // failed to link on Windows?
-            throw KeyError("delItem failed.");
+            if(PyObject_DelItem(p, *key) == -1)
+                // failed to link on Windows?
+                throw KeyError("delItem failed.");
         }
 
         // Equality and comparison use PyObject_RichCompareBool
