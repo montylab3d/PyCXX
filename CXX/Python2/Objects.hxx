@@ -101,19 +101,20 @@ namespace Py
     //
     /*
     explicit MyType (PyObject *pyob): Object(pyob) {
-    validate();
-}
+        validate();
+    }
 
     MyType(const Object& other): Object(other.ptr()) {
-    validate();
-}
+        validate();
+    }
     */
 
     // Alernate version for the constructor to allow for construction from owned pointers:
     /*
-    explicit MyType (PyObject *pyob): Object(pyob) {
-    validate();
-}
+    explicit MyType (PyObject *pyob)
+    : Object(pyob) {
+        validate();
+    }
     */
 
     // You may wish to add other constructors; see the classes below for examples.
@@ -123,14 +124,14 @@ namespace Py
     // (4) Each class needs at least these two assignment operators:
     /*
     MyType& operator= (const Object& rhs) {
-    return (*this = *rhs);
-}
+        return (*this = *rhs);
+    }
 
     Mytype& operator= (PyObject* rhsp) {
-    if(ptr() == rhsp) return *this;
-    set(rhsp);
-    return *this;
-}
+        if(ptr() == rhsp) return *this;
+        set(rhsp);
+        return *this;
+    }
     */
     // Note on accepts: constructors call the base class
     // version of a virtual when calling the base class constructor,
@@ -174,7 +175,8 @@ namespace Py
 
     public:
         // Constructor acquires new ownership of pointer unless explicitly told not to.
-        explicit Object (PyObject* pyob=Py::_None(), bool owned = false): p (pyob)
+        explicit Object (PyObject* pyob=Py::_None(), bool owned = false)
+        : p(pyob)
         {
             if(!owned)
             {
@@ -184,7 +186,8 @@ namespace Py
         }
 
         // Copy constructor acquires new ownership of pointer
-        Object (const Object& ob): p(ob.p)
+        Object (const Object& ob)
+        : p(ob.p)
         {
             Py::_XINCREF (p);
             validate();
