@@ -91,7 +91,9 @@ static PyObject *ptr__Exc_NotImplementedError = NULL;
 static PyObject *ptr__Exc_OSError = NULL;
 static PyObject *ptr__Exc_OverflowError = NULL;
 static PyObject *ptr__Exc_RuntimeError = NULL;
+#if PY_MAJOR_VERSION == 2
 static PyObject *ptr__Exc_StandardError = NULL;
+#endif
 static PyObject *ptr__Exc_SyntaxError = NULL;
 static PyObject *ptr__Exc_SystemError = NULL;
 static PyObject *ptr__Exc_SystemExit = NULL;
@@ -265,7 +267,9 @@ bool InitialisePythonIndirectInterface()
     ptr__Exc_OSError            = GetPyObjectPointer_As_PyObjectPointer( "PyExc_OSError" );
     ptr__Exc_OverflowError      = GetPyObjectPointer_As_PyObjectPointer( "PyExc_OverflowError" );
     ptr__Exc_RuntimeError       = GetPyObjectPointer_As_PyObjectPointer( "PyExc_RuntimeError" );
+#if PY_MAJOR_VERSION == 2
     ptr__Exc_StandardError      = GetPyObjectPointer_As_PyObjectPointer( "PyExc_StandardError" );
+#endif
     ptr__Exc_SyntaxError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_SyntaxError" );
     ptr__Exc_SystemError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_SystemError" );
     ptr__Exc_SystemExit         = GetPyObjectPointer_As_PyObjectPointer( "PyExc_SystemExit" );
@@ -281,7 +285,11 @@ bool InitialisePythonIndirectInterface()
     ptr__Exc_UnicodeError       = GetPyObjectPointer_As_PyObjectPointer( "PyExc_UnicodeError" );
     ptr__PyNone                 = GetPyObject_As_PyObjectPointer( "_Py_NoneStruct" );
 
+#if PY_MAJOR_VERSION == 2
     ptr__PyFalse                = GetPyObject_As_PyObjectPointer( "_Py_ZeroStruct" );
+#else
+    ptr__PyFalse                = GetPyObject_As_PyObjectPointer( "_Py_FalseStruct" );
+#endif
     ptr__PyTrue                 = GetPyObject_As_PyObjectPointer( "_Py_TrueStruct" );
 
     ptr__CFunction_Type         = GetPyTypeObject_As_PyTypeObjectPointer( "PyCFunction_Type" );
@@ -344,7 +352,9 @@ PyObject *_Exc_NotImplementedError()    { return ptr__Exc_NotImplementedError; }
 PyObject *_Exc_OSError()                { return ptr__Exc_OSError; }
 PyObject *_Exc_OverflowError()          { return ptr__Exc_OverflowError; }
 PyObject *_Exc_RuntimeError()           { return ptr__Exc_RuntimeError; }
+#if PY_MAJOR_VERSION == 2
 PyObject *_Exc_StandardError()          { return ptr__Exc_StandardError; }
+#endif
 PyObject *_Exc_SyntaxError()            { return ptr__Exc_SyntaxError; }
 PyObject *_Exc_SystemError()            { return ptr__Exc_SystemError; }
 PyObject *_Exc_SystemExit()             { return ptr__Exc_SystemExit; }
