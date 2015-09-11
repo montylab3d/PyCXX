@@ -18,7 +18,7 @@ class Setup:
     def __init__( self, argv ):
         args = argv[1:]
         if len(args) < 2:
-            raise ValueError( 'Usage: setup.py win32|macosx|linux> <makefile>' )
+            raise ValueError( 'Usage: setup.py win32|win64|macosx|linux> <makefile>' )
 
         self.opt_debug = False
 
@@ -44,6 +44,10 @@ class Setup:
 
     def setupCompile( self ):
         if self.platform == 'win32':
+            self.c_utils = Win32CompilerMSVC90( self )
+            self.c_python_extension = Win32CompilerMSVC90( self )
+
+        elif self.platform == 'win64':
             self.c_utils = Win32CompilerMSVC90( self )
             self.c_python_extension = Win32CompilerMSVC90( self )
 
