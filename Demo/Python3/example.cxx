@@ -139,7 +139,7 @@ void test_boolean()
     test_assert( "boolean true pybool var ", pb1 ? true : false, true );
 
     b1 = pb1;
-    test_assert( "boolean true bool = pybool", pb1 ? true : false, true );
+    test_assert( "boolean true bool = pybool", b1, true );
 
     pb2 = pb1;
     test_assert( "boolean true pybool = pybool", pb2 ? true : false, true );
@@ -157,7 +157,7 @@ void test_boolean()
     test_assert( "boolean false pybool var ", pb1 ? true : false, false );
 
     b1 = pb1;
-    test_assert( "boolean false bool = pybool", pb1 ? true : false, false );
+    test_assert( "boolean false bool = pybool", b1, false );
 
     pb2 = pb1;
     test_assert( "boolean false pybool = pybool", pb2 ? true : false, false );
