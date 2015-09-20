@@ -291,12 +291,6 @@ extern "C" EXPORT_SYMBOL PyObject *PyInit_simple()
     return simple->module().ptr();
 }
 
-#if defined( _WIN32 )
-#define EXPORT_SYMBOL __declspec( dllexport )
-#else
-#define EXPORT_SYMBOL
-#endif
-
 // symbol required for the debug version
 extern "C" EXPORT_SYMBOL PyObject *PyInit_simple_d()
 { 
