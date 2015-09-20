@@ -86,7 +86,7 @@ PyCXX Paul. -- Barry Scott.</p>
 
 <p>PyCXX is designed to make it easier to extend Python with C++</p>
 
-<p>Use PyCXX Version 5 with Python 2 and PyCXX Version 6 with Python 3.</p>
+<p>PyCXX Version 6.1 and later supports both Python 2 and Python 3.</p>
 
 <p>PyCXX is a set of C++ facilities to make it easier to write Python extensions.
 The chief way in which PyCXX makes it easier to write Python extensions is that it greatly
@@ -159,8 +159,9 @@ can be used to build and run the example code.</p>
 
 <p>It is possible to have common code that can be compiled to work with Python 2 or Python 3.</p>
 
-<p>Use PyCXX V5.5 with PYCXX_PYTHON_2TO3 defined to support Python 2.</p>
-<p>Use PyCXX V6.0 with PYCXX_PYTHON_2TO3 defined to support Python 3.</p>
+<p>Define PYCXX_PYTHON_2TO3 to turn on the compatibility support.
+When compiling against Python 2 this means faking up the Python 3 API
+and when compiling against Python 3 faking the old Python 2 API.</p>
 
 <p>The changes from Python 2 to Python 3 that require code changes are:</p>
 <ul>
@@ -178,10 +179,6 @@ can be used to build and run the example code.</p>
 <li>Replace as_std_string() with as_std_string( "encoding" ) or as_std_string( NULL ) - required</li>
 <li>Replace Py::String that holds non unicode data with Py::Bytes - required</li>
 </ul>
-
-<p>Because the Py::String and Py::Byte implementations in PyCXX V5.5 allow abuses
-of the API it is best to test your code against PyCXX V6.0 to ensure correct API
-use then test against PyCXX V5.5.</p>
 
 <h2><a name="h2_namespaces">Use of namespaces</a></h2>
 
