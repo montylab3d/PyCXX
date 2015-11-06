@@ -21,9 +21,23 @@ class my_install (install):
         self.distribution.headers = headers
         install.run (self)
 
+# read the version from the master file CXX/Version.hxx
+v_maj = None
+v_min = None
+v_pat = None
+with open( 'CXX/Version.hxx', 'r' ) as f:
+    for line in f:
+        if line.startswith( '#define PYCXX_VERSION_' ):
+            parts = line.strip().split()
+            if parts[1] == 'PYCXX_VERSION_MAJOR':
+                v_maj = parts[2]
+            elif parts[1] == 'PYCXX_VERSION_MINOR':
+                v_min = parts[2]
+            elif parts[1] == 'PYCXX_VERSION_PATCH':
+                v_pat = parts[2]
 
 setup (name             = "CXX",
-       version          = "6.2.4",
+       version          = "%s.%s.%s" % (v_maj, v_min, v_pat),
        maintainer       = "Barry Scott",
        maintainer_email = "barry-scott@users.sourceforge.net",
        description      = "Facility for extending Python with C++",
