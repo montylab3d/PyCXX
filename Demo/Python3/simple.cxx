@@ -17,6 +17,11 @@
 
 #include <assert.h>
 
+// useful to set a break point on when debugging
+void bpt()
+{
+}
+
 class new_style_class: public Py::PythonClass< new_style_class >
 {
 public:
@@ -52,6 +57,8 @@ public:
 
         PYCXX_ADD_NOARGS_METHOD( func_noargs_raise_exception, new_style_class_func_noargs_raise_exception, "docs for func_noargs_raise_exception" );
 
+        PYCXX_ADD_VARARGS_METHOD( func_varargs_call_member, new_style_class_call_member, "docs for func_varargs_call_member" );
+
         // Call to make the type ready for use
         behaviors().readyType();
     }
@@ -70,6 +77,28 @@ public:
         return Py::None();
     }
     PYCXX_VARARGS_METHOD_DECL( new_style_class, new_style_class_func_varargs )
+
+    Py::Object new_style_class_call_member( const Py::Tuple &args )
+    {
+        std::cout << "new_style_class_call_member Called with " << args.length() << " normal arguments." << std::endl;
+
+        Py::String member_func_name( args[0] );
+
+        bpt();
+        Py::Object _self = self();
+        try
+        {
+            Py::Object result( _self.callMemberFunction( member_func_name.as_std_string(), args ) );
+            return result;
+        }
+        catch( Py::Exception &e )
+        {
+            e.clear();
+            return Py::String( "new_style_class_call_member error when calling member" );
+        }
+        
+    }
+    PYCXX_VARARGS_METHOD_DECL( new_style_class, new_style_class_call_member )
 
     Py::Object new_style_class_func_keyword( const Py::Tuple &args, const Py::Dict &kwds )
     {
@@ -192,6 +221,7 @@ public:
 
         add_varargs_method("old_style_class", &simple_module::factory_old_style_class, "documentation for old_style_class()");
         add_keyword_method("func", &simple_module::func, "documentation for func()");
+        add_keyword_method("func_with_callback", &simple_module::func_with_callback, "documentation for func_with_callback()");
         add_keyword_method("make_instance", &simple_module::make_instance, "documentation for make_instance()");
 
         add_keyword_method("decode_test", &simple_module::decode_test, "documentation for decode_test()");
@@ -248,6 +278,15 @@ private:
 #endif
 
         return Py::None();
+    }
+
+    Py::Object func_with_callback( const Py::Tuple &args, const Py::Dict &kwds )
+    {
+        Py::Callable callback_func( args[0] );
+        Py::Tuple callback_args( 1 );
+        callback_args[0] = Py::String( "callback_args string" );
+
+        return callback_func.apply( callback_args );
     }
 
     Py::Object make_instance( const Py::Tuple &args, const Py::Dict &kwds )

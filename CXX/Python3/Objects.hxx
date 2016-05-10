@@ -3138,7 +3138,9 @@ namespace Py
         Callable &operator=( PyObject *rhsp )
         {
             if( ptr() != rhsp )
+            {
                 set( rhsp );
+            }
             return *this;
         }
 
@@ -3151,13 +3153,23 @@ namespace Py
         // Call
         Object apply( const Tuple &args ) const
         {
-            return asObject( PyObject_CallObject( ptr(), args.ptr() ) );
+            PyObject *result = PyObject_CallObject( ptr(), args.ptr() );
+            if( result == NULL )
+            {
+                throw Exception();
+            }
+            return asObject( result );
         }
 
         // Call with keywords
         Object apply( const Tuple &args, const Dict &kw ) const
         {
-            return asObject( PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() ) );
+            PyObject *result = PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() );
+            if( result == NULL )
+            {
+                throw Exception();
+            }
+            return asObject( result );
         }
 
         Object apply( PyObject *pargs = 0 ) const
