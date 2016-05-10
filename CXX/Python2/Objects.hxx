@@ -3240,7 +3240,14 @@ namespace Py
 
         Object apply(PyObject* pargs = 0) const
         {
-            return apply (Tuple(pargs));
+            if( pargs == 0 )
+            {
+                return apply( Tuple() );
+            }
+            else
+            {
+                return apply( Tuple( pargs ) );
+            }
         }
     };
 
