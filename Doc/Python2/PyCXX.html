@@ -45,7 +45,7 @@ integrates Python with C++ in these ways: </p>
     compiler keep track of what objects need to be dereferenced when an error occurs.</li>
   <li>The Standard Template Library (STL) and its many algorithms plug and play with Python
     containers such as lists and tuples.</li>
-  <li>The optional CXX_Extensions facility allows you to replace the clumsy C tables with
+  <li>The optional CXX/Extensions facility allows you to replace the clumsy C tables with
     objects and method calls that define your modules and extension objects.</li>
 </ul>
 
@@ -74,7 +74,7 @@ Unix: <cite>/usr/local/PyCXX</cite>
 Windows: <cite>cl /I=C:\PyCXX ...</cite><br>
 Unix: <cite>g++ -I/usr/local/PyCXX ...</cite>
 <li>Include PyCXX headers files in your code using the CXX prefix:<br>
-<cite>#include &quot;CXX/Object.hxx&quot;</cite>
+<cite>#include &quot;CXX/Objects.hxx&quot;</cite>
 </ul>
 
 <p>The header file CXX/config.h may need to be adjusted for the
@@ -117,7 +117,7 @@ the Py:: prefix when referring to them, or include the statement:</p>
 <h2>Wrappers for standard objects: CXX/Objects.hxx</h2>
 
 <p>Header file CXX/Objects.hxx requires adding file Src/cxxsupport.cxx and
-Src/IndirectPythonInterface.cxx to your module sources. CXX_Objects provides a
+Src/IndirectPythonInterface.cxx to your module sources. CXX/Objects provides a
 set of wrapper classes that allow you access
 to most of the Python C API using a C++ notation that closely resembles Python. For
 example, this Python:</p>
@@ -154,7 +154,7 @@ integer argument, that will create a Python <cite>dict</cite>
  and insert into it that the integer plus one under the key <cite>value</cite>.
  In C we might do that as follows:</p>
 
-<pre>static PyObject* mymodule_addvalue (PyObject* self, PyObject* args)
+<pre>static PyObject* mymodule_addvalue (PyObject* args)
 {
     PyObject *d;
     PyObject* f;
@@ -185,7 +185,7 @@ The vast bulk of the coding is error checking and cleanup. Now compare the same 
 written in C++ using CXX/Objects.hxx. The things with Python-like names (Int, Dict, Tuple) are
 from CXX/Objects.hxx.</p>
 
-<pre>static PyObject* mymodule_addvalue (PyObject* self, PyObject* pargs)
+<pre>static PyObject* mymodule_addvalue (PyObject* pargs)
 { 
     try
     {
@@ -216,7 +216,7 @@ ExtensionModule-derived module of your own, it would be a method and it could be
 even more simply:</p>
 
 <pre>
-Object addvalue (Object &amp; self, const Tuple &amp; args)
+Object addvalue (const Tuple &amp; args)
 {
     args.verify_length(1);
     Dict d;
@@ -872,7 +872,7 @@ be any kind of Python sequence, and you wish to return the length of that sequen
 might write:</p>
 
 <pre>static PyObject*
-my_module_seqlen (PyObject *self, PyObject* args) {
+my_module_seqlen (PyObject* args) {
 try
     {
     Tuple t(args);       // set up a Tuple pointing to the arguments.
@@ -1702,7 +1702,7 @@ other exceptions, not in the Exception family, in the same way. If so, you need 
 sure you set the error in Python before returning.</p>
 
 <pre>static PyObject *
-some_module_method(PyObject* self, PyObject* args)
+some_module_method(PyObject* args)
 {
     Tuple a( args ); // we know args is a Tuple
     try

@@ -227,7 +227,7 @@ integer argument, that will create a Python <cite>dict</cite>
  and insert into it that the integer plus one under the key <cite>value</cite>.
  In C we might do that as follows:</p>
 
-<pre>static PyObject *mymodule_addvalue( PyObject *self, PyObject *args )
+<pre>static PyObject *mymodule_addvalue( PyObject *args )
 {
     PyObject *d;
     PyObject *f;
@@ -258,7 +258,7 @@ The vast bulk of the coding is error checking and cleanup. Now compare the same 
 written in C++ using CXX/Objects.hxx. The things with Python-like names ( Long, Dict, Tuple ) are
 from CXX/Objects.hxx.</p>
 
-<pre>static PyObject *mymodule_addvalue( PyObject *self, PyObject *pargs )
+<pre>static PyObject *mymodule_addvalue( PyObject *pargs )
 { 
     try
     {
@@ -289,7 +289,7 @@ ExtensionModule-derived module of your own, it would be a method and it could be
 even more simply:</p>
 
 <pre>
-Object addvalue( Object &amp; self, const Tuple &amp; args )
+Object addvalue( const Tuple &amp; args )
 {
     args.verify_length( 1 );
     Dict d;
@@ -908,7 +908,7 @@ be any kind of Python sequence, and you wish to return the length of that sequen
 might write:</p>
 
 <pre>static PyObject*
-my_module_seqlen( PyObject *self, PyObject *args ) {
+my_module_seqlen( PyObject *args ) {
 try
     {
     Tuple t( args );       // set up a Tuple pointing to the arguments.
@@ -1987,7 +1987,7 @@ other exceptions, not in the Exception family, in the same way. If so, you need 
 sure you set the error in Python before returning.</p>
 
 <pre>static PyObject *
-some_module_method( PyObject *self, PyObject *args )
+some_module_method( PyObject *args )
 {
     Tuple a( args ); // we know args is a Tuple
     try
