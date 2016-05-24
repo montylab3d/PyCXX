@@ -36,6 +36,7 @@
 //-----------------------------------------------------------------------------
 #include "CXX/Extensions.hxx"
 #include "CXX/Exception.hxx"
+
 #include <assert.h>
 
 #ifdef PYCXX_DEBUG
@@ -1823,6 +1824,12 @@ void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::strin
      module_name += ".";
      module_name += name;
      set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), parent.ptr(), NULL ), true );
+}
+
+bool ExtensionExceptionType::matches( ExtensionExceptionType &exc )
+// is the exception this specific exception 'exc'
+{
+    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
 
 ExtensionExceptionType::~ExtensionExceptionType()

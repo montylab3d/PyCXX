@@ -1636,6 +1636,12 @@ void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::strin
     set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), parent.ptr(), NULL ), true );
 }
 
+// is the exception this specific exception 'exc'
+bool Exception::matches( ExtensionExceptionType &exc )
+{
+    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
+}
+
 ExtensionExceptionType::~ExtensionExceptionType()
 {
 }
