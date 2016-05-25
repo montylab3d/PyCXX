@@ -54,6 +54,8 @@
 
 namespace Py
 {
+    void ifPyErrorThrowCxxException();
+
     typedef int sequence_index_type;    // type of an index into a sequence
 
     // Forward declarations
@@ -401,14 +403,14 @@ namespace Py
         bool operator==(const Object& o2) const
         {
             int k = PyObject_RichCompareBool (p, *o2, Py_EQ);
-            if (PyErr_Occurred()) throw Exception();
+            ifPyErrorThrowCxxException();
             return k != 0;
         }
 
         bool operator!=(const Object& o2) const
         {
             int k = PyObject_RichCompareBool (p, *o2, Py_NE);
-            if (PyErr_Occurred()) throw Exception();
+            ifPyErrorThrowCxxException();
             return k != 0;
 
         }
@@ -416,28 +418,28 @@ namespace Py
         bool operator>=(const Object& o2) const
         {
             int k = PyObject_RichCompareBool (p, *o2, Py_GE);
-            if (PyErr_Occurred()) throw Exception();
+            ifPyErrorThrowCxxException();
             return k != 0;
         }
 
         bool operator<=(const Object& o2) const
         {
             int k = PyObject_RichCompareBool (p, *o2, Py_LE);
-            if (PyErr_Occurred()) throw Exception();
+            ifPyErrorThrowCxxException();
             return k != 0;
         }
 
         bool operator<(const Object& o2) const
         {
             int k = PyObject_RichCompareBool (p, *o2, Py_LT);
-            if (PyErr_Occurred()) throw Exception();
+            ifPyErrorThrowCxxException();
             return k != 0;
         }
 
         bool operator>(const Object& o2) const
         {
             int k = PyObject_RichCompareBool (p, *o2, Py_GT);
-            if (PyErr_Occurred()) throw Exception();
+            ifPyErrorThrowCxxException();
             return k != 0;
         }
     };
@@ -3222,7 +3224,7 @@ namespace Py
             PyObject *result = PyObject_CallObject( ptr(), args.ptr() );
             if( result == NULL )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
             return asObject( result );
         }
@@ -3233,7 +3235,7 @@ namespace Py
             PyObject *result = PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() );
             if( result == NULL )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
             return asObject( result );
         }

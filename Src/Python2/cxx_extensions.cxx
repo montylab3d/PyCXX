@@ -117,10 +117,10 @@ void Object::validate()
         }
 #endif
         release();
-        if( PyErr_Occurred() )
-        { // Error message already set
-            throw Exception();
-        }
+
+        // Error message already set
+        ifPyErrorThrowCxxException()
+
         // Better error message if RTTI available
 #if defined( _CPPRTTI ) || defined( __GNUG__ )
         throw TypeError( s );

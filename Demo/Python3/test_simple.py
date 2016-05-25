@@ -14,16 +14,40 @@ def callback_bad( arg ):
     print( 'callback_bad with %r' % (arg,) )
     raise ValueError( 'callback_bad error' )
 
+def callback_raise_simple_error( arg ):
+    print( 'callback_bad with %r' % (arg,) )
+    raise simple.SimpleError( 'callback_raise_simple_error' )
+
 answer = simple.func_with_callback( callback_good, 'fred' )
-print( 'callback_good returned %r' % (answer,) )
+print( 'PASS callback_good returned %r' % (answer,) )
 
 try:
     answer = simple.func_with_callback( callback_bad, 'fred' )
-    print( 'callback_bad returned %r' % (answer,) )
+    print( 'FAILED callback_bad %r' % (answer,) )
 
 except Exception as e:
-    print( 'callback_bad: error %r' % (e,) )
+    print( 'PASS callback_bad: error %s' % (e,) )
 
+try:
+    answer = simple.func_with_callback( callback_raise_simple_error, 'fred' )
+    print( 'FAIL callback_raise_simple_error returned %r' % (answer,) )
+
+except simple.SimpleError as e:
+    print( 'PASS callback_raise_simple_error: %s' % (e,) )
+
+try:
+    answer = simple.func_with_callback_catch_simple_error( callback_raise_simple_error, 'fred' )
+    print( 'PASS func_with_callback_catch_simple_error returned %r' % (answer,) )
+
+except simple.SimpleError as e:
+    print( 'FAIL func_with_callback_catch_simple_error: %s' % (e,) )
+
+print( '--- module error ---' )
+try:
+    raise simple.SimpleError( 'Hello!' )
+
+except simple.SimpleError as e:
+    print( 'PASS caught SimpleError - %s' % (e,) )
 
 print( '--- old_style_class func ---' )
 old_style_class = simple.old_style_class()

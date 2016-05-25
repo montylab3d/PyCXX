@@ -210,6 +210,37 @@ public:
     }
 };
 
+class SimpleError : public Py::Exception
+{
+public:
+    SimpleError( const std::string &reason )
+    : Exception( reason )
+    { }
+
+    ~SimpleError() {}
+
+    static void init( Py::ExtensionModuleBase &module )
+    {
+        m_error.init( module, "SimpleError" );
+        Py::addPythonException( m_error, throwFunc );
+
+        Py::Dict d( module.moduleDictionary() );
+        d["SimpleError"] = m_error;
+    }
+
+private:
+    SimpleError() : Py::Exception() {}
+
+    static void throwFunc()
+    {
+        throw SimpleError();
+    }
+
+    static Py::ExtensionExceptionType m_error;
+};
+
+Py::ExtensionExceptionType SimpleError::m_error;
+
 class simple_module : public Py::ExtensionModule<simple_module>
 {
 public:
@@ -222,6 +253,7 @@ public:
         add_varargs_method("old_style_class", &simple_module::factory_old_style_class, "documentation for old_style_class()");
         add_keyword_method("func", &simple_module::func, "documentation for func()");
         add_keyword_method("func_with_callback", &simple_module::func_with_callback, "documentation for func_with_callback()");
+        add_keyword_method("func_with_callback_catch_simple_error", &simple_module::func_with_callback_catch_simple_error, "documentation for func_with_callback_catch_simple_error()");
         add_keyword_method("make_instance", &simple_module::make_instance, "documentation for make_instance()");
 
         add_keyword_method("decode_test", &simple_module::decode_test, "documentation for decode_test()");
@@ -234,6 +266,8 @@ public:
         d["var"] = Py::String( "var value" );
         Py::Object x( new_style_class::type() );
         d["new_style_class"] = x;
+
+        SimpleError::init( *this );
     }
 
     virtual ~simple_module()
@@ -287,6 +321,27 @@ private:
         callback_args[0] = Py::String( "callback_args string" );
 
         return callback_func.apply( callback_args );
+    }
+
+    Py::Object func_with_callback_catch_simple_error( const Py::Tuple &args, const Py::Dict &kwds )
+    {
+        Py::Callable callback_func( args[0] );
+        Py::Tuple callback_args( 1 );
+        callback_args[0] = Py::String( "callback_args string" );
+
+        try
+        {
+            std::cout << "func_with_callback_catch_simple_error calling arg[0]" << std::endl;
+            return callback_func.apply( callback_args );
+        }
+        catch( SimpleError &e )
+        {
+            Py::String value = Py::value( e );
+            e.clear();
+            std::cout << "PASS caught SimpleError( \"" << value << "\"" << std::endl;
+
+            return Py::String("Error");
+        }
     }
 
     Py::Object make_instance( const Py::Tuple &args, const Py::Dict &kwds )

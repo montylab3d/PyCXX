@@ -36,6 +36,7 @@
 //-----------------------------------------------------------------------------
 #include "CXX/Extensions.hxx"
 #include "CXX/Exception.hxx"
+#include "CXX/Objects.hxx"
 
 #include <assert.h>
 
@@ -77,10 +78,10 @@ void Object::validate()
         }
 #endif
         release();
-        if( PyErr_Occurred() )
-        { // Error message already set
-            throw Exception();
-        }
+
+        // If error message already set
+        ifPyErrorThrowCxxException();
+
         // Better error message if RTTI available
 #if defined( _CPPRTTI ) || defined( __GNUG__ )
         throw TypeError( s );
@@ -183,8 +184,13 @@ public:
     ExtensionModuleBase *module;
 };
 
+void initExceptions();
+
 void ExtensionModuleBase::initialize( const char *module_doc )
 {
+    // init the exception code
+    initExceptions();
+
     memset( &m_module_def, 0, sizeof( m_module_def ) );
 
     m_module_def.m_name = const_cast<char *>( m_module_name.c_str() );
@@ -222,7 +228,9 @@ extern "C"
     // All the following functions redirect the call from Python
     // onto the matching virtual function in PythonExtensionBase
     //
+#ifdef PYCXX_PYTHON_2TO3
     static int print_handler( PyObject *, FILE *, int );
+#endif
     static PyObject *getattr_handler( PyObject *, char * );
     static int setattr_handler( PyObject *, char *, PyObject * );
     static PyObject *getattro_handler( PyObject *, PyObject * );
@@ -1614,7 +1622,7 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
 //
 //--------------------------------------------------------------------------------
 ExtensionExceptionType::ExtensionExceptionType()
-    : Py::Object()
+: Py::Object()
 {
 }
 

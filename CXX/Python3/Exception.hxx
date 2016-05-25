@@ -85,6 +85,10 @@ namespace Py
         bool matches( ExtensionExceptionType &exc );
     };
 
+    // for user defined exceptions to be made know to pycxx
+    typedef void (*throw_exception_func_t)( void );
+    void addPythonException( ExtensionExceptionType &py_exc_type, throw_exception_func_t throw_func );
+
     // Abstract
     class StandardError: public Exception
     {
@@ -93,170 +97,22 @@ namespace Py
         {}
     };
 
-    class LookupError: public StandardError
-    {
-    protected:
-        explicit LookupError()
-        {}
-    };
+#define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+    class eclass : public bclass \
+    { \
+    public: \
+        eclass() {} \
+        eclass( const char *reason ) { PyErr_SetString( _Exc_##eclass(), reason ); } \
+        eclass( const std::string &reason ) { PyErr_SetString( _Exc_##eclass(), reason.c_str() ); } \
+        ~eclass() {} \
+        \
+        static void throwFunc() { throw eclass(); } \
+        static PyObject *exceptionType() { return _Exc_##eclass(); } \
+    }; \
 
-    class ArithmeticError: public StandardError
-    {
-    protected:
-        explicit ArithmeticError()
-        {}
-    };
+#include <CXX/Python3/cxx_standard_exceptions.hxx>
 
-    class EnvironmentError: public StandardError
-    {
-    protected:
-        explicit EnvironmentError()
-        {}
-    };
-
-    // Concrete
-
-    class TypeError: public StandardError
-    {
-    public:
-        TypeError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_TypeError(),reason.c_str() );
-        }
-    };
-
-    class IndexError: public LookupError
-    {
-    public:
-        IndexError (const std::string& reason)
-        : LookupError()
-        {
-            PyErr_SetString( Py::_Exc_IndexError(), reason.c_str() );
-        }
-    };
-
-    class AttributeError: public StandardError
-    {
-    public:
-        AttributeError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_AttributeError(), reason.c_str() );
-        }
-    };
-
-    class NameError: public StandardError
-    {
-    public:
-        NameError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_NameError(), reason.c_str() );
-        }
-    };
-
-    class RuntimeError: public StandardError
-    {
-    public:
-        RuntimeError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
-        }
-    };
-
-    class NotImplementedError: public StandardError
-    {
-    public:
-        NotImplementedError (const std::string& reason)
-            : StandardError()
-        {
-            PyErr_SetString (Py::_Exc_NotImplementedError(), reason.c_str());
-        }
-    };
-
-    class SystemError: public StandardError
-    {
-    public:
-        SystemError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_SystemError(),reason.c_str() );
-        }
-    };
-
-    class KeyError: public LookupError
-    {
-    public:
-        KeyError (const std::string& reason)
-        : LookupError()
-        {
-            PyErr_SetString( Py::_Exc_KeyError(),reason.c_str() );
-        }
-    };
-
-
-    class ValueError: public StandardError
-    {
-    public:
-        ValueError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_ValueError(), reason.c_str() );
-        }
-    };
-
-    class OverflowError: public ArithmeticError
-    {
-    public:
-        OverflowError (const std::string& reason)
-        : ArithmeticError()
-        {
-            PyErr_SetString( Py::_Exc_OverflowError(), reason.c_str() );
-        }
-    };
-
-    class ZeroDivisionError: public ArithmeticError
-    {
-    public:
-        ZeroDivisionError (const std::string& reason)
-        : ArithmeticError()
-        {
-            PyErr_SetString( Py::_Exc_ZeroDivisionError(), reason.c_str() );
-        }
-    };
-
-    class FloatingPointError: public ArithmeticError
-    {
-    public:
-        FloatingPointError (const std::string& reason)
-        : ArithmeticError()
-        {
-            PyErr_SetString( Py::_Exc_FloatingPointError(), reason.c_str() );
-        }
-    };
-
-    class MemoryError: public StandardError
-    {
-    public:
-        MemoryError (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_MemoryError(), reason.c_str() );
-        }
-    };
-
-    class SystemExit: public StandardError
-    {
-    public:
-        SystemExit (const std::string& reason)
-        : StandardError()
-        {
-            PyErr_SetString( Py::_Exc_SystemExit(),reason.c_str() );
-        }
-    };
-
+#undef PYCXX_STANDARD_EXCEPTION
 }// Py
 
 #endif

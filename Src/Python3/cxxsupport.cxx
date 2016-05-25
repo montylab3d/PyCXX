@@ -38,7 +38,6 @@
 #include "CXX/Objects.hxx"
 namespace Py 
 {
-
 Py_UNICODE unicode_null_string[1] = { 0 };
 
 Type Object::type() const
@@ -85,16 +84,14 @@ String Bytes::decode( const char *encoding, const char *error )
 bool operator==( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_EQ );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator!=( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_NE );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 
 }
@@ -102,32 +99,28 @@ bool operator!=( const Object &o1, const Object &o2 )
 bool operator>=( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_GE );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator<=( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_LE );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator<( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_LT );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 
 bool operator>( const Object &o1, const Object &o2 )
 {
     int k = PyObject_RichCompareBool( *o1, *o2, Py_GT );
-    if( PyErr_Occurred() )
-        throw Exception();
+    ifPyErrorThrowCxxException();
     return k != 0;
 }
 

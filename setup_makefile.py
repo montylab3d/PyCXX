@@ -67,6 +67,7 @@ class Setup:
         self.pycxx_obj_file = [
             Source( self.c_python_extension, 'Src/cxxsupport.cxx' ),
             Source( self.c_python_extension, 'Src/cxx_extensions.cxx' ),
+            Source( self.c_python_extension, 'Src/cxx_exceptions.cxx' ),
             Source( self.c_python_extension, 'Src/cxxextensions.c' ),
             Source( self.c_python_extension, 'Src/IndirectPythonInterface.cxx' ),
             ]
