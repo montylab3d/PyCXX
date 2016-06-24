@@ -3414,7 +3414,7 @@ namespace Py
 
     //------------------------------------------------------------
     // type
-    inline Object type( const Exception &) // return the type of the error
+    inline Object type( const BaseException & ) // return the type of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch( &ptype, &pvalue, &ptrace );
@@ -3425,7 +3425,7 @@ namespace Py
         return result;
     }
 
-    inline Object value( const Exception &) // return the value of the error
+    inline Object value( const BaseException & ) // return the value of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch( &ptype, &pvalue, &ptrace );
@@ -3436,7 +3436,7 @@ namespace Py
         return result;
     }
 
-    inline Object trace( const Exception &) // return the traceback of the error
+    inline Object trace( const BaseException & ) // return the traceback of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch( &ptype, &pvalue, &ptrace );

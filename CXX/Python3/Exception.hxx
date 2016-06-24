@@ -54,26 +54,26 @@ namespace Py
 
     class Object;
 
-    class Exception
+    class BaseException
     {
     public:
-        Exception( ExtensionExceptionType &exception, const std::string &reason );
-        Exception( ExtensionExceptionType &exception, Object &reason );
+        BaseException( ExtensionExceptionType &exception, const std::string &reason );
+        BaseException( ExtensionExceptionType &exception, Object &reason );
 
-        explicit Exception ()
+        explicit BaseException()
         {}
 
-        Exception (const std::string &reason)
+        BaseException( const std::string &reason )
         {
             PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
         }
 
-        Exception( PyObject *exception, const std::string &reason )
+        BaseException( PyObject *exception, const std::string &reason )
         {
             PyErr_SetString( exception, reason.c_str() );
         }
 
-        Exception( PyObject *exception, Object &reason );
+        BaseException( PyObject *exception, Object &reason );
 
         void clear() // clear the error
         // technically but not philosophically const
@@ -88,14 +88,6 @@ namespace Py
     // for user defined exceptions to be made know to pycxx
     typedef void (*throw_exception_func_t)( void );
     void addPythonException( ExtensionExceptionType &py_exc_type, throw_exception_func_t throw_func );
-
-    // Abstract
-    class StandardError: public Exception
-    {
-    protected:
-        explicit StandardError()
-        {}
-    };
 
 #define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
     class eclass : public bclass \
@@ -115,11 +107,11 @@ namespace Py
 #undef PYCXX_STANDARD_EXCEPTION
 
 #define PYCXX_USER_EXCEPTION_STR_ARG( uclass ) \
-class uclass : public Py::Exception \
+class uclass : public Py::BaseException \
 { \
 public: \
     uclass( const std::string &reason ) \
-    : Py::Exception( reason ) \
+    : Py::BaseException( reason ) \
     { } \
     ~uclass() {} \
     static void init( Py::ExtensionModuleBase &module ) \
@@ -130,7 +122,7 @@ public: \
         d[#uclass] = m_error; \
     } \
 private: \
-    uclass() : Py::Exception() {} \
+    uclass() : Py::BaseException() {} \
     static void throwFunc() \
     { \
         throw uclass(); \
@@ -140,11 +132,11 @@ private: \
 Py::ExtensionExceptionType uclass::m_error;
 
 #define PYCXX_USER_EXCEPTION_NO_ARG( uclass ) \
-class uclass : public Py::Exception \
+class uclass : public Py::BaseException \
 { \
 public: \
     uclass() \
-    : Py::Exception() \
+    : Py::BaseException() \
     { } \
     ~uclass() {} \
     static void init( Py::ExtensionModuleBase &module ) \
