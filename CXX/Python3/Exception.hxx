@@ -113,6 +113,56 @@ namespace Py
 #include <CXX/Python3/cxx_standard_exceptions.hxx>
 
 #undef PYCXX_STANDARD_EXCEPTION
+
+#define PYCXX_USER_EXCEPTION_STR_ARG( uclass ) \
+class uclass : public Py::Exception \
+{ \
+public: \
+    uclass( const std::string &reason ) \
+    : Py::Exception( reason ) \
+    { } \
+    ~uclass() {} \
+    static void init( Py::ExtensionModuleBase &module ) \
+    { \
+        m_error.init( module, #uclass ); \
+        Py::addPythonException( m_error, throwFunc ); \
+        Py::Dict d( module.moduleDictionary() ); \
+        d[#uclass] = m_error; \
+    } \
+private: \
+    uclass() : Py::Exception() {} \
+    static void throwFunc() \
+    { \
+        throw uclass(); \
+    } \
+    static Py::ExtensionExceptionType m_error; \
+}; \
+Py::ExtensionExceptionType uclass::m_error;
+
+#define PYCXX_USER_EXCEPTION_NO_ARG( uclass ) \
+class uclass : public Py::Exception \
+{ \
+public: \
+    uclass() \
+    : Py::Exception() \
+    { } \
+    ~uclass() {} \
+    static void init( Py::ExtensionModuleBase &module ) \
+    { \
+        m_error.init( module, #uclass ); \
+        Py::addPythonException( m_error, throwFunc ); \
+        Py::Dict d( module.moduleDictionary() ); \
+        d[#uclass] = m_error; \
+    } \
+private: \
+    static void throwFunc() \
+    { \
+        throw uclass(); \
+    } \
+    static Py::ExtensionExceptionType m_error; \
+}; \
+Py::ExtensionExceptionType uclass::m_error;
+
 }// Py
 
 #endif

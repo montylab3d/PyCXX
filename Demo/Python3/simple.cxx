@@ -210,36 +210,7 @@ public:
     }
 };
 
-class SimpleError : public Py::Exception
-{
-public:
-    SimpleError( const std::string &reason )
-    : Exception( reason )
-    { }
-
-    ~SimpleError() {}
-
-    static void init( Py::ExtensionModuleBase &module )
-    {
-        m_error.init( module, "SimpleError" );
-        Py::addPythonException( m_error, throwFunc );
-
-        Py::Dict d( module.moduleDictionary() );
-        d["SimpleError"] = m_error;
-    }
-
-private:
-    SimpleError() : Py::Exception() {}
-
-    static void throwFunc()
-    {
-        throw SimpleError();
-    }
-
-    static Py::ExtensionExceptionType m_error;
-};
-
-Py::ExtensionExceptionType SimpleError::m_error;
+PYCXX_USER_EXCEPTION_STR_ARG(  SimpleError )
 
 class simple_module : public Py::ExtensionModule<simple_module>
 {
