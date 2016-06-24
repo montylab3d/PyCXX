@@ -72,46 +72,17 @@ bool _Bytes_Check( PyObject *op )       { return op->ob_type == _Bytes_Type(); }
 
 static HMODULE python_dll;
 
-static PyObject *ptr__Exc_ArithmeticError = NULL;
-static PyObject *ptr__Exc_AssertionError = NULL;
-static PyObject *ptr__Exc_AttributeError = NULL;
-static PyObject *ptr__Exc_EnvironmentError = NULL;
-static PyObject *ptr__Exc_EOFError = NULL;
-static PyObject *ptr__Exc_Exception = NULL;
-static PyObject *ptr__Exc_FloatingPointError = NULL;
-static PyObject *ptr__Exc_ImportError = NULL;
-static PyObject *ptr__Exc_IndexError = NULL;
-static PyObject *ptr__Exc_IOError = NULL;
-static PyObject *ptr__Exc_KeyboardInterrupt = NULL;
-static PyObject *ptr__Exc_KeyError = NULL;
-static PyObject *ptr__Exc_LookupError = NULL;
-static PyObject *ptr__Exc_MemoryError = NULL;
-static PyObject *ptr__Exc_NameError = NULL;
-static PyObject *ptr__Exc_NotImplementedError = NULL;
-static PyObject *ptr__Exc_OSError = NULL;
-static PyObject *ptr__Exc_OverflowError = NULL;
-static PyObject *ptr__Exc_RuntimeError = NULL;
+#define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+    static PyObject *ptr_Exc_##eclass = NULL;
+
 #if PY_MAJOR_VERSION == 2
-static PyObject *ptr__Exc_StandardError = NULL;
-#endif
-static PyObject *ptr__Exc_SyntaxError = NULL;
-static PyObject *ptr__Exc_SystemError = NULL;
-static PyObject *ptr__Exc_SystemExit = NULL;
-static PyObject *ptr__Exc_TypeError = NULL;
-static PyObject *ptr__Exc_ValueError = NULL;
-static PyObject *ptr__Exc_ZeroDivisionError = NULL;
-
-#ifdef MS_WINDOWS
-static PyObject *ptr__Exc_WindowsError = NULL;
+#include "CXX/Python2/cxx_standard_exceptions.hxx"
+#else
+#include "CXX/Python3/cxx_standard_exceptions.hxx"
 #endif
 
-static PyObject *ptr__Exc_IndentationError = NULL;
-static PyObject *ptr__Exc_TabError = NULL;
-static PyObject *ptr__Exc_UnboundLocalError = NULL;
-static PyObject *ptr__Exc_UnicodeError = NULL;
-static PyObject *ptr__PyNone = NULL;
-static PyObject *ptr__PyFalse = NULL;
-static PyObject *ptr__PyTrue = NULL;
+#undef PYCXX_STANDARD_EXCEPTION
+
 static PyTypeObject *ptr__CFunction_Type = NULL;
 static PyTypeObject *ptr__Complex_Type = NULL;
 static PyTypeObject *ptr__Dict_Type = NULL;
@@ -136,7 +107,6 @@ static PyTypeObject *ptr__CObject_Type = NULL;
 #if PY_MAJOR_VERSION >= 3
 static PyTypeObject *ptr__Bytes_Type = NULL;
 #endif
-
 
 static int *ptr_Py_DebugFlag = NULL;
 static int *ptr_Py_InteractiveFlag = NULL;
@@ -248,41 +218,17 @@ bool InitialisePythonIndirectInterface()
     ptr_Py_VerboseFlag          = GetInt_as_IntPointer( "Py_VerboseFlag" );
     ptr__Py_PackageContext      = GetCharPointer_as_CharPointerPointer( "_Py_PackageContext" );
 
-    ptr__Exc_ArithmeticError    = GetPyObjectPointer_As_PyObjectPointer( "PyExc_ArithmeticError" );
-    ptr__Exc_AssertionError     = GetPyObjectPointer_As_PyObjectPointer( "PyExc_AssertionError" );
-    ptr__Exc_AttributeError     = GetPyObjectPointer_As_PyObjectPointer( "PyExc_AttributeError" );
-    ptr__Exc_EnvironmentError   = GetPyObjectPointer_As_PyObjectPointer( "PyExc_EnvironmentError" );
-    ptr__Exc_EOFError           = GetPyObjectPointer_As_PyObjectPointer( "PyExc_EOFError" );
-    ptr__Exc_Exception          = GetPyObjectPointer_As_PyObjectPointer( "PyExc_Exception" );
-    ptr__Exc_FloatingPointError = GetPyObjectPointer_As_PyObjectPointer( "PyExc_FloatingPointError" );
-    ptr__Exc_ImportError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_ImportError" );
-    ptr__Exc_IndexError         = GetPyObjectPointer_As_PyObjectPointer( "PyExc_IndexError" );
-    ptr__Exc_IOError            = GetPyObjectPointer_As_PyObjectPointer( "PyExc_IOError" );
-    ptr__Exc_KeyboardInterrupt  = GetPyObjectPointer_As_PyObjectPointer( "PyExc_KeyboardInterrupt" );
-    ptr__Exc_KeyError           = GetPyObjectPointer_As_PyObjectPointer( "PyExc_KeyError" );
-    ptr__Exc_LookupError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_LookupError" );
-    ptr__Exc_MemoryError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_MemoryError" );
-    ptr__Exc_NameError          = GetPyObjectPointer_As_PyObjectPointer( "PyExc_NameError" );
-    ptr__Exc_NotImplementedError= GetPyObjectPointer_As_PyObjectPointer( "PyExc_NotImplementedError" );
-    ptr__Exc_OSError            = GetPyObjectPointer_As_PyObjectPointer( "PyExc_OSError" );
-    ptr__Exc_OverflowError      = GetPyObjectPointer_As_PyObjectPointer( "PyExc_OverflowError" );
-    ptr__Exc_RuntimeError       = GetPyObjectPointer_As_PyObjectPointer( "PyExc_RuntimeError" );
+#define PYCXX_STANDARD_EXCEPTION( eclass, bclass )
+    ptr_Exc_#eclass = GetPyTypeObject_As_PyTypeObjectPointer( "PyExc_" #eclass );
+
 #if PY_MAJOR_VERSION == 2
-    ptr__Exc_StandardError      = GetPyObjectPointer_As_PyObjectPointer( "PyExc_StandardError" );
+#include "CXX/Python2/cxx_standard_exceptions.hxx"
+#else
+#include "CXX/Python3/cxx_standard_exceptions.hxx"
 #endif
-    ptr__Exc_SyntaxError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_SyntaxError" );
-    ptr__Exc_SystemError        = GetPyObjectPointer_As_PyObjectPointer( "PyExc_SystemError" );
-    ptr__Exc_SystemExit         = GetPyObjectPointer_As_PyObjectPointer( "PyExc_SystemExit" );
-    ptr__Exc_TypeError          = GetPyObjectPointer_As_PyObjectPointer( "PyExc_TypeError" );
-    ptr__Exc_ValueError         = GetPyObjectPointer_As_PyObjectPointer( "PyExc_ValueError" );
-#ifdef MS_WINDOWS
-    ptr__Exc_WindowsError       = GetPyObjectPointer_As_PyObjectPointer( "PyExc_WindowsError" );
-#endif
-    ptr__Exc_ZeroDivisionError  = GetPyObjectPointer_As_PyObjectPointer( "PyExc_ZeroDivisionError" );
-    ptr__Exc_IndentationError   = GetPyObjectPointer_As_PyObjectPointer( "PyExc_IndentationError" );
-    ptr__Exc_TabError           = GetPyObjectPointer_As_PyObjectPointer( "PyExc_TabError" );
-    ptr__Exc_UnboundLocalError  = GetPyObjectPointer_As_PyObjectPointer( "PyExc_UnboundLocalError" );
-    ptr__Exc_UnicodeError       = GetPyObjectPointer_As_PyObjectPointer( "PyExc_UnicodeError" );
+
+#undef PYCXX_STANDARD_EXCEPTION
+
     ptr__PyNone                 = GetPyObject_As_PyObjectPointer( "_Py_NoneStruct" );
 
 #if PY_MAJOR_VERSION == 2
@@ -470,43 +416,16 @@ void _XDECREF( PyObject *op )
 //
 //    Wrap variables as function calls
 //
+#define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+    PyObject *_Exc_##eclass() { return ::PyExc_##eclass; }
 
-PyObject *_Exc_ArithmeticError()        { return ::PyExc_ArithmeticError; }
-PyObject *_Exc_AssertionError()         { return ::PyExc_AssertionError; }
-PyObject *_Exc_AttributeError()         { return ::PyExc_AttributeError; }
-PyObject *_Exc_EnvironmentError()       { return ::PyExc_EnvironmentError; }
-PyObject *_Exc_EOFError()               { return ::PyExc_EOFError; }
-PyObject *_Exc_Exception()              { return ::PyExc_Exception; }
-PyObject *_Exc_FloatingPointError()     { return ::PyExc_FloatingPointError; }
-PyObject *_Exc_ImportError()            { return ::PyExc_ImportError; }
-PyObject *_Exc_IndexError()             { return ::PyExc_IndexError; }
-PyObject *_Exc_IOError()                { return ::PyExc_IOError; }
-PyObject *_Exc_KeyboardInterrupt()      { return ::PyExc_KeyboardInterrupt; }
-PyObject *_Exc_KeyError()               { return ::PyExc_KeyError; }
-PyObject *_Exc_LookupError()            { return ::PyExc_LookupError; }
-PyObject *_Exc_MemoryError()            { return ::PyExc_MemoryError; }
-PyObject *_Exc_NameError()              { return ::PyExc_NameError; }
-PyObject *_Exc_NotImplementedError()    { return ::PyExc_NotImplementedError; }
-PyObject *_Exc_OSError()                { return ::PyExc_OSError; }
-PyObject *_Exc_OverflowError()          { return ::PyExc_OverflowError; }
-PyObject *_Exc_RuntimeError()           { return ::PyExc_RuntimeError; }
-PyObject *_Exc_SyntaxError()            { return ::PyExc_SyntaxError; }
-PyObject *_Exc_SystemError()            { return ::PyExc_SystemError; }
-PyObject *_Exc_SystemExit()             { return ::PyExc_SystemExit; }
-PyObject *_Exc_TypeError()              { return ::PyExc_TypeError; }
-PyObject *_Exc_ValueError()             { return ::PyExc_ValueError; }
-PyObject *_Exc_ZeroDivisionError()      { return ::PyExc_ZeroDivisionError; }
-PyObject *_Exc_IndentationError()       { return ::PyExc_IndentationError; }
-PyObject *_Exc_TabError()               { return ::PyExc_TabError; }
-PyObject *_Exc_UnboundLocalError()      { return ::PyExc_UnboundLocalError; }
-PyObject *_Exc_UnicodeError()           { return ::PyExc_UnicodeError; }
-
-#ifdef MS_WINDOWS
-PyObject *_Exc_WindowsError()           { return ::PyExc_WindowsError; }
+#if PY_MAJOR_VERSION == 2
+#include "CXX/Python2/cxx_standard_exceptions.hxx"
+#else
+#include "CXX/Python3/cxx_standard_exceptions.hxx"
 #endif
 
-
-
+#undef PYCXX_STANDARD_EXCEPTION
 
 //
 //    wrap items in Object.h

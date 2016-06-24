@@ -231,7 +231,7 @@ test_List_iterators (const Py::List& x, Py::List& y)
         std::cout << "About to raise exception int(\"Howdy\")" << std::endl;
         o2 = o1;
     } 
-    catch (Py::Exception &e)
+    catch (Py::BaseException &e)
     {
         std::cout << "Catch o.k." << std::endl;
         caught_it = 1;
@@ -364,7 +364,7 @@ test_Tuple()
         t[0] = Py::Int(1); // should fail, tuple has multiple references
         return "failed 2";
     }
-    catch (Py::Exception& e)
+    catch (Py::BaseException& e)
     {
         e.clear();
     }
@@ -569,7 +569,7 @@ private:
             a.verify_length(0);
             std::cout << "I see that you refuse to give me any work to do." << std::endl;
         }
-        catch (Py::Exception& e)
+        catch (Py::BaseException& e)
         {
             e.clear();
             std::cout << "I will now add up your elements, oh great one." << std::endl;
@@ -600,8 +600,8 @@ private:
         catch (Py::TypeError& e)
         {
             std::cout << "Correctly caught " << Py::type(e) << std::endl;
-            std::cout << "  Py::Exception value: " << Py::value(e) << std::endl;
-            std::cout << "  Py::Exception traceback: " << Py::trace(e) << std::endl;
+            std::cout << "  Py::BaseException value: " << Py::value(e) << std::endl;
+            std::cout << "  Py::BaseException traceback: " << Py::trace(e) << std::endl;
             e.clear();
         }
 
@@ -615,8 +615,8 @@ private:
         catch (Py::TypeError& e)
         {
             std::cout << "Correctly caught " << Py::type(e) << std::endl;
-            std::cout << "  Py::Exception value: " << Py::value(e) << std::endl;
-            std::cout << "  Py::Exception traceback: " << Py::trace(e) << std::endl;
+            std::cout << "  Py::BaseException value: " << Py::value(e) << std::endl;
+            std::cout << "  Py::BaseException traceback: " << Py::trace(e) << std::endl;
             e.clear();
         }
 
@@ -631,8 +631,8 @@ private:
         catch (Py::TypeError& e)
         {
             std::cout << "Correctly caught " << Py::type(e) << std::endl;
-            std::cout << "  Py::Exception value: " << Py::value(e) << std::endl;
-            std::cout << "  Py::Exception traceback: " << Py::trace(e) << std::endl;
+            std::cout << "  Py::BaseException value: " << Py::value(e) << std::endl;
+            std::cout << "  Py::BaseException traceback: " << Py::trace(e) << std::endl;
             e.clear();
         }
 

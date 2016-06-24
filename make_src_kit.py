@@ -18,7 +18,7 @@ def main( argv ):
 
     print( 'version: %s, %s, %s' % (major, minor, patch) )
 
-    tmp_dir = os.environ.get('TMP','/tmp')
+    tmp_dir = os.environ.get('TMPDIR','/tmp')
     kit_name = 'pycxx-%s.%s.%s' % (major, minor, patch)
     kit_dir = os.path.join( tmp_dir, kit_name )
 

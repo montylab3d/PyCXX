@@ -17,10 +17,6 @@
 
 #include <assert.h>
 
-// useful to set a break point on when debugging
-void bpt()
-{
-}
 
 class new_style_class: public Py::PythonClass< new_style_class >
 {
@@ -84,14 +80,16 @@ public:
 
         Py::String member_func_name( args[0] );
 
+#ifdef PYCXX_DEBUG
         bpt();
+#endif
         Py::Object _self = self();
         try
         {
             Py::Object result( _self.callMemberFunction( member_func_name.as_std_string(), args ) );
             return result;
         }
-        catch( Py::Exception &e )
+        catch( Py::BaseException &e )
         {
             e.clear();
             return Py::String( "new_style_class_call_member error when calling member" );
@@ -210,7 +208,7 @@ public:
     }
 };
 
-PYCXX_USER_EXCEPTION_STR_ARG(  SimpleError )
+PYCXX_USER_EXCEPTION_STR_ARG( SimpleError )
 
 class simple_module : public Py::ExtensionModule<simple_module>
 {
@@ -273,10 +271,10 @@ private:
         {
             Py::Object x( args[0] );
             PyObject *x_p = x.ptr();
-            std::cout << "func( self=0x" << std::hex << reinterpret_cast< unsigned int >( x_p ) << std::dec << " )" << std::endl;
+            std::cout << "func( self=0x" << std::hex << reinterpret_cast< unsigned long >( x_p ) << std::dec << " )" << std::endl;
             Py::PythonClassInstance *instance_wrapper = reinterpret_cast< Py::PythonClassInstance * >( x_p );
-            new_style_class *instance = static_cast<new_style_class *>( instance_wrapper->cxx_object );
-            std::cout << "    self->cxx_object=0x" << std::hex << reinterpret_cast< unsigned int >( instance ) << std::dec << std::endl;
+            new_style_class *instance = static_cast<new_style_class *>( instance_wrapper->m_pycxx_object );
+            std::cout << "    self->cxx_object=0x" << std::hex << reinterpret_cast< unsigned long >( instance ) << std::dec << std::endl;
         }
 
         bpt();

@@ -1,4 +1,4 @@
-#
+
 #   Copyright (c) 2010-2011 Barry A. Scott
 #
 import os
@@ -21,6 +21,7 @@ class Setup:
             raise ValueError( 'Usage: setup.py win32|win64|macosx|linux> <makefile>' )
 
         self.opt_debug = False
+        self.opt_pycxx_debug = False
 
         self.platform = args[0]
         del args[0]
@@ -31,6 +32,10 @@ class Setup:
         while len(args) > 0:
             if args[0] == '--debug':
                 self.opt_debug = True
+                del args[0]
+
+            if args[0] == '--pycxx-debug':
+                self.opt_pycxx_debug = True
                 del args[0]
 
             else:
@@ -273,12 +278,15 @@ class Win32CompilerMSVC90(Compiler):
 
         self._addVar( 'DEMO_DIR',       'Demo\Python%d' % (sys.version_info[0],) )
 
+        self._addVar( 'PYCXX_DEBUG',    '-DPYCXX_DEBUG=1' if self.setup.opt_pycxx_debug else '' )
+
         self._addVar( 'CCCFLAGS',
                                         r'/Zi /MT /EHsc '
                                         r'-I. -ISrc -I%(PYTHON_INCLUDE)s '
                                         r'-D_CRT_NONSTDC_NO_DEPRECATE '
                                         r'-U_DEBUG '
-                                        r'-D%(DEBUG)s' )
+                                        r'-D%(DEBUG)s '
+                                        r'%(PYCXX_DEBUG)s' )
 
     def ruleTest( self, python_test ):
         rules = []
@@ -406,11 +414,14 @@ class MacOsxCompilerGCC(CompilerGCC):
 
         self._addVar( 'DEMO_DIR',       'Demo/Python%d' % (sys.version_info[0],) )
 
+        self._addVar( 'PYCXX_DEBUG',    '-DPYCXX_DEBUG=1' if self.setup.opt_pycxx_debug else '' )
+
         self._addVar( 'CCCFLAGS',
                                         '-g '
                                         '-Wall -fPIC -fexceptions -frtti '
                                         '-I. -ISrc -I%(PYTHON_INCLUDE)s '
-                                        '-D%(DEBUG)s' )
+                                        '-D%(DEBUG)s '
+                                        '%(PYCXX_DEBUG)s' )
 
         self._addVar( 'LDSHARED',       '%(CCC)s -bundle -g '
                                         '-framework System '
@@ -430,11 +441,13 @@ class LinuxCompilerGCC(CompilerGCC):
 
         self._addVar( 'PYTHON_VERSION', '%d.%d' % (sys.version_info[0], sys.version_info[1]) )
         self._addVar( 'PYTHON_INCLUDE', distutils.sysconfig.get_python_inc() )
+        self._addVar( 'PYCXX_DEBUG',    '-DPYCXX_DEBUG=1' if self.setup.opt_pycxx_debug else '' )
         self._addVar( 'CCCFLAGS',
                                         '-g '
                                         '-Wall -fPIC -fexceptions -frtti '
                                         '-I. -ISrc -I%(PYTHON_INCLUDE)s '
-                                        '-D%(DEBUG)s' )
+                                        '-D%(DEBUG)s '
+                                        '%(PYCXX_DEBUG)s' )
 
         self._addVar( 'LDEXE',          '%(CCC)s -g' )
         self._addVar( 'LDSHARED',       '%(CCC)s -shared -g ' )

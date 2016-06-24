@@ -488,7 +488,7 @@ void test_Tuple()
     {
         tuple3[0] = Py::Long( 1 ); // should fail, tuple has multiple references
     }
-    catch( Py::Exception &e )
+    catch( Py::BaseException &e )
     {
         e.clear();
         test_passed = true;
@@ -750,7 +750,7 @@ private:
             a.verify_length(0);
             std::cout << "I see that you refuse to give me any work to do." << std::endl;
         }
-        catch (Py::Exception& e)
+        catch (Py::BaseException& e)
         {
             e.clear();
             std::cout << "I will now add up your elements, oh great one." << std::endl;
@@ -784,8 +784,8 @@ private:
             e.clear();
 
             std::cout << "PASSED: Correctly caught " << Py::type(e) << std::endl;
-            std::cout << "PASSED:   Py::Exception value: " << Py::value(e) << std::endl;
-            std::cout << "PASSED:   Py::Exception traceback: " << Py::trace(e) << std::endl;
+            std::cout << "PASSED:   Py::BaseException value: " << Py::value(e) << std::endl;
+            std::cout << "PASSED:   Py::BaseException traceback: " << Py::trace(e) << std::endl;
         }
 
         try
