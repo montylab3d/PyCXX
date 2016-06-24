@@ -35,14 +35,16 @@ void ifPyErrorThrowCxxException()
         std::map<void *, throw_exception_func_t>::iterator func = py_exc_type_to_exc_func.find( ptype );
         if( func != py_exc_type_to_exc_func.end() )
         {
+#ifdef PYCXX_DEBUG
             std::cout << "ifPyErrorThrowCxxException found throwFunc: " << q << std::endl;
-
+#endif
             (func->second)();
         }
         else
         {
+#ifdef PYCXX_DEBUG
             std::cout << "ifPyErrorThrowCxxException no throwFunc: " << q << std::endl;
-
+#endif
             throw Exception();
         }
     }
