@@ -44,6 +44,10 @@ d.value = "a string"
 print( d.value )
 d.new_var = 99
 
+print( 'TEST: pass derived class to C++ world' )
+result = simple.derived_class_test( d, 5, 9 )
+print( 'derived_class_test result %r' % (result,) )
+
 print( '--- new_style_class func ---' )
 new_style_class = simple.new_style_class()
 print( dir( new_style_class ) )

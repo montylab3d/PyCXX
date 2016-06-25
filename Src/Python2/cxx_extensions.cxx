@@ -1826,12 +1826,6 @@ void ExtensionExceptionType::init( ExtensionModuleBase &module, const std::strin
      set( PyErr_NewException( const_cast<char *>( module_name.c_str() ), parent.ptr(), NULL ), true );
 }
 
-bool ExtensionExceptionType::matches( ExtensionExceptionType &exc )
-// is the exception this specific exception 'exc'
-{
-    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
-}
-
 ExtensionExceptionType::~ExtensionExceptionType()
 {
 }
@@ -1849,6 +1843,12 @@ Exception::Exception( ExtensionExceptionType &exception, Object &reason )
 Exception::Exception( PyObject *exception, Object &reason )
 {
     PyErr_SetObject( exception, reason.ptr() );
+}
+
+bool Exception::matches( ExtensionExceptionType &exc )
+// is the exception this specific exception 'exc'
+{
+    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
 
 }    // end of namespace Py

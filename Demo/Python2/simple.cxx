@@ -39,6 +39,11 @@ public:
         std::cout << "~new_style_class." << std::endl;
     }
 
+    long cxx_method( long a, long b )
+    {
+        return a * b + 3;
+    }
+
     static void init_type(void)
     {
         behaviors().name( "new_style_class" );
@@ -195,6 +200,7 @@ public:
 
         add_keyword_method("decode_test", &simple_module::decode_test, "documentation for decode_test()");
         add_keyword_method("encode_test", &simple_module::encode_test, "documentation for encode_test()");
+        add_keyword_method("derived_class_test", &simple_module::derived_class_test, "documentation for derived_class_test()");
 
         // after initialize the moduleDictionary will exist
         initialize( "documentation for the simple module" );
@@ -219,6 +225,19 @@ private:
     {
         Py::String s( args[0] );
         return s.encode("utf-8");
+    }
+
+    Py::Object derived_class_test( const Py::Tuple &args, const Py::Dict &kwds )
+    {
+        Py::PythonClassObject<new_style_class> py_nsc( args[0] );
+        new_style_class *cxx_nsc = py_nsc.getCxxObject();
+
+        Py::Long a( args[1] );
+        Py::Long b( args[2] );
+
+        long result = cxx_nsc->cxx_method( a, b );
+
+        return Py::Long( result );
     }
 
     Py::Object func( const Py::Tuple &args, const Py::Dict &kwds )
