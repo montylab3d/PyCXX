@@ -107,6 +107,10 @@ d.func_varargs_call_member( "derived_func" )
 result = d.func_varargs_call_member( "derived_func_bad" )
 print( 'derived_func_bad caught error: %r' % (result,) )
 
+print( 'TEST: pass derived class to C++ world' )
+result = simple.derived_class_test( d, 5, 9 )
+print( 'derived_class_test result %r' % (result,) )+
+
 print( 'TEST: new_style_class functions' )
 new_style_class = simple.new_style_class()
 print( dir( new_style_class ) )

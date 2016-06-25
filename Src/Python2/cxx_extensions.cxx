@@ -1852,4 +1852,10 @@ bool BaseException::matches( ExtensionExceptionType &exc )
     return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
 
+bool Exception::matches( ExtensionExceptionType &exc )
+// is the exception this specific exception 'exc'
+{
+    return PyErr_ExceptionMatches( exc.ptr() ) != 0;
+}
+
 }    // end of namespace Py

@@ -111,7 +111,6 @@ namespace Py
         PythonExtensionBase *m_pycxx_object;
     };
 
-
     class ExtensionClassMethodsTable
     {
     public:
@@ -314,8 +313,17 @@ namespace Py
 
         static bool check( PyObject *p )
         {
-            // is p like me?
-            return p->ob_type == type_object();
+            // is p a me or a derived me
+            switch( PyObject_IsInstance( p, reinterpret_cast<PyObject *>( type_object() ) ) )
+            {
+                default:
+                case -1:
+                    throw Exception();
+                case 0:
+                    return false;
+                case 1:
+                    return true;
+            }            
         }
 
         static bool check( const Object &ob )
