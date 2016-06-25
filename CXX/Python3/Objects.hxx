@@ -384,7 +384,7 @@ namespace Py
         {
             if( PyObject_SetAttrString( p, const_cast<char*>( s.c_str() ), *value ) == -1 )
             {
-                throw AttributeError( "setAttr failed." );
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -392,7 +392,7 @@ namespace Py
         {
             if( PyObject_DelAttrString( p, const_cast<char*>( s.c_str() ) ) == -1 )
             {
-                throw AttributeError( "delAttr failed." );
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -403,8 +403,7 @@ namespace Py
         {
             if( PyObject_DelItem( p, *key ) == -1 )
             {
-                // failed to link on Windows?
-                throw KeyError( "delItem failed." );
+                ifPyErrorThrowCxxException();
             }
         }
         // Equality and comparison use PyObject_Compare
@@ -1381,7 +1380,7 @@ namespace Py
         {
             if( PySequence_SetItem( ptr(), i, *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2163,7 +2162,7 @@ namespace Py
             // note PyTuple_SetItem is a thief...
             if( PyTuple_SetItem( ptr(), offset, new_reference_to( ob ) ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2189,7 +2188,7 @@ namespace Py
             {
                 if( PyTuple_SetItem( ptr(), i, new_reference_to( Py::_None() ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2205,7 +2204,7 @@ namespace Py
             {
                 if( PyTuple_SetItem( ptr(), i, new_reference_to( s[i] ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2372,7 +2371,7 @@ namespace Py
             {
                 if( PyList_SetItem( ptr(), i, new_reference_to( Py::_None() ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2388,7 +2387,7 @@ namespace Py
             {
                 if( PyList_SetItem( ptr(), i, new_reference_to( s[i] ) ) == -1 )
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2426,7 +2425,7 @@ namespace Py
         {
             if( PyList_SetSlice( ptr(), i, j, *v ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2434,7 +2433,7 @@ namespace Py
         {
             if( PyList_Append( ptr(), *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2447,7 +2446,7 @@ namespace Py
         {
             if( PyList_Insert( ptr(), i, *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2455,7 +2454,7 @@ namespace Py
         {
             if( PyList_Sort( ptr() ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2463,7 +2462,7 @@ namespace Py
         {
             if( PyList_Reverse( ptr() ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
     };
@@ -2773,7 +2772,7 @@ namespace Py
         {
             if( PyMapping_SetItemString( ptr(), const_cast<char*>( s ), *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2781,7 +2780,7 @@ namespace Py
         {
             if( PyMapping_SetItemString( ptr(), const_cast<char*>( s.c_str() ), *ob ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2789,7 +2788,7 @@ namespace Py
         {
             if( PyObject_SetItem( ptr(), s.ptr(), ob.ptr() ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2797,7 +2796,7 @@ namespace Py
         {
             if( PyMapping_DelItemString( ptr(), const_cast<char*>( s.c_str() ) ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2805,7 +2804,7 @@ namespace Py
         {
             if( PyMapping_DelItem( ptr(), *s ) == -1 )
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 

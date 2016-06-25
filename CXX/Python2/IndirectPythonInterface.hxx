@@ -132,9 +132,6 @@ bool _Slice_Check( PyObject *op );
 PyTypeObject * _String_Type();
 bool _String_Check( PyObject *op );
 
-PyTypeObject * _Unicode_Type();
-bool _Unicode_Check( PyObject *op );
-
 PyTypeObject * _TraceBack_Type();
 bool _TraceBack_Check( PyObject *v );
 

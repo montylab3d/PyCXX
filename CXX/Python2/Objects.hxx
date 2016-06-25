@@ -379,13 +379,13 @@ namespace Py
         void setAttr (const std::string& s, const Object& value)
         {
             if(PyObject_SetAttrString (p, const_cast<char*>(s.c_str()), *value) == -1)
-                throw AttributeError ("setAttr failed.");
+                ifPyErrorThrowCxxException();
         }
 
         void delAttr (const std::string& s)
         {
             if(PyObject_DelAttrString (p, const_cast<char*>(s.c_str())) == -1)
-                throw AttributeError ("delAttr failed.");
+                ifPyErrorThrowCxxException();
         }
 
         // PyObject_SetItem is too weird to be using from C++
@@ -394,8 +394,7 @@ namespace Py
         void delItem (const Object& key)
         {
             if(PyObject_DelItem(p, *key) == -1)
-                // failed to link on Windows?
-                throw KeyError("delItem failed.");
+                ifPyErrorThrowCxxException();
         }
 
         // Equality and comparison use PyObject_RichCompareBool
@@ -412,7 +411,6 @@ namespace Py
             int k = PyObject_RichCompareBool (p, *o2, Py_NE);
             ifPyErrorThrowCxxException();
             return k != 0;
-
         }
 
         bool operator>=(const Object& o2) const
@@ -1403,7 +1401,7 @@ namespace Py
         {
             if (PySequence_SetItem (ptr(), i, *ob) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2286,7 +2284,7 @@ namespace Py
             // note PyTuple_SetItem is a thief...
             if(PyTuple_SetItem (ptr(), offset, new_reference_to(ob)) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2310,7 +2308,7 @@ namespace Py
             {
                 if(PyTuple_SetItem (ptr(), i, new_reference_to(Py::_None())) == -1)
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2326,7 +2324,7 @@ namespace Py
             {
                 if(PyTuple_SetItem (ptr(), i, new_reference_to(s[i])) == -1)
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2492,7 +2490,7 @@ namespace Py
             {
                 if(PyList_SetItem (ptr(), i, new_reference_to(Py::_None())) == -1)
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2507,7 +2505,7 @@ namespace Py
             {
                 if(PyList_SetItem (ptr(), i, new_reference_to(s[i])) == -1)
                 {
-                    throw Exception();
+                    ifPyErrorThrowCxxException();
                 }
             }
         }
@@ -2544,7 +2542,7 @@ namespace Py
         {
             if(PyList_SetSlice (ptr(), i, j, *v) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2552,7 +2550,7 @@ namespace Py
         {
             if(PyList_Append (ptr(), *ob) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2560,7 +2558,7 @@ namespace Py
         {
             if(PyList_Insert (ptr(), i, *ob) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2568,7 +2566,7 @@ namespace Py
         {
             if(PyList_Sort(ptr()) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2576,7 +2574,7 @@ namespace Py
         {
             if(PyList_Reverse(ptr()) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
     };
@@ -2879,7 +2877,7 @@ namespace Py
         {
             if (PyMapping_SetItemString (ptr(), const_cast<char*>(s), *ob) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2887,7 +2885,7 @@ namespace Py
         {
             if (PyMapping_SetItemString (ptr(), const_cast<char*>(s.c_str()), *ob) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2895,7 +2893,7 @@ namespace Py
         {
             if (PyObject_SetItem (ptr(), s.ptr(), ob.ptr()) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2903,7 +2901,7 @@ namespace Py
         {
             if (PyMapping_DelItemString (ptr(), const_cast<char*>(s.c_str())) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
 
@@ -2911,7 +2909,7 @@ namespace Py
         {
             if (PyMapping_DelItem (ptr(), *s) == -1)
             {
-                throw Exception();
+                ifPyErrorThrowCxxException();
             }
         }
         // Queries
@@ -3336,7 +3334,7 @@ namespace Py
         p2 = *b;
         if(PyNumber_Coerce(&p1,&p2) == -1)
         {
-            throw Exception();
+            ifPyErrorThrowCxxException();
         }
         return std::pair<Object,Object>(asObject(p1), asObject(p2));
     }
@@ -3446,7 +3444,7 @@ namespace Py
         return asObject(PyNumber_Remainder(*Float(v), *b));
     }
 
-    inline Object type(const Exception&) // return the type of the error
+    inline Object type(const BaseException&) // return the type of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);
@@ -3456,7 +3454,7 @@ namespace Py
         return result;
     }
 
-    inline Object value(const Exception&) // return the value of the error
+    inline Object value(const BaseException&) // return the value of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);
@@ -3466,7 +3464,7 @@ namespace Py
         return result;
     }
 
-    inline Object trace(const Exception&) // return the traceback of the error
+    inline Object trace(const BaseException&) // return the traceback of the error
     {
         PyObject *ptype, *pvalue, *ptrace;
         PyErr_Fetch(&ptype, &pvalue, &ptrace);

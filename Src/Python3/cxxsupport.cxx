@@ -93,7 +93,6 @@ bool operator!=( const Object &o1, const Object &o2 )
     int k = PyObject_RichCompareBool( *o1, *o2, Py_NE );
     ifPyErrorThrowCxxException();
     return k != 0;
-
 }
 
 bool operator>=( const Object &o1, const Object &o2 )

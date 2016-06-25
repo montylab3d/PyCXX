@@ -14,7 +14,9 @@ PYCXX_STANDARD_EXCEPTION( KeyboardInterrupt,    BaseException )
 PYCXX_STANDARD_EXCEPTION( GeneratorExit,        BaseException )
 PYCXX_STANDARD_EXCEPTION( Exception,            BaseException )
 PYCXX_STANDARD_EXCEPTION(     StopIteration,        Exception )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
 PYCXX_STANDARD_EXCEPTION(     StopAsyncIteration,       Exception )
+#endif
 PYCXX_STANDARD_EXCEPTION(     ArithmeticError,      Exception )
 PYCXX_STANDARD_EXCEPTION(         FloatingPointError,   ArithmeticError )
 PYCXX_STANDARD_EXCEPTION(         OverflowError,        ArithmeticError )
@@ -49,7 +51,9 @@ PYCXX_STANDARD_EXCEPTION(         TimeoutError,         OSError )
 PYCXX_STANDARD_EXCEPTION(     ReferenceError,   Exception )
 PYCXX_STANDARD_EXCEPTION(     RuntimeError,     Exception )
 PYCXX_STANDARD_EXCEPTION(         NotImplementedError,  RuntimeError )
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
 PYCXX_STANDARD_EXCEPTION(         RecursionError,       RuntimeError )
+#endif
 PYCXX_STANDARD_EXCEPTION(     SyntaxError,      Exception )
 PYCXX_STANDARD_EXCEPTION(         IndentationError,     SyntaxError )
 PYCXX_STANDARD_EXCEPTION(             TabError,             IndentationError )
