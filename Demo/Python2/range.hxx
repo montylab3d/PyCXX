@@ -112,7 +112,7 @@ public:
     Py::Object assign (const Py::Tuple& args); 
     Py::Object reference_count (const Py::Tuple& args) 
     {
-        return Py::Int(this->ob_refcnt);
+        return Py::Int( int(this->ob_refcnt ) );
     }
 
     Py::Object c_value(const Py::Tuple&) const
