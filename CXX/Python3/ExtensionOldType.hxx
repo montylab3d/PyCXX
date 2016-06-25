@@ -180,7 +180,7 @@ namespace Py
             self[0] = Object( this );
             self[1] = Object( PyCapsule_New( method_def, NULL, NULL ), true );
 
-            PyObject *func = PyCFunction_New( &method_def->ext_meth_def, self.ptr() );
+            PyObject *func = PyCFunction_NewEx( &method_def->ext_meth_def, self.ptr(), NULL );
 
             return Object(func, true);
         }
