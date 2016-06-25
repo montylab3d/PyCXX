@@ -31,8 +31,6 @@ if exist c:\python35.win32\python.exe (
 )
 endlocal
 
-endlocal
-
 setlocal
 call "%LOCALAPPDATA%\Programs\Common\Microsoft\Visual C++ for Python\9.0\vcvarsall.bat" x64
 if exist c:\python27.win64\python.exe (
