@@ -292,12 +292,12 @@ namespace Py
             return PyObject_Hash (p);
         }
 
-        //
-        // int print (FILE* fp, int flags=Py_Print_RAW)
-        //{
-        //    return PyObject_Print (p, fp, flags);
-        //}
-        //
+        // convert to bool
+        bool as_bool() const
+        {
+            return PyObject_IsTrue( ptr() ) != 0;
+        }
+
         bool is(PyObject *pother) const
         {  // identity test
             return p == pother;

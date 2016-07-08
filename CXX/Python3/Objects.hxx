@@ -292,16 +292,6 @@ namespace Py
             return PyObject_IsTrue( ptr() ) != 0;
         }
 
-        //operator bool() const
-        //{
-        //    return as_bool();
-        //}
-
-        // int print( FILE *fp, int flags=Py_Print_RAW )
-        //{
-        //    return PyObject_Print( p, fp, flags );
-        //}
-
         bool is( PyObject *pother ) const
         {  // identity test
             return p == pother;
