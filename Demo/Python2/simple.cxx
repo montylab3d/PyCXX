@@ -194,8 +194,11 @@ public:
         old_style_class::init_type();
         new_style_class::init_type();
 
+        add_noargs_method( "mod_func_noargs", &simple_module::mod_func_noargs, "documentation for mod_func_noargs()" );
+        add_varargs_method( "mod_func_varargs", &simple_module::mod_func_varargs, "documentation for mod_func_varargs()" );
+        add_keyword_method( "mod_func_keyword", &simple_module::mod_func_keyword, "documentation for mod_func_keyword()" );
+
         add_varargs_method("old_style_class", &simple_module::factory_old_style_class, "documentation for old_style_class()");
-        add_keyword_method("func", &simple_module::func, "documentation for func()");
         add_keyword_method("make_instance", &simple_module::make_instance, "documentation for make_instance()");
 
         add_keyword_method("decode_test", &simple_module::decode_test, "documentation for decode_test()");
@@ -240,9 +243,21 @@ private:
         return Py::Long( result );
     }
 
-    Py::Object func( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object mod_func_noargs()
     {
-        std::cout << "func Called with " << args.length() << " normal arguments." << std::endl;
+        std::cout << "mod_func_noargs Called." << std::endl;
+        return Py::None();
+    }
+
+    Py::Object mod_func_varargs( const Py::Tuple &args )
+    {
+        std::cout << "mod_func_varargs Called with " << args.length() << " normal arguments." << std::endl;
+        return Py::None();
+    }
+
+    Py::Object mod_func_keyword( const Py::Tuple &args, const Py::Dict &kwds )
+    {
+        std::cout << "mod_func_varargs Called with " << args.length() << " normal arguments." << std::endl;
         Py::List names( kwds.keys() );
         std::cout << "and with " << names.length() << " keyword arguments:" << std::endl;
         for( Py::List::size_type i=0; i< names.length(); i++ )

@@ -2,9 +2,12 @@ import sys
 import simple
 
 print( '--- module func ---' )
-simple.func()
-simple.func( 4, 5 )
-simple.func( 4, 5, name=6, value=7 )
+simple.mod_func_noargs()
+simple.mod_func_varargs( 6, 7 )
+
+simple.mod_func_keyword()
+simple.mod_func_keyword( 4, 5 )
+simple.mod_func_keyword( 4, 5, name=6, value=7 )
 
 print( '--- old_style_class func ---' )
 old_style_class = simple.old_style_class()
