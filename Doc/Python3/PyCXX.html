@@ -175,7 +175,7 @@ and when compiling against Python 3 faking the old Python 2 API.</p>
 <ul>
 <li>Replace Py::Nothing with Py::None - required</li>
 <li>Replace Py::Int with Py::Long - recommended</li>
-<li>Replace Py::LongLong with Py::Long -recommended</li>
+<li>Replace Py::LongLong with Py::Long - recommended</li>
 <li>Replace as_std_string() with as_std_string( "encoding" ) or as_std_string( NULL ) - required</li>
 <li>Replace Py::String that holds non unicode data with Py::Bytes - required</li>
 </ul>
@@ -1870,21 +1870,26 @@ converted to a standard string which is passed to std::ostream &amp;operator&lt;
 
 <h1><a name="h1_exceptions">Exceptions</a></h1>
 
-<p>The Python exception facility and the C++ exception facility can be merged via the use
-of try/catch blocks in the bodies of extension objects and module functions.</p>
+<p>All the standard python exceptions have a C++ equivilent that can to caught and thrown.</p>
+<p>In addition new expections can be defined using PyCXX as well.</p>
 
-<h2><a name="h2_class_exception">Class Exception and its children</a></h2>
+<p>Exceptions thrown from C++ will be converted into Python exceptions when returning to Python code.</p>
+<p>Python exceptions are converted into C++ exceptions when returning from Python code back into C++ code.</p>
 
-<p>A set of classes is provided. Each is derived from class Exception, and represents a
-particular sort of Python exception, such as IndexError, RuntimeError, ValueError. Each of
-them( other than Exception ) has a constructor which takes an explanatory string as an
-argument, and is used in a throw statement such as:</p>
+<h2><a name="h2_class_exception">class BaseException and its children</a></h2>
+
+<p>All the Python standard exceptions are provided as C++ classes.
+The C++ class hierarchy mirrors the Python class hierarchy. 
+The base of the exception hierarchy is class BaseException.</p>
+
+The derived exception class, such as IndexError, RuntimeError and ValueError, has a constructor which takes
+an explanatory string as an argument, and is used in a throw statement such as:</p>
 
 <pre>throw IndexError( &quot;Index too large in MyObject access.&quot; );</pre>
 
-<p>If in using a routine from the Python API, you discover that it has returned a NULL
-indicating an error, then Python has already set the error message. In that case you
-merely throw Exception.</p>
+<p>You cannot throw BaseException, but you can catch it.</p>
+
+<p>See the Python documentation for a list of all the standard exceptions.</p>
 
 <h2><a name="h2_exceptions_list">List of Exceptions</a></h2>
 
@@ -1899,15 +1904,15 @@ classes are shown here.</p>
 </tr>
 <tr>
 <td class="code">explicit </td>
-<td class="code">Exception()</td>
+<td class="code">BaseException()</td>
 </tr>
 <tr>
 <td class="code"> </td>
-<td class="code">Exception( const std::string &amp;reason ) </td>
+<td class="code">BaseException( const std::string &amp;reason ) </td>
 </tr>
 <tr>
 <td class="code"> </td>
-<td class="code">Exception( PyObject *exception, const std::string &amp;reason ) </td>
+<td class="code">BaseException( PyObject *exception, const std::string &amp;reason ) </td>
 </tr>
 <tr>
 <td class="code">void </td>
@@ -1919,51 +1924,7 @@ classes are shown here.</p>
 </tr>
 <tr>
 <td class="code"> </td>
-<td class="code">TypeError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">IndexError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">AttributeError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">NameError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">RuntimeError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">SystemError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">KeyError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
 <td class="code">ValueError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">OverflowError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">ZeroDivisionError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">MemoryError( const std::string &amp;reason )</td>
-</tr>
-<tr>
-<td class="code"> </td>
-<td class="code">SystemExit( const std::string &amp;reason )</td>
 </tr>
 </table>
 
@@ -1979,40 +1940,35 @@ explicitly in unusual cases.</p>
 
 <h2><a name="h2_exceptions_catching">Catching Exceptions from the Python API or PyCXX.</a></h2>
 
-<p>When writing an extension module method, you can use the following boilerplate. Any
-exceptions caused by the Python API or PyCXX itself will be converted into a Python
-exception. Note that Exception is the most general of the exceptions listed above, and
-therefore this one catch clause will serve to catch all of them. You may wish to catch
-other exceptions, not in the Exception family, in the same way. If so, you need to make
-sure you set the error in Python before returning.</p>
+<p>In the example, some_method, any expections raise from the C++ will be automatically
+converted into Python exceptions.</p>
 
-<pre>static PyObject *
-some_module_method( PyObject *args )
+<pre>static Object
+some_method( Object &args )
 {
     Tuple a( args ); // we know args is a Tuple
-    try
+
+    if( a.length() != 2 )
     {
-        ...calculate something from a...
-        return ...something, usually of the form new_reference_to( some Object );
+        throw AttributeError( "2 arguments expected" );
     }
-    catch( const Exception  &amp;)
-    {
-        //Exception caught, passing it on to Python
-        return None();
-    }
+
+    // do something useful
+    // and return a result
+
+    return result;
 }
 </pre>
 
 <h2><a name="h2_exceptions_clearing">How to clear an Exception</a></h2>
 
-<p>If you anticipate that an Exception may be thrown and wish to recover from it, change
-the catch phrase to set a reference to an Exception, and use the method clear() from class
-Exception to clear it.:</p>
+<p>If you anticipate that an Exception may be thrown and wish to recover from it then add a try/catch block
+for the expected exception. Then use the method clear() to tell python that the expection has been handled.</p>
 
-<pre>catch( Exception &amp;e )
+<pre>catch( ValueError &amp;e )
 {
+    // handle expection
     e.clear();
-    ...now decide what to do about it...
 }
 </pre>
 
