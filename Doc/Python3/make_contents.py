@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+import sys
+
 all_lines = open( 'PyCXX.html' ).readlines()
 
 all_contents = []
@@ -37,16 +40,17 @@ all_html_contents.append( '</ul>' )
 output = True
 for line in all_lines:
     if line == '<h2>Contents</h2>\n':
-        print line,
+        sys.stdout.write( line )
         for line in all_html_contents:
-            print line
+            sys.stdout.write( line )
+            sys.stdout.write( '\n' )
 
         output = False
 
     elif output:
-        print line,
+        sys.stdout.write( line )
 
     else:
         if line.startswith( '<h' ):
-            print line,
+            sys.stdout.write( line, )
             output = True

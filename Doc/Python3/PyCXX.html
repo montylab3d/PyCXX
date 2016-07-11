@@ -47,6 +47,7 @@
     <li class="contents_h2"><a href="#h2_class_byte">The Byte interface</a></li>
     <li class="contents_h2"><a href="#h2_class_bytes">The Bytes Interface</a></li>
     <li class="contents_h2"><a href="#h2_class_tuple">Class Tuple</a></li>
+    <li class="contents_h2"><a href="#h2_class_tuplen">Class TupleN</a></li>
     <li class="contents_h2"><a href="#h2_class_list">Class List</a></li>
     <li class="contents_h2"><a href="#h2_mappings">Mappings</a></li>
     <li class="contents_h2"><a href="#h2_class_mapbase">The MapBase&lt;T&gt; interface</a></li>
@@ -58,7 +59,7 @@
     </ul></li>
 <li class="contents_h1"><a href="#h1_exceptions">Exceptions</a></li>
     <li><ul>
-    <li class="contents_h2"><a href="#h2_class_exception">Class Exception and its children</a></li>
+    <li class="contents_h2"><a href="#h2_class_exception">class BaseException and its children</a></li>
     <li class="contents_h2"><a href="#h2_exceptions_list">List of Exceptions</a></li>
     <li class="contents_h2"><a href="#h2_exceptions_using">Using Exceptions in extension methods</a></li>
     <li class="contents_h2"><a href="#h2_exceptions_catching">Catching Exceptions from the Python API or PyCXX.</a></li>
@@ -286,10 +287,10 @@ that it is an <cite>Long</cite>.</p>
 
 <p>Just to peek ahead, if you wrote this method in an
 ExtensionModule-derived module of your own, it would be a method and it could be written
-even more simply:</p>
+as:</p>
 
 <pre>
-Object addvalue( const Tuple &amp; args )
+Object addvalue( const Tuple &amp;args )
 {
     args.verify_length( 1 );
     Dict d;
@@ -300,7 +301,6 @@ Object addvalue( const Tuple &amp; args )
 </pre>
 
 <h2><a name="h2_basic_concepts">The basic concept is to wrap Python pointers</a></h2>
-
 
 <p>The basic concept of CXX/Objects.hxx is to create a wrapper around 
 each <cite>PyObject *</cite> so that the reference counting can be
@@ -1894,10 +1894,10 @@ an explanatory string as an argument, and is used in a throw statement such as:<
 <h2><a name="h2_exceptions_list">List of Exceptions</a></h2>
 
 <p>The exception hierarchy mirrors the Python exception hierarchy. The concrete exception
-classes are shown here.</p>
+classes are shown here. With ValueError being the pattern for all the other expections.</p>
 
 <table cellspacing="0" cellpadding="3px">
-<caption>List of Exceptions</caption>
+<caption>BaseException</caption>
 <tr>
 <th>Type</th>
 <th>Interface for class Exception</th>
@@ -1918,13 +1918,17 @@ classes are shown here.</p>
 <td class="code">void </td>
 <td class="code">clear()</td>
 </tr>
+</table>
+
+<table>
+<caption>Python Standard Exceptions</caption>
 <tr>
-<td class="code"></td>
-<td>Constructors for other children of class Exception</td>
+<th>Type</th>
+<th>Interface for class Exception</th>
 </tr>
 <tr>
-<td class="code"> </td>
-<td class="code">ValueError( const std::string &amp;reason )</td>
+<td class="code">void </td>
+<td class="code"><i>python-standard-exception</i>( const std::string &amp;reason )</td>
 </tr>
 </table>
 
@@ -1943,7 +1947,7 @@ explicitly in unusual cases.</p>
 <p>In the example, some_method, any expections raise from the C++ will be automatically
 converted into Python exceptions.</p>
 
-<pre>static Object
+<pre>Object
 some_method( Object &args )
 {
     Tuple a( args ); // we know args is a Tuple
@@ -1955,6 +1959,33 @@ some_method( Object &args )
 
     // do something useful
     // and return a result
+
+    return result;
+}
+</pre>
+
+<p>And in this example the call_python method is calling back into python and handling ArithmeticError from the "func". 
+Any other expections will be passed back to Python.</p>
+
+<pre>Object
+cal_python( Object &args )
+{
+    Tuple a( args ); // we know args is a Tuple
+    Callable func( a[0] );   // first arg expected to be a python callable
+
+    ...
+    Tuple call_args( 1 );
+    call_args[0] = Long( 42 );
+    try
+    {
+        Object result = func.apply( call_args );
+    }
+    catch( ArithmeticError &e )
+    {
+        // handle error
+        e.clear();
+    }
+
 
     return result;
 }
