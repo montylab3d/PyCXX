@@ -1280,19 +1280,19 @@ namespace Py
     {
     public:
         // STL definitions
-        typedef size_t size_type;
+        typedef Py_ssize_t size_type;
         typedef seqref<T> reference;
         typedef T const_reference;
         typedef seqref<T> *pointer;
         typedef int difference_type;
         typedef T value_type;        // TMM: 26Jun'01
 
-        virtual size_type max_size() const
+        virtual Py_ssize_t max_size() const
         {
-            return std::string::npos; // ?
+            return static_cast<Py_ssize_t>( std::string::npos ); // why this constant its not from python
         }
 
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return size();
         }
@@ -1304,7 +1304,7 @@ namespace Py
             set( temp.ptr() );
         }
 
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
             return PySequence_Length( ptr() );
         }
@@ -1345,7 +1345,7 @@ namespace Py
             return pyob && PySequence_Check( pyob );
         }
 
-        size_type length() const
+        Py_ssize_t length() const
         {
             return PySequence_Length( ptr() );
         }
@@ -1405,7 +1405,7 @@ namespace Py
             return seqref<T>( *this, size()-1 );
         }
 
-        void verify_length( size_type required_size ) const
+        void verify_length( Py_ssize_t required_size ) const
         {
             if( size() != required_size )
             {
@@ -1413,9 +1413,9 @@ namespace Py
             }
         }
 
-        void verify_length( size_type min_size, size_type max_size ) const
+        void verify_length( Py_ssize_t min_size, Py_ssize_t max_size ) const
         {
-            size_type n = size();
+            Py_ssize_t n = size();
             if( n < min_size || n > max_size )
             {
                 throw IndexError( "Unexpected SeqBase<T> length." );
@@ -1836,7 +1836,7 @@ namespace Py
             return pyob != NULL && Py::_Bytes_Check( pyob );
         }
 
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -1906,9 +1906,9 @@ namespace Py
         String decode( const char *encoding, const char *error="strict" );
 
         // Queries
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
-            return static_cast<size_type>( PyBytes_Size( ptr() ) );
+            return PyBytes_Size( ptr() );
         }
 
         operator std::string() const
@@ -1918,7 +1918,7 @@ namespace Py
 
         std::string as_std_string() const
         {
-            return std::string( PyBytes_AsString( ptr() ), static_cast<size_type>( PyBytes_Size( ptr() ) ) );
+            return std::string( PyBytes_AsString( ptr() ), static_cast<size_t>( PyBytes_Size( ptr() ) ) );
         }
     };
 
@@ -2000,7 +2000,7 @@ namespace Py
     class String: public SeqBase<Char>
     {
     public:
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -2114,14 +2114,14 @@ namespace Py
         }
 
         // Queries
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
-            return static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) );
+            return PyUnicode_GET_SIZE( ptr() );
         }
 
         unicodestring as_unicodestring() const
         {
-            return unicodestring( PyUnicode_AS_UNICODE( ptr() ), static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) ) );
+            return unicodestring( PyUnicode_AS_UNICODE( ptr() ), static_cast<size_t>( PyUnicode_GET_SIZE( ptr() ) ) );
         }
 
         operator std::string() const
@@ -2382,7 +2382,7 @@ namespace Py
             }
         }
 
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -2650,7 +2650,7 @@ namespace Py
         // If you assume that Python mapping is a hash_map...
         // hash_map::value_type is not assignable, but
         //( *it ).second = data must be a valid expression
-        typedef size_t size_type;
+        typedef Py_ssize_t size_type;
         typedef Object key_type;
         typedef mapref<T> data_type;
         typedef std::pair< const T, T > value_type;
@@ -2702,7 +2702,7 @@ namespace Py
             }
         }
 
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
             return PyMapping_Length( ptr() );
         }
@@ -2733,7 +2733,7 @@ namespace Py
             return mapref<T>( *this, key );
         }
 
-        int length() const
+        Py_ssize_t length() const
         {
             return PyMapping_Length( ptr() );
         }

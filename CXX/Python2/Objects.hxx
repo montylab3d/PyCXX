@@ -1311,43 +1311,43 @@ namespace Py
     {
     public:
         // STL definitions
-        typedef size_t size_type;
+        typedef Py_ssize_t size_type;
         typedef seqref<T> reference;
         typedef T const_reference;
         typedef seqref<T>* pointer;
         typedef int difference_type;
         typedef T value_type;        // TMM: 26Jun'01
 
-        virtual size_type max_size() const
+        virtual Py_ssize_t max_size() const
         {
-            return std::string::npos; // ?
+            return static_cast<Py_ssize_t>( std::string::npos ); // why this constant - its not from python?
         }
 
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return size();
         }
 
-        virtual void swap(SeqBase<T>& c)
+        virtual void swap( SeqBase<T> &c )
         {
             SeqBase<T> temp = c;
             c = ptr();
             set(temp.ptr());
         }
 
-        virtual size_type size () const
+        virtual Py_ssize_t size() const
         {
             return PySequence_Length (ptr());
         }
 
         explicit SeqBase<T> ()
-            :Object(PyTuple_New(0), true)
+        : Object( PyTuple_New(0), true )
         {
             validate();
         }
 
         explicit SeqBase<T> (PyObject* pyob, bool owned=false)
-            : Object(pyob, owned)
+        : Object( pyob, owned )
         {
             validate();
         }
@@ -1376,7 +1376,7 @@ namespace Py
             return pyob && PySequence_Check (pyob);
         }
 
-        size_type length () const
+        Py_ssize_t length () const
         {
             return PySequence_Length (ptr());
         }
@@ -1436,15 +1436,15 @@ namespace Py
             return seqref<T>(*this, size()-1);
         }
 
-        void verify_length(size_type required_size) const
+        void verify_length(Py_ssize_t required_size) const
         {
             if (size() != required_size)
                 throw IndexError ("Unexpected SeqBase<T> length.");
         }
 
-        void verify_length(size_type min_size, size_type max_size) const
+        void verify_length(Py_ssize_t min_size, Py_ssize_t max_size) const
         {
-            size_type n = size();
+            Py_ssize_t n = size();
             if (n < min_size || n > max_size)
                 throw IndexError ("Unexpected SeqBase<T> length.");
         }
@@ -1842,7 +1842,7 @@ namespace Py
     class String: public SeqBase<Char>
     {
     public:
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -1944,15 +1944,15 @@ namespace Py
         Bytes encode( const char *encoding, const char *error="strict" ) const;
 
         // Queries
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
             if( isUnicode() )
             {
-                return static_cast<size_type>( PyUnicode_GET_SIZE (ptr()) );
+                return PyUnicode_GET_SIZE (ptr());
             }
             else
             {
-                return static_cast<size_type>( PyString_Size (ptr()) );
+                return PyString_Size (ptr());
             }
         }
 
@@ -1968,7 +1968,7 @@ namespace Py
             if( isUnicode() )
             {
                 return unicodestring( PyUnicode_AS_UNICODE( ptr() ),
-                    static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) ) );
+                                        static_cast<size_t>( PyUnicode_GET_SIZE( ptr() ) ) );
             }
             else
             {
@@ -1991,7 +1991,7 @@ namespace Py
     class Bytes: public SeqBase<Char>
     {
     public:
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -2069,15 +2069,15 @@ namespace Py
         }
 
         // Queries
-        virtual size_type size () const
+        virtual Py_ssize_t size () const
         {
             if( isUnicode() )
             {
-                return static_cast<size_type>( PyUnicode_GET_SIZE (ptr()) );
+                return PyUnicode_GET_SIZE (ptr());
             }
             else
             {
-                return static_cast<size_type>( PyString_Size (ptr()) );
+                return PyString_Size (ptr());
             }
         }
 
@@ -2094,7 +2094,7 @@ namespace Py
             }
             else
             {
-                return std::string( PyString_AsString( ptr() ), static_cast<size_type>( PyString_Size( ptr() ) ) );
+                return std::string( PyString_AsString( ptr() ), static_cast<size_t>( PyString_Size( ptr() ) ) );
             }
         }
 
@@ -2103,7 +2103,7 @@ namespace Py
             if( isUnicode() )
             {
                 return unicodestring( PyUnicode_AS_UNICODE( ptr() ),
-                    static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) ) );
+                    static_cast<size_t>( PyUnicode_GET_SIZE( ptr() ) ) );
             }
             else
             {
@@ -2117,7 +2117,7 @@ namespace Py
     class String: public SeqBase<Char>
     {
     public:
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -2228,16 +2228,16 @@ namespace Py
         }
 
         // Queries
-        virtual size_type size () const
+        virtual Py_ssize_t size () const
         {
             if( isUnicode() )
-        {
-                return static_cast<size_type>( PyUnicode_GET_SIZE (ptr()) );
-        }
+            {
+                return PyUnicode_GET_SIZE (ptr());
+            }
             else
-        {
-                return static_cast<size_type>( PyString_Size (ptr()) );
-        }
+            {
+                return PyString_Size (ptr());
+            }
         }
 
         operator std::string () const
@@ -2253,7 +2253,7 @@ namespace Py
             }
             else
             {
-                return std::string( PyString_AsString( ptr() ), static_cast<size_type>( PyString_Size( ptr() ) ) );
+                return std::string( PyString_AsString( ptr() ), static_cast<size_t>( PyString_Size( ptr() ) ) );
             }
         }
 
@@ -2264,7 +2264,7 @@ namespace Py
             if( isUnicode() )
             {
                 return unicodestring( PyUnicode_AS_UNICODE( ptr() ),
-                    static_cast<size_type>( PyUnicode_GET_SIZE( ptr() ) ) );
+                    static_cast<size_t>( PyUnicode_GET_SIZE( ptr() ) ) );
             }
             else
             {
@@ -2510,7 +2510,7 @@ namespace Py
             }
         }
 
-        virtual size_type capacity() const
+        virtual Py_ssize_t capacity() const
         {
             return max_size();
         }
@@ -2768,7 +2768,7 @@ namespace Py
         // If you assume that Python mapping is a hash_map...
         // hash_map::value_type is not assignable, but
         // (*it).second = data must be a valid expression
-        typedef size_t size_type;
+        typedef Py_ssize_t size_type;
         typedef Object key_type;
         typedef mapref<T> data_type;
         typedef std::pair< const T, T > value_type;
@@ -2818,7 +2818,7 @@ namespace Py
             }
         }
 
-        virtual size_type size() const
+        virtual Py_ssize_t size() const
         {
             return PyMapping_Length (ptr());
         }
@@ -2844,7 +2844,7 @@ namespace Py
             return mapref<T>(*this, key);
         }
 
-        int length () const
+        Py_ssize_t length () const
         {
             return PyMapping_Length (ptr());
         }

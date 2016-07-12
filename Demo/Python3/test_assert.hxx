@@ -49,29 +49,24 @@ static void test_assert( const char *description, bool benchmark, bool value )
     test_assert_scaler( description, "bool", benchmark, value );
 }
 
-static void test_assert( const char *description, long benchmark, long value )
-{
-    test_assert_scaler( description, "long", benchmark, value );
-}
-
 static void test_assert( const char *description, int benchmark, int value )
 {
     test_assert_scaler( description, "int", benchmark, value );
 }
 
-static void test_assert( const char *description, size_t benchmark, size_t value )
-{
-    test_assert_scaler( description, "size_t", benchmark, value );
-}
-
-static void test_assert( const char *description, int benchmark, size_t value )
-{
-    test_assert_scaler( description, "size_t", size_t( benchmark ), value );
-}
-
 static void test_assert( const char *description, double benchmark, double value )
 {
-    test_assert_scaler( description, "float", benchmark, value );
+    test_assert_scaler( description, "double", benchmark, value );
+}
+
+static void test_assert( const char *description, Py_ssize_t benchmark, Py_ssize_t value )
+{
+    test_assert_scaler( description, "Py_ssize_t", benchmark, value );
+}
+
+static void test_assert( const char *description, int benchmark, Py_ssize_t value )
+{
+    test_assert_scaler( description, "Py_ssize_t", Py_ssize_t( benchmark ), value );
 }
 
 static void test_assert( const char *description, const std::string &benchmark, const std::string &value )

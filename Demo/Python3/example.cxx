@@ -406,7 +406,7 @@ void test_List()
     Py::List list1;
     Py::List list2;
 
-    test_assert( "list empty len()", list1.size(), static_cast<size_t>( 0 ) );
+    test_assert( "list empty len()", list1.size(), static_cast<Py_ssize_t>( 0 ) );
 
     list2.append( Py::String( "list2 index 0" ) );
     list2.append( Py::String( "list2 index 1" ) );
@@ -416,7 +416,7 @@ void test_List()
     list1.append( list2 );
     list1.append( Py::String( "world" ) );
 
-    test_assert( "list len()", static_cast<size_t>( 4 ), list1.size() );
+    test_assert( "list len()", static_cast<Py_ssize_t>( 4 ), list1.size() );
 
     test_assert( "list index[0]", Py::Long( 3 ), list1[0] );
     test_assert( "list index[1]", Py::Float( 6.0 ), list1[1] );
@@ -448,7 +448,7 @@ void test_List()
 
     Py::List list3;
     list3 = list1 + list2;
-    test_assert( "list operator+ count", static_cast<size_t>( 6 ), list3.size() );
+    test_assert( "list operator+ count", static_cast<Py_ssize_t>( 6 ), list3.size() );
 
     Py::Tuple tuple1( list1 );
     test_assert( "list construct from tuple", list1.size(), tuple1.size() );
@@ -545,8 +545,8 @@ void test_Dict()
     test_assert( "dict index[std::string]", dict1[ std::string("one") ], Py::Long( 1 ) );
     test_assert( "dict index[Py::String]", dict1[ str1 ], Py::Long( 2 ) );
 
-    test_assert( "dict keys()", dict1.keys().size(), static_cast<size_t>( 3 ) );
-    test_assert( "dict values()", dict1.values().size(), static_cast<size_t>( 3 ) );
+    test_assert( "dict keys()", dict1.keys().size(), static_cast<Py_ssize_t>( 3 ) );
+    test_assert( "dict values()", dict1.values().size(), static_cast<Py_ssize_t>( 3 ) );
 
     Py::Dict::iterator it1 = dict1.begin();
     test_assert( "dict iterator not end != [0]", true, it1 != dict1.end() );
@@ -575,7 +575,7 @@ void test_Dict()
 
     Py::Dict dict2 = dict1;
     dict2.clear();
-    test_assert( "dict clear()", dict2.keys().length(), static_cast<size_t>( 0 ) );
+    test_assert( "dict clear()", dict2.keys().length(), Py_ssize_t( 0 ) );
 
     const Py::Dict c;
     for (Py::Dict::const_iterator it = c.begin(); it != c.end(); ++it)
