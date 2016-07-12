@@ -1229,7 +1229,7 @@ Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
     return self().callMemberFunction( fn_name, args );
 }
 
-void PythonExtensionBase::reinit( Tuple &args, Dict &kwds )
+void PythonExtensionBase::reinit( Tuple &/*args*/, Dict &/*kwds*/ )
 {
     throw RuntimeError( "Must not call __init__ twice on this class" );
 }
@@ -1249,20 +1249,17 @@ int PythonExtensionBase::genericSetAttro( const String &name, const Object &valu
 int PythonExtensionBase::print( FILE *, int )
 {
     missing_method( print );
-    return -1;
 }
 #endif
 
 Object PythonExtensionBase::getattr( const char * )
 {
     missing_method( getattr );
-    return None();
 }
 
 int PythonExtensionBase::setattr( const char *, const Object & )
 {
     missing_method( setattr );
-    return -1;
 }
 
 Object PythonExtensionBase::getattro( const String &name )
@@ -1279,49 +1276,42 @@ int PythonExtensionBase::setattro( const String &name, const Object &value )
 int PythonExtensionBase::compare( const Object & )
 {
     missing_method( compare );
-    return -1;
 }
 
 Object PythonExtensionBase::rich_compare( const Object &, int )
 {
     missing_method( rich_compare );
-    return None();
 }
 
 Object PythonExtensionBase::repr()
 {
     missing_method( repr );
-    return None();
 }
 
 Object PythonExtensionBase::str()
 {
     missing_method( str );
-    return None();
 }
 
 long PythonExtensionBase::hash()
 {
     missing_method( hash );
-    return -1; }
-
+}
 
 Object PythonExtensionBase::call( const Object &, const Object & )
 {
     missing_method( call );
-    return None();
 }
 
 Object PythonExtensionBase::iter()
 {
     missing_method( iter );
-    return None();
 }
 
 PyObject *PythonExtensionBase::iternext()
 {
     missing_method( iternext );
-    return NULL; }
+}
 
 
 
@@ -1329,31 +1319,26 @@ PyObject *PythonExtensionBase::iternext()
 int PythonExtensionBase::sequence_length()
 {
     missing_method( sequence_length );
-    return -1; }
-
+}
 
 Object PythonExtensionBase::sequence_concat( const Object & )
 {
     missing_method( sequence_concat );
-    return None();
 }
 
 Object PythonExtensionBase::sequence_repeat( Py_ssize_t )
 {
     missing_method( sequence_repeat );
-    return None();
 }
 
 Object PythonExtensionBase::sequence_item( Py_ssize_t )
 {
     missing_method( sequence_item );
-    return None();
 }
 
 int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Object & )
 {
     missing_method( sequence_ass_item );
-    return -1;
 }
 
 
@@ -1361,142 +1346,120 @@ int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Object & )
 int PythonExtensionBase::mapping_length()
 {
     missing_method( mapping_length );
-    return -1;
 }
 
 
 Object PythonExtensionBase::mapping_subscript( const Object & )
 {
     missing_method( mapping_subscript );
-    return None();
 }
 
 int PythonExtensionBase::mapping_ass_subscript( const Object &, const Object & )
 {
     missing_method( mapping_ass_subscript );
-    return -1;
 }
 
 Object PythonExtensionBase::number_negative()
 {
     missing_method( number_negative );
-    return None();
 }
 
 Object PythonExtensionBase::number_positive()
 {
     missing_method( number_positive );
-    return None();
 }
 
 Object PythonExtensionBase::number_absolute()
 {
     missing_method( number_absolute );
-    return None();
 }
 
 Object PythonExtensionBase::number_invert()
 {
     missing_method( number_invert );
-    return None();
 }
 
 Object PythonExtensionBase::number_int()
 {
     missing_method( number_int );
-    return None();
 }
 
 Object PythonExtensionBase::number_float()
 {
     missing_method( number_float );
-    return None();
 }
 
 Object PythonExtensionBase::number_long()
 {
     missing_method( number_long );
-    return None();
 }
 
 Object PythonExtensionBase::number_add( const Object & )
 {
     missing_method( number_add );
-    return None();
 }
 
 Object PythonExtensionBase::number_subtract( const Object & )
 {
     missing_method( number_subtract );
-    return None();
 }
 
 Object PythonExtensionBase::number_multiply( const Object & )
 {
     missing_method( number_multiply );
-    return None();
 }
 
 Object PythonExtensionBase::number_remainder( const Object & )
 {
     missing_method( number_remainder );
-    return None();
 }
 
 Object PythonExtensionBase::number_divmod( const Object & )
 {
     missing_method( number_divmod );
-    return None();
 }
 
 Object PythonExtensionBase::number_lshift( const Object & )
 {
     missing_method( number_lshift );
-    return None();
 }
 
 Object PythonExtensionBase::number_rshift( const Object & )
 {
     missing_method( number_rshift );
-    return None();
 }
 
 Object PythonExtensionBase::number_and( const Object & )
 {
     missing_method( number_and );
-    return None();
 }
 
 Object PythonExtensionBase::number_xor( const Object & )
 {
     missing_method( number_xor );
-    return None();
 }
 
 Object PythonExtensionBase::number_or( const Object & )
 {
     missing_method( number_or );
-    return None();
 }
 
 Object PythonExtensionBase::number_power( const Object &, const Object & )
 {
     missing_method( number_power );
-    return None();
 }
 
 
 // Buffer
-int PythonExtensionBase::buffer_get( Py_buffer *buf, int flags )
+int PythonExtensionBase::buffer_get( Py_buffer * /*buf*/, int /*flags*/ )
 {
     missing_method( buffer_get );
-    return -1;
 }
 
-int PythonExtensionBase::buffer_release( Py_buffer *buf )
+int PythonExtensionBase::buffer_release( Py_buffer * /*buf*/ )
 {
-    /* This method is optional and only required if the buffer's
-       memory is dynamic. */
+    // This method is optional and only required if the buffer's
+    // memory is dynamic.
     return 0;
 }
 

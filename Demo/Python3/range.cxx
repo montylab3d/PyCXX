@@ -59,12 +59,12 @@ range::~range()
     std::cout << "range object destroyed " << this << std::endl;
 }
 
-long range::length() const
+Py_ssize_t range::length() const
 {
     return (m_stop - m_start + 1)/m_step;
 }
 
-long range::item( int i ) const
+int range::item( int i ) const
 {
     if( i >= length() )
         // this exception stops a Python for loop over range.
@@ -73,7 +73,7 @@ long range::item( int i ) const
     return m_start + i * m_step;
 }
 
-range *range::slice( int i, int j ) const
+range *range::slice( Py_ssize_t i, Py_ssize_t j ) const
 {
     int first = m_start + i * m_step;
     int last = m_start + j * m_step;
@@ -93,7 +93,7 @@ std::string range::asString() const
     return std::string( s.str() );
 }
 
-Py::Object range::reference_count( const Py::Tuple &args )
+Py::Object range::reference_count( const Py::Tuple &/*args*/ )
 {
     return Py::Long( ob_refcnt );
 }
@@ -125,12 +125,12 @@ Py::Object range::repr()
 
 int range::sequence_length()
 {
-    return length();
+    return static_cast<int>( length() );
 }
 
 Py::Object range::sequence_item( Py_ssize_t i ) 
 {
-    return Py::Long( item( i ) );
+    return Py::Long( item( static_cast<int>( i ) ) );
 }
 
 Py::Object range::sequence_concat( const Py::Object &j )

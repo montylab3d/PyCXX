@@ -767,7 +767,7 @@ private:
         return f;
     }
 
-    Py::Object ex_test( const Py::Tuple &args )
+    Py::Object ex_test( const Py::Tuple &/*args*/ )
     {
         debug_check_ref_queue();
 

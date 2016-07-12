@@ -121,7 +121,6 @@ public:
     {
         std::cout << "new_style_class_func_noargs_raise_exception Called." << std::endl;
         throw Py::RuntimeError( "its an error" );
-        return Py::None();
     }
     PYCXX_NOARGS_METHOD_DECL( new_style_class, new_style_class_func_noargs_raise_exception )
 
@@ -249,19 +248,19 @@ public:
     {}
 
 private:
-    Py::Object decode_test( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object decode_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::Bytes s( args[0] );
         return s.decode("utf-8");
     }
 
-    Py::Object encode_test( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object encode_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::String s( args[0] );
         return s.encode("utf-8");
     }
 
-    Py::Object derived_class_test( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object derived_class_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::PythonClassObject<new_style_class> py_nsc( args[0] );
         new_style_class *cxx_nsc = py_nsc.getCxxObject();
@@ -302,7 +301,7 @@ private:
         return Py::None();
     }
 
-    Py::Object func_with_callback( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object func_with_callback( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::Callable callback_func( args[0] );
         Py::Tuple callback_args( 1 );
@@ -311,7 +310,7 @@ private:
         return callback_func.apply( callback_args );
     }
 
-    Py::Object func_with_callback_catch_simple_error( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object func_with_callback_catch_simple_error( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::Callable callback_func( args[0] );
         Py::Tuple callback_args( 1 );
@@ -350,7 +349,7 @@ private:
         return new_style_obj;
     }
 
-    Py::Object factory_old_style_class( const Py::Tuple &rargs )
+    Py::Object factory_old_style_class( const Py::Tuple &/*args*/ )
     {
         Py::Object obj = Py::asObject( new old_style_class );
         return obj;
@@ -368,6 +367,11 @@ extern "C" EXPORT_SYMBOL PyObject *PyInit_simple()
 #if defined(PY_WIN32_DELAYLOAD_PYTHON_DLL)
     Py::InitialisePythonIndirectPy::Interface();
 #endif
+
+    std::cout << "sizeof(int) " << sizeof(int) << std::endl;
+    std::cout << "sizeof(long) " << sizeof(long) << std::endl;
+    std::cout << "sizeof(Py_hash_t) " << sizeof(Py_hash_t) << std::endl;
+    std::cout << "sizeof(Py_ssize_t) " << sizeof(Py_ssize_t) << std::endl;
 
     static simple_module* simple = new simple_module;
     return simple->module().ptr();

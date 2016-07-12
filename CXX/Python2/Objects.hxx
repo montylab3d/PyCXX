@@ -56,7 +56,7 @@ namespace Py
 {
     void ifPyErrorThrowCxxException();
 
-    typedef int sequence_index_type;    // type of an index into a sequence
+    typedef Py_ssize_t sequence_index_type;    // type of an index into a sequence
 
     // Forward declarations
     class Object;
@@ -1121,23 +1121,23 @@ namespace Py
     {
     protected:
         SeqBase<T>& s; // the sequence
-        int offset; // item number
+        sequence_index_type offset; // item number
         T the_item; // lvalue
     public:
 
         seqref (SeqBase<T>& seq, sequence_index_type j)
-            : s(seq), offset(j), the_item (s.getItem(j))
+        : s(seq), offset(j), the_item (s.getItem(j))
         {}
 
         seqref (const seqref<T>& range)
-            : s(range.s), offset(range.offset), the_item(range.the_item)
+        : s(range.s), offset(range.offset), the_item(range.the_item)
         {}
 
         // TMM: added this seqref ctor for use with STL algorithms
         seqref (Object& obj)
-            : s(dynamic_cast< SeqBase<T>&>(obj))
-            , offset( 0 )
-            , the_item(s.getItem(offset))
+        : s(dynamic_cast< SeqBase<T>&>(obj))
+        , offset( 0 )
+        , the_item(s.getItem(offset))
         {}
         ~seqref()
         {}
@@ -1585,7 +1585,7 @@ namespace Py
         }
 
         class const_iterator
-            : public random_access_iterator_parent(const Object)
+        : public random_access_iterator_parent(const Object)
         {
         protected:
             friend class SeqBase<T>;
@@ -1593,9 +1593,9 @@ namespace Py
             sequence_index_type count;
 
         private:
-            const_iterator (const SeqBase<T>* s, int where)
-                : seq( s )
-                , count( where )
+            const_iterator (const SeqBase<T>* s, sequence_index_type where)
+            : seq( s )
+            , count( where )
             {}
 
         public:
@@ -1603,13 +1603,13 @@ namespace Py
             {}
 
             const_iterator ()
-                : seq( 0 )
-                , count( 0 )
+            : seq( 0 )
+            , count( 0 )
             {}
 
             const_iterator(const const_iterator& other)
-                : seq( other.seq )
-                , count( other.count )
+            : seq( other.seq )
+            , count( other.count )
             {}
 
             const T operator*() const

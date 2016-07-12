@@ -94,7 +94,6 @@ public:
     {
         std::cout << "new_style_class_func_noargs_raise_exception Called." << std::endl;
         throw Py::RuntimeError( "its an error" );
-        return Py::None();
     }
     PYCXX_NOARGS_METHOD_DECL( new_style_class, new_style_class_func_noargs_raise_exception )
 
@@ -218,19 +217,19 @@ public:
     {}
 
 private:
-    Py::Object decode_test( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object decode_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::String s( args[0] );
         return s.decode("utf-8");
     }
 
-    Py::Object encode_test( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object encode_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::String s( args[0] );
         return s.encode("utf-8");
     }
 
-    Py::Object derived_class_test( const Py::Tuple &args, const Py::Dict &kwds )
+    Py::Object derived_class_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
     {
         Py::PythonClassObject<new_style_class> py_nsc( args[0] );
         new_style_class *cxx_nsc = py_nsc.getCxxObject();
@@ -304,7 +303,7 @@ private:
     }
 
 
-    Py::Object factory_old_style_class( const Py::Tuple &rargs )
+    Py::Object factory_old_style_class( const Py::Tuple &/*args*/ )
     {
         Py::Object obj = Py::asObject( new old_style_class );
         return obj;

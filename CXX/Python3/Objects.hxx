@@ -56,7 +56,7 @@ namespace Py
 {
     void ifPyErrorThrowCxxException();
 
-    typedef int sequence_index_type;    // type of an index into a sequence
+    typedef Py_ssize_t sequence_index_type;    // type of an index into a sequence
 
     // Forward declarations
     class Object;
@@ -241,7 +241,7 @@ namespace Py
         //
 
         // Can pyob be used in this object's constructor?
-        virtual bool accepts( PyObject *pyob ) const
+        virtual bool accepts( PyObject * ) const
         {
             // allow any object or NULL
             return true;
@@ -281,7 +281,7 @@ namespace Py
             return Object( PyObject_GetItem( p, *key ), true );
         }
 
-        long hashValue() const
+        Py_hash_t hashValue() const
         {
             return PyObject_Hash( p );
         }
@@ -1086,7 +1086,7 @@ namespace Py
     {
     protected:
         SeqBase<T> &s; // the sequence
-        int offset; // item number
+        sequence_index_type offset; // item number
         T the_item; // lvalue
 
     public:
@@ -1428,7 +1428,7 @@ namespace Py
         protected:
             friend class SeqBase<T>;
             SeqBase<T> *seq;
-            int count;
+            Py_ssize_t count;
 
         public:
             ~iterator()
@@ -1439,7 +1439,7 @@ namespace Py
             , count( 0 )
             {}
 
-            iterator( SeqBase<T> *s, int where )
+            iterator( SeqBase<T> *s, Py_ssize_t where )
             : seq( s )
             , count( where )
             {}
@@ -1592,7 +1592,7 @@ namespace Py
             , count( 0 )
             {}
 
-            const_iterator( const SeqBase<T> *s, int where )
+            const_iterator( const SeqBase<T> *s, sequence_index_type where )
             : seq( s )
             , count( where )
             {}
@@ -1982,7 +1982,7 @@ namespace Py
 
         Char &operator=( int v_ )
         {
-            Py_UNICODE v( v_ );
+            Py_UNICODE v( static_cast<Py_UNICODE>( v_ ) );
             set( PyUnicode_FromUnicode( &v, 1 ), true );
             return *this;
         }
@@ -2411,7 +2411,7 @@ namespace Py
             return List( PyList_GetSlice( ptr(), i, j ), true );
         }
 
-        void setSlice( int i, int j, const Object &v )
+        void setSlice( Py_ssize_t i, Py_ssize_t j, const Object &v )
         {
             if( PyList_SetSlice( ptr(), i, j, *v ) == -1 )
             {
@@ -2946,7 +2946,7 @@ namespace Py
             friend class MapBase<T>;
             const MapBase<T>    *map;
             List                keys;   // for iterating over the map
-            int                 pos;    // index into the keys
+            Py_ssize_t          pos;    // index into the keys
 
         public:
             ~const_iterator()
@@ -2958,7 +2958,7 @@ namespace Py
             , pos()
             {}
 
-            const_iterator( const MapBase<T> *m, List k, int p )
+            const_iterator( const MapBase<T> *m, List k, Py_ssize_t p )
             : map( m )
             , keys( k )
             , pos( p )

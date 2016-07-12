@@ -78,7 +78,7 @@ public:
         return start + i * step;
     }
 
-    range* slice(int i, int j) const
+    range *slice( int i, int j ) const
     {
         int first = start + i * step;
         int last = start + j * step;
@@ -110,9 +110,9 @@ public:
     Py::Object amethod (const Py::Tuple& args);
     Py::Object value (const Py::Tuple& args);
     Py::Object assign (const Py::Tuple& args); 
-    Py::Object reference_count (const Py::Tuple& args) 
+    Py::Object reference_count (const Py::Tuple& /*args*/)
     {
-        return Py::Int(this->ob_refcnt);
+        return Py::LongLong(this->ob_refcnt);
     }
 
     Py::Object c_value(const Py::Tuple&) const

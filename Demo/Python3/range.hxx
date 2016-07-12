@@ -50,8 +50,8 @@ public:
     virtual ~range();
     static void init_type(void);
 
-    long length() const;
-    long item( int i ) const;
+    Py_ssize_t length() const;
+    int item( int i ) const;
     range *slice( int i, int j ) const;
     range *extend( int k ) const;
     std::string asString() const;
