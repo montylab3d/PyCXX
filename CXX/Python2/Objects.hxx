@@ -248,9 +248,10 @@ namespace Py
         //
 
         // Can pyob be used in this object's constructor?
-        virtual bool accepts (PyObject *pyob) const
+        virtual bool accepts (PyObject *) const
         {
-            return (pyob != 0);
+            // allow any object or NULL
+            return true;
         }
 
         Py_ssize_t reference_count () const
@@ -306,6 +307,11 @@ namespace Py
         bool is(const Object& other) const
         { // identity test
             return p == other.p;
+        }
+
+        bool isNull() const
+        {
+            return p == NULL;
         }
 
         bool isNone() const
