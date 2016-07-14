@@ -50,7 +50,7 @@ Py::Object range::repr()
     return Py::String(asString());
 }
 
-int range::sequence_length()
+Py_ssize_t range::sequence_length()
 {
     return length();
 }

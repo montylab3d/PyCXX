@@ -1353,7 +1353,7 @@ PyObject *PythonExtensionBase::iternext()
 
 
 // Sequence methods
-int PythonExtensionBase::sequence_length()
+Py_ssize_t PythonExtensionBase::sequence_length()
 {
     missing_method( sequence_length );
 }
@@ -1389,11 +1389,10 @@ Object PythonExtensionBase::sequence_inplace_repeat( Py_ssize_t )
 }
 
 // Mapping
-int PythonExtensionBase::mapping_length()
+Py_ssize_t PythonExtensionBase::mapping_length()
 {
     missing_method( mapping_length );
 }
-
 
 Object PythonExtensionBase::mapping_subscript( const Object & )
 {
