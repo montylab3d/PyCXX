@@ -76,6 +76,7 @@ namespace Py
         PythonType &supportIter( void );
 
         PythonType &supportSequenceType( void );
+        PythonType &supportSequenceInplaceType( void );
         PythonType &supportMappingType( void );
         PythonType &supportNumberType( void );
         PythonType &supportBufferType( void );

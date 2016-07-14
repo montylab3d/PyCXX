@@ -52,7 +52,7 @@ public:
 
     Py_ssize_t length() const;
     int item( int i ) const;
-    range *slice( int i, int j ) const;
+    range *slice( Py_ssize_t i, Py_ssize_t j ) const;
     range *extend( int k ) const;
     std::string asString() const;
 

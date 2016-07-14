@@ -250,6 +250,9 @@ extern "C"
     static PyObject *sequence_item_handler( PyObject *, Py_ssize_t );
     static int sequence_ass_item_handler( PyObject *, Py_ssize_t, PyObject * );
 
+    static PyObject *sequence_inplace_concat_handler( PyObject *, PyObject * );
+    static PyObject *sequence_inplace_repeat_handler( PyObject *, Py_ssize_t );
+
     // Mapping
     static Py_ssize_t mapping_length_handler( PyObject * );
     static PyObject *mapping_subscript_handler( PyObject *, PyObject * );
@@ -302,9 +305,17 @@ PythonType &PythonType::supportSequenceType()
         sequence_table->sq_item = sequence_item_handler;
 
         sequence_table->sq_ass_item = sequence_ass_item_handler;    // BAS setup seperately?
-        // QQQ sq_inplace_concat
-        // QQQ sq_inplace_repeat
     }
+    return *this;
+}
+
+PythonType &PythonType::supportSequenceInplaceType()
+{
+    assert( sequence_table != NULL );
+    
+    table->tp_as_sequence->sq_inplace_concat = sequence_inplace_concat_handler;
+    table->tp_as_sequence->sq_inplace_repeat = sequence_inplace_repeat_handler;
+
     return *this;
 }
 
@@ -850,6 +861,32 @@ extern "C" int sequence_ass_item_handler( PyObject *self, Py_ssize_t index, PyOb
     }
 }
 
+extern "C" PyObject *sequence_inplace_concat_handler( PyObject *self, PyObject *o2 )
+{
+    try
+    {
+        PythonExtensionBase *p = getPythonExtensionBase( self );
+        return new_reference_to( p->sequence_inplace_concat( Object( o2 ) ) );
+    }
+    catch( BaseException & )
+    {
+        return NULL;    // indicate error
+    }
+}
+
+extern "C" PyObject *sequence_inplace_repeat_handler( PyObject *self, Py_ssize_t count )
+{
+    try
+    {
+        PythonExtensionBase *p = getPythonExtensionBase( self );
+        return new_reference_to( p->sequence_inplace_repeat( count ) );
+    }
+    catch( BaseException & )
+    {
+        return NULL;    // indicate error
+    }
+}
+
 // Mapping
 extern "C" Py_ssize_t mapping_length_handler( PyObject *self )
 {
@@ -1341,6 +1378,15 @@ int PythonExtensionBase::sequence_ass_item( Py_ssize_t, const Object & )
     missing_method( sequence_ass_item );
 }
 
+Object PythonExtensionBase::sequence_inplace_concat( const Object & )
+{
+    missing_method( sequence_inplace_concat );
+}
+
+Object PythonExtensionBase::sequence_inplace_repeat( Py_ssize_t )
+{
+    missing_method( sequence_inplace_repeat );
+}
 
 // Mapping
 int PythonExtensionBase::mapping_length()

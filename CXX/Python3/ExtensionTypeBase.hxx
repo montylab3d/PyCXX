@@ -95,6 +95,9 @@ namespace Py
         virtual Object sequence_item( Py_ssize_t );
         virtual int sequence_ass_item( Py_ssize_t, const Object & );
 
+        virtual Object sequence_inplace_concat( const Object & );
+        virtual Object sequence_inplace_repeat( Py_ssize_t );
+
         // Mapping
         virtual int mapping_length();
         virtual Object mapping_subscript( const Object & );
