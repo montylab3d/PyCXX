@@ -291,6 +291,8 @@ extern "C"
     static PyObject *sequence_inplace_concat_handler( PyObject *, PyObject * );
     static PyObject *sequence_inplace_repeat_handler( PyObject *, Py_ssize_t );
 
+    static int sequence_contains_handler( PyObject *, PyObject * );
+
     // Mapping
     static Py_ssize_t mapping_length_handler( PyObject * );
     static PyObject *mapping_subscript_handler( PyObject *, PyObject * );
@@ -336,7 +338,7 @@ bool PythonType::readyType()
     return PyType_Ready( table ) >= 0;
 }
 
-PythonType &PythonType::supportSequenceType()
+PythonType &PythonType::supportSequenceType( bool support_assignment, bool support_inplace, bool support_contains )
 {
     if( !sequence_table )
     {
@@ -344,29 +346,34 @@ PythonType &PythonType::supportSequenceType()
         memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
         table->tp_as_sequence = sequence_table;
         sequence_table->sq_length = sequence_length_handler;
-        sequence_table->sq_concat = sequence_concat_handler;
         sequence_table->sq_repeat = sequence_repeat_handler;
         sequence_table->sq_item = sequence_item_handler;
         sequence_table->sq_slice = sequence_slice_handler;
 
-        sequence_table->sq_ass_item = sequence_ass_item_handler;
-        sequence_table->sq_ass_slice = sequence_ass_slice_handler;
+        sequence_table->sq_concat = sequence_concat_handler;
+
+        if( support_assignment )
+        {
+            sequence_table->sq_ass_item = sequence_ass_item_handler;
+            sequence_table->sq_ass_slice = sequence_ass_slice_handler;
+        }
+
+        if( support_inplace )
+        {
+            sequence_table->sq_inplace_concat = sequence_inplace_concat_handler;
+            sequence_table->sq_inplace_repeat = sequence_inplace_repeat_handler;
+        }
+
+        if( support_contains )
+        {
+            sequence_table->sq_contains = sequence_contains_handler;
+        }
     }
     return *this;
 }
 
 
-PythonType &PythonType::supportSequenceInplaceType()
-{
-    assert( sequence_table != NULL );
-    
-    table->tp_as_sequence->sq_inplace_concat = sequence_inplace_concat_handler;
-    table->tp_as_sequence->sq_inplace_repeat = sequence_inplace_repeat_handler;
-
-    return *this;
-}
-
-PythonType &PythonType::supportMappingType()
+PythonType &PythonType::supportMappingType( bool support_assignment )
 {
     if( !mapping_table )
     {
@@ -375,7 +382,10 @@ PythonType &PythonType::supportMappingType()
         table->tp_as_mapping = mapping_table;
         mapping_table->mp_length = mapping_length_handler;
         mapping_table->mp_subscript = mapping_subscript_handler;
-        mapping_table->mp_ass_subscript = mapping_ass_subscript_handler;    // BAS setup seperately?
+        if( support_assignment )
+        {
+            mapping_table->mp_ass_subscript = mapping_ass_subscript_handler;
+        }
     }
     return *this;
 }
@@ -977,6 +987,19 @@ extern "C" PyObject *sequence_inplace_repeat_handler( PyObject *self, Py_ssize_t
     }
 }
 
+extern "C" int sequence_contains_handler( PyObject *self, PyObject *value )
+{
+    try
+    {
+        PythonExtensionBase *p = getPythonExtensionBase( self );
+        return p->sequence_contains( Object( value ) );
+    }
+    catch( BaseException & )
+    {
+        return -1;    // indicate error
+    }
+}
+
 // Mapping
 extern "C" Py_ssize_t mapping_length_handler( PyObject *self )
 {
@@ -1566,6 +1589,11 @@ Object PythonExtensionBase::sequence_inplace_concat( const Object & )
 Object PythonExtensionBase::sequence_inplace_repeat( Py_ssize_t )
 {
     missing_method( sequence_inplace_repeat );
+}
+
+int PythonExtensionBase::sequence_contains( const Object & )
+{
+    missing_method( sequence_contains );
 }
 
 // Mapping

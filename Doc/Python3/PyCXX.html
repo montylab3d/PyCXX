@@ -2366,8 +2366,8 @@ void supportStr( void );
 void supportHash( void );
 void supportCall( void );
 
-void supportSequenceType( void );
-void supportMappingType( void );
+void supportSequenceType( bool support_assignment=true, bool support_inplace=false, bool support_contains=false );
+void supportMappingType( bool support_assignment=true );
 void supportNumberType( void );
 void supportBufferType( void );</pre>
 
