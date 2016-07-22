@@ -92,7 +92,7 @@ namespace Py
         PythonType &supportMappingType(
                     bool hook_length=true,
                     bool hook_subscript=true,
-                    bool hook_ass_slice=true
+                    bool hook_ass_subscript=true
                     );
         PythonType &supportNumberType(
                     bool hook_add=true,
