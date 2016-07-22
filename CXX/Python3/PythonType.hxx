@@ -72,12 +72,51 @@ namespace Py
         PythonType &supportStr( void );
         PythonType &supportHash( void );
         PythonType &supportCall( void );
-        PythonType &supportIter( void );
+        PythonType &supportIter(
+                    bool hook_iter=true,
+                    bool hook_iternext=true
+                    );
 
-        PythonType &supportSequenceType( bool support_assignment=true, bool support_inplace=false, bool support_contains=false );
-        PythonType &supportMappingType( bool support_assignment=true );
-        PythonType &supportNumberType( void );
-        PythonType &supportBufferType( void );
+        PythonType &supportSequenceType(
+                    bool hook_length=true,
+                    bool hook_repeat=true,
+                    bool hook_item=true,
+                    bool hook_slice=true,
+                    bool hook_concat=true,
+                    bool hook_ass_item=true,
+                    bool hook_ass_slice=true,
+                    bool hook_inplace_concat=false,
+                    bool hook_inplace_repeat=false,
+                    bool hook_contains=false
+                    );
+        PythonType &supportMappingType(
+                    bool hook_length=true,
+                    bool hook_subscript=true,
+                    bool hook_ass_slice=true
+                    );
+        PythonType &supportNumberType(
+                    bool hook_add=true,
+                    bool hook_subtract=true,
+                    bool hook_multiply=true,
+                    bool hook_remainder=true,
+                    bool hook_divmod=true,
+                    bool hook_power=true,
+                    bool hook_negative=true,
+                    bool hook_positive=true,
+                    bool hook_absolute=true,
+                    bool hook_invert=true,
+                    bool hook_lshift=true,
+                    bool hook_rshift=true,
+                    bool hook_and=true,
+                    bool hook_xor=true,
+                    bool hook_or=true,
+                    bool hook_int=true,
+                    bool hook_float=true
+                    );
+        PythonType &supportBufferType(
+                    bool hook_getbuffer=true,
+                    bool hook_releasebuffer=true
+                    );
 
         PythonType &set_tp_dealloc( void (*tp_dealloc)( PyObject * ) );
         PythonType &set_tp_init( int (*tp_init)( PyObject *self, PyObject *args, PyObject *kwds ) );

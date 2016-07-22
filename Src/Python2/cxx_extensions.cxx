@@ -338,33 +338,61 @@ bool PythonType::readyType()
     return PyType_Ready( table ) >= 0;
 }
 
-PythonType &PythonType::supportSequenceType( bool support_assignment, bool support_inplace, bool support_contains )
+PythonType &PythonType::supportSequenceType(
+    bool hook_length,
+    bool hook_repeat,
+    bool hook_item,
+    bool hook_slice,
+    bool hook_concat,
+    bool hook_ass_item,
+    bool hook_ass_slice,
+    bool hook_inplace_concat,
+    bool hook_inplace_repeat,
+    bool hook_contains
+    )
 {
     if( !sequence_table )
     {
         sequence_table = new PySequenceMethods;
         memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
         table->tp_as_sequence = sequence_table;
-        sequence_table->sq_length = sequence_length_handler;
-        sequence_table->sq_repeat = sequence_repeat_handler;
-        sequence_table->sq_item = sequence_item_handler;
-        sequence_table->sq_slice = sequence_slice_handler;
-
-        sequence_table->sq_concat = sequence_concat_handler;
-
-        if( support_assignment )
+        if( hook_length )
+        {
+            sequence_table->sq_length = sequence_length_handler;
+        }
+        if( hook_repeat )
+        {
+            sequence_table->sq_repeat = sequence_repeat_handler;
+        }
+        if( hook_item )
+        {
+            sequence_table->sq_item = sequence_item_handler;
+        }
+        if( hook_slice )
+        {
+            sequence_table->sq_slice = sequence_slice_handler;
+        }
+        if( hook_concat )
+        {
+            sequence_table->sq_concat = sequence_concat_handler;
+        }
+        if( hook_ass_item )
         {
             sequence_table->sq_ass_item = sequence_ass_item_handler;
+        }
+        if( hook_ass_slice )
+        {
             sequence_table->sq_ass_slice = sequence_ass_slice_handler;
         }
-
-        if( support_inplace )
+        if( hook_inplace_concat )
         {
             sequence_table->sq_inplace_concat = sequence_inplace_concat_handler;
+        }
+        if( hook_inplace_repeat )
+        {
             sequence_table->sq_inplace_repeat = sequence_inplace_repeat_handler;
         }
-
-        if( support_contains )
+        if( hook_contains )
         {
             sequence_table->sq_contains = sequence_contains_handler;
         }
@@ -373,16 +401,27 @@ PythonType &PythonType::supportSequenceType( bool support_assignment, bool suppo
 }
 
 
-PythonType &PythonType::supportMappingType( bool support_assignment )
+PythonType &PythonType::supportMappingType(
+    bool hook_length,
+    bool hook_subscript,
+    bool hook_ass_subscript
+    )
 {
     if( !mapping_table )
     {
         mapping_table = new PyMappingMethods;
         memset( mapping_table, 0, sizeof( PyMappingMethods ) );   // ensure new fields are 0
         table->tp_as_mapping = mapping_table;
-        mapping_table->mp_length = mapping_length_handler;
-        mapping_table->mp_subscript = mapping_subscript_handler;
-        if( support_assignment )
+
+        if( hook_length )
+        {
+            mapping_table->mp_length = mapping_length_handler;
+        }
+        if( hook_subscript )
+        {
+            mapping_table->mp_subscript = mapping_subscript_handler;
+        }
+        if( hook_ass_subscript )
         {
             mapping_table->mp_ass_subscript = mapping_ass_subscript_handler;
         }
@@ -390,57 +429,161 @@ PythonType &PythonType::supportMappingType( bool support_assignment )
     return *this;
 }
 
-PythonType &PythonType::supportNumberType()
+PythonType &PythonType::supportNumberType(
+    bool hook_add,
+    bool hook_subtract,
+    bool hook_multiply,
+    bool hook_divide,
+    bool hook_remainder,
+    bool hook_divmod,
+    bool hook_power,
+    bool hook_negative,
+    bool hook_positive,
+    bool hook_absolute,
+    bool hook_nonzero,
+    bool hook_invert,
+    bool hook_lshift,
+    bool hook_rshift,
+    bool hook_and,
+    bool hook_xor,
+    bool hook_or,
+    bool hook_int,
+    bool hook_long,
+    bool hook_float,
+    bool hook_oct,
+    bool hook_hex
+    )
 {
     if( !number_table )
     {
         number_table = new PyNumberMethods;
         memset( number_table, 0, sizeof( PyNumberMethods ) );   // ensure new fields are 0
         table->tp_as_number = number_table;
-        number_table->nb_add = number_add_handler;
-        number_table->nb_subtract = number_subtract_handler;
-        number_table->nb_multiply = number_multiply_handler;
-        number_table->nb_divide = number_divide_handler;
-        number_table->nb_remainder = number_remainder_handler;
-        number_table->nb_divmod = number_divmod_handler;
-        number_table->nb_power = number_power_handler;
-        number_table->nb_negative = number_negative_handler;
-        number_table->nb_positive = number_positive_handler;
-        number_table->nb_absolute = number_absolute_handler;
-        number_table->nb_nonzero = number_nonzero_handler;
-        number_table->nb_invert = number_invert_handler;
-        number_table->nb_lshift = number_lshift_handler;
-        number_table->nb_rshift = number_rshift_handler;
-        number_table->nb_and = number_and_handler;
-        number_table->nb_xor = number_xor_handler;
-        number_table->nb_or = number_or_handler;
         number_table->nb_coerce = 0;
-        number_table->nb_int = number_int_handler;
-        number_table->nb_long = number_long_handler;
-        number_table->nb_float = number_float_handler;
-        number_table->nb_oct = number_oct_handler;
-        number_table->nb_hex = number_hex_handler;
+
+        if( hook_add )
+        {
+            number_table->nb_add = number_add_handler;
+        }
+        if( hook_subtract )
+        {
+            number_table->nb_subtract = number_subtract_handler;
+        }
+        if( hook_multiply )
+        {
+            number_table->nb_multiply = number_multiply_handler;
+        }
+        if( hook_divide )
+        {
+            number_table->nb_divide = number_divide_handler;
+        }
+        if( hook_remainder )
+        {
+            number_table->nb_remainder = number_remainder_handler;
+        }
+        if( hook_divmod )
+        {
+            number_table->nb_divmod = number_divmod_handler;
+        }
+        if( hook_power )
+        {
+            number_table->nb_power = number_power_handler;
+        }
+        if( hook_negative )
+        {
+            number_table->nb_negative = number_negative_handler;
+        }
+        if( hook_positive )
+        {
+            number_table->nb_positive = number_positive_handler;
+        }
+        if( hook_absolute )
+        {
+            number_table->nb_absolute = number_absolute_handler;
+        }
+        if( hook_nonzero )
+        {
+            number_table->nb_nonzero = number_nonzero_handler;
+        }
+        if( hook_invert )
+        {
+            number_table->nb_invert = number_invert_handler;
+        }
+        if( hook_lshift )
+        {
+            number_table->nb_lshift = number_lshift_handler;
+        }
+        if( hook_rshift )
+        {
+            number_table->nb_rshift = number_rshift_handler;
+        }
+        if( hook_and )
+        {
+            number_table->nb_and = number_and_handler;
+        }
+        if( hook_xor )
+        {
+            number_table->nb_xor = number_xor_handler;
+        }
+        if( hook_or )
+        {
+            number_table->nb_or = number_or_handler;
+        }
+        if( hook_int )
+        {
+            number_table->nb_int = number_int_handler;
+        }
+        if( hook_long )
+        {
+            number_table->nb_long = number_long_handler;
+        }
+        if( hook_float )
+        {
+            number_table->nb_float = number_float_handler;
+        }
+        if( hook_oct )
+        {
+            number_table->nb_oct = number_oct_handler;
+        }
+        if( hook_hex )
+        {
+            number_table->nb_hex = number_hex_handler;
+        }
     }
     return *this;
 }
 
-PythonType &PythonType::supportBufferType()
+PythonType &PythonType::supportBufferType(
+    bool hook_getreadbuffer,
+    bool hook_getwritebuffer,
+    bool hook_getsegcount
+    )
 {
     if( !buffer_table )
     {
         buffer_table = new PyBufferProcs;
         memset( buffer_table, 0, sizeof( PyBufferProcs ) );   // ensure new fields are 0
         table->tp_as_buffer = buffer_table;
-        buffer_table->bf_getreadbuffer = buffer_getreadbuffer_handler;
-        buffer_table->bf_getwritebuffer = buffer_getwritebuffer_handler;
-        buffer_table->bf_getsegcount = buffer_getsegcount_handler;
+
+        if( hook_getreadbuffer )
+        {
+            buffer_table->bf_getreadbuffer = buffer_getreadbuffer_handler;
+        }
+        if( hook_getwritebuffer )
+        {
+            buffer_table->bf_getwritebuffer = buffer_getwritebuffer_handler;
+        }
+        if( hook_getsegcount )
+        {
+            buffer_table->bf_getsegcount = buffer_getsegcount_handler;
+        }
     }
     return *this;
 }
 
-// if you define one sequence method you must define
-// all of them except the assigns
-
+//
+// if you define add methods that you hook. Use the hook_XXX to choice what to hook.
+//
 PythonType::PythonType( size_t basic_size, int itemsize, const char *default_name )
 : table( new PyTypeObject )
 , sequence_table( NULL )
@@ -664,10 +807,19 @@ PythonType &PythonType::supportCall()
     return *this;
 }
 
-PythonType &PythonType::supportIter()
+PythonType &PythonType::supportIter(
+    bool hook_iter,
+    bool hook_iternext
+    )
 {
-    table->tp_iter = iter_handler;
-    table->tp_iternext = iternext_handler;
+    if( hook_iter )
+    {
+        table->tp_iter = iter_handler;
+    }
+    if( hook_iternext )
+    {
+        table->tp_iternext = iternext_handler;
+    }
     return *this;
 }
 
