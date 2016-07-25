@@ -99,7 +99,6 @@ public:
             e.clear();
             return Py::String( "new_style_class_call_member error when calling member" );
         }
-        
     }
     PYCXX_VARARGS_METHOD_DECL( new_style_class, new_style_class_call_member )
 
@@ -156,7 +155,6 @@ public:
 
     Py::String m_value;
 };
-
 
 class old_style_class: public Py::PythonExtension< old_style_class >
 {

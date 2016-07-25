@@ -43,7 +43,7 @@ public:
             fwd_iter = 1;    // indicate forward iteration
         return Py::Object(this,false);    // increment the refcount
     }
-    
+
     PyObject* iternext()
     {
         int ct;

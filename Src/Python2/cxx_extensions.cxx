@@ -338,61 +338,50 @@ bool PythonType::readyType()
     return PyType_Ready( table ) >= 0;
 }
 
-PythonType &PythonType::supportSequenceType(
-    bool hook_length,
-    bool hook_repeat,
-    bool hook_item,
-    bool hook_slice,
-    bool hook_concat,
-    bool hook_ass_item,
-    bool hook_ass_slice,
-    bool hook_inplace_concat,
-    bool hook_inplace_repeat,
-    bool hook_contains
-    )
+PythonType &PythonType::supportSequenceType( int methods_to_support )
 {
     if( !sequence_table )
     {
         sequence_table = new PySequenceMethods;
         memset( sequence_table, 0, sizeof( PySequenceMethods ) );   // ensure new fields are 0
         table->tp_as_sequence = sequence_table;
-        if( hook_length )
+        if( methods_to_support&support_sequence_length )
         {
             sequence_table->sq_length = sequence_length_handler;
         }
-        if( hook_repeat )
+        if( methods_to_support&support_sequence_repeat )
         {
             sequence_table->sq_repeat = sequence_repeat_handler;
         }
-        if( hook_item )
+        if( methods_to_support&support_sequence_item )
         {
             sequence_table->sq_item = sequence_item_handler;
         }
-        if( hook_slice )
+        if( methods_to_support&support_sequence_slice )
         {
             sequence_table->sq_slice = sequence_slice_handler;
         }
-        if( hook_concat )
+        if( methods_to_support&support_sequence_concat )
         {
             sequence_table->sq_concat = sequence_concat_handler;
         }
-        if( hook_ass_item )
+        if( methods_to_support&support_sequence_ass_item )
         {
             sequence_table->sq_ass_item = sequence_ass_item_handler;
         }
-        if( hook_ass_slice )
+        if( methods_to_support&support_sequence_ass_slice )
         {
             sequence_table->sq_ass_slice = sequence_ass_slice_handler;
         }
-        if( hook_inplace_concat )
+        if( methods_to_support&support_sequence_inplace_concat )
         {
             sequence_table->sq_inplace_concat = sequence_inplace_concat_handler;
         }
-        if( hook_inplace_repeat )
+        if( methods_to_support&support_sequence_inplace_repeat )
         {
             sequence_table->sq_inplace_repeat = sequence_inplace_repeat_handler;
         }
-        if( hook_contains )
+        if( methods_to_support&support_sequence_contains )
         {
             sequence_table->sq_contains = sequence_contains_handler;
         }
@@ -401,11 +390,7 @@ PythonType &PythonType::supportSequenceType(
 }
 
 
-PythonType &PythonType::supportMappingType(
-    bool hook_length,
-    bool hook_subscript,
-    bool hook_ass_subscript
-    )
+PythonType &PythonType::supportMappingType( int methods_to_support )
 {
     if( !mapping_table )
     {
@@ -413,15 +398,15 @@ PythonType &PythonType::supportMappingType(
         memset( mapping_table, 0, sizeof( PyMappingMethods ) );   // ensure new fields are 0
         table->tp_as_mapping = mapping_table;
 
-        if( hook_length )
+        if( methods_to_support&support_mapping_length )
         {
             mapping_table->mp_length = mapping_length_handler;
         }
-        if( hook_subscript )
+        if( methods_to_support&support_mapping_subscript )
         {
             mapping_table->mp_subscript = mapping_subscript_handler;
         }
-        if( hook_ass_subscript )
+        if( methods_to_support&support_mapping_ass_subscript )
         {
             mapping_table->mp_ass_subscript = mapping_ass_subscript_handler;
         }
@@ -429,30 +414,7 @@ PythonType &PythonType::supportMappingType(
     return *this;
 }
 
-PythonType &PythonType::supportNumberType(
-    bool hook_add,
-    bool hook_subtract,
-    bool hook_multiply,
-    bool hook_divide,
-    bool hook_remainder,
-    bool hook_divmod,
-    bool hook_power,
-    bool hook_negative,
-    bool hook_positive,
-    bool hook_absolute,
-    bool hook_nonzero,
-    bool hook_invert,
-    bool hook_lshift,
-    bool hook_rshift,
-    bool hook_and,
-    bool hook_xor,
-    bool hook_or,
-    bool hook_int,
-    bool hook_long,
-    bool hook_float,
-    bool hook_oct,
-    bool hook_hex
-    )
+PythonType &PythonType::supportNumberType( int methods_to_support )
 {
     if( !number_table )
     {
@@ -461,91 +423,91 @@ PythonType &PythonType::supportNumberType(
         table->tp_as_number = number_table;
         number_table->nb_coerce = 0;
 
-        if( hook_add )
+        if( methods_to_support&support_number_add )
         {
             number_table->nb_add = number_add_handler;
         }
-        if( hook_subtract )
+        if( methods_to_support&support_number_subtract )
         {
             number_table->nb_subtract = number_subtract_handler;
         }
-        if( hook_multiply )
+        if( methods_to_support&support_number_multiply )
         {
             number_table->nb_multiply = number_multiply_handler;
         }
-        if( hook_divide )
+        if( methods_to_support&support_number_divide )
         {
             number_table->nb_divide = number_divide_handler;
         }
-        if( hook_remainder )
+        if( methods_to_support&support_number_remainder )
         {
             number_table->nb_remainder = number_remainder_handler;
         }
-        if( hook_divmod )
+        if( methods_to_support&support_number_divmod )
         {
             number_table->nb_divmod = number_divmod_handler;
         }
-        if( hook_power )
+        if( methods_to_support&support_number_power )
         {
             number_table->nb_power = number_power_handler;
         }
-        if( hook_negative )
+        if( methods_to_support&support_number_negative )
         {
             number_table->nb_negative = number_negative_handler;
         }
-        if( hook_positive )
+        if( methods_to_support&support_number_positive )
         {
             number_table->nb_positive = number_positive_handler;
         }
-        if( hook_absolute )
+        if( methods_to_support&support_number_absolute )
         {
             number_table->nb_absolute = number_absolute_handler;
         }
-        if( hook_nonzero )
+        if( methods_to_support&support_number_nonzero )
         {
             number_table->nb_nonzero = number_nonzero_handler;
         }
-        if( hook_invert )
+        if( methods_to_support&support_number_invert )
         {
             number_table->nb_invert = number_invert_handler;
         }
-        if( hook_lshift )
+        if( methods_to_support&support_number_lshift )
         {
             number_table->nb_lshift = number_lshift_handler;
         }
-        if( hook_rshift )
+        if( methods_to_support&support_number_rshift )
         {
             number_table->nb_rshift = number_rshift_handler;
         }
-        if( hook_and )
+        if( methods_to_support&support_number_and )
         {
             number_table->nb_and = number_and_handler;
         }
-        if( hook_xor )
+        if( methods_to_support&support_number_xor )
         {
             number_table->nb_xor = number_xor_handler;
         }
-        if( hook_or )
+        if( methods_to_support&support_number_or )
         {
             number_table->nb_or = number_or_handler;
         }
-        if( hook_int )
+        if( methods_to_support&support_number_int )
         {
             number_table->nb_int = number_int_handler;
         }
-        if( hook_long )
+        if( methods_to_support&support_number_long )
         {
             number_table->nb_long = number_long_handler;
         }
-        if( hook_float )
+        if( methods_to_support&support_number_float )
         {
             number_table->nb_float = number_float_handler;
         }
-        if( hook_oct )
+        if( methods_to_support&support_number_oct )
         {
             number_table->nb_oct = number_oct_handler;
         }
-        if( hook_hex )
+        if( methods_to_support&support_number_hex )
         {
             number_table->nb_hex = number_hex_handler;
         }
@@ -553,11 +515,7 @@ PythonType &PythonType::supportNumberType(
     return *this;
 }
 
-PythonType &PythonType::supportBufferType(
-    bool hook_getreadbuffer,
-    bool hook_getwritebuffer,
-    bool hook_getsegcount
-    )
+PythonType &PythonType::supportBufferType( int methods_to_support )
 {
     if( !buffer_table )
     {
@@ -565,15 +523,15 @@ PythonType &PythonType::supportBufferType(
         memset( buffer_table, 0, sizeof( PyBufferProcs ) );   // ensure new fields are 0
         table->tp_as_buffer = buffer_table;
 
-        if( hook_getreadbuffer )
+        if( methods_to_support&support_buffer_getreadbuffer )
         {
             buffer_table->bf_getreadbuffer = buffer_getreadbuffer_handler;
         }
-        if( hook_getwritebuffer )
+        if( methods_to_support&support_buffer_getwritebuffer )
         {
             buffer_table->bf_getwritebuffer = buffer_getwritebuffer_handler;
         }
-        if( hook_getsegcount )
+        if( methods_to_support&support_buffer_getsegcount )
         {
             buffer_table->bf_getsegcount = buffer_getsegcount_handler;
         }
@@ -807,16 +765,13 @@ PythonType &PythonType::supportCall()
     return *this;
 }
 
-PythonType &PythonType::supportIter(
-    bool hook_iter,
-    bool hook_iternext
-    )
+PythonType &PythonType::supportIter( int methods_to_support )
 {
-    if( hook_iter )
+    if( methods_to_support&support_iter_iter )
     {
         table->tp_iter = iter_handler;
     }
-    if( hook_iternext )
+    if( methods_to_support&support_iter_iternext )
     {
         table->tp_iternext = iternext_handler;
     }

@@ -22,7 +22,7 @@ public:
         add_varargs_method( "IterT", &MyIterModule::new_IterT, "IterT(from,last)" );
         initialize( "MyIterModule documentation" ); // register with Python
     }
-    
+
     virtual ~MyIterModule()
     {}
 
