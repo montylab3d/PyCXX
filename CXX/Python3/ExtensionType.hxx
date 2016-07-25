@@ -119,6 +119,13 @@ namespace Py
         , m_methods_used( 0 )
         , m_methods_size( METHOD_TABLE_SIZE_INCREMENT )
         {
+            // add the sentinel marking the table end
+            PyMethodDef *p = &m_methods_table[ 0 ];
+
+            p->ml_name = NULL;
+            p->ml_meth = NULL;
+            p->ml_flags = 0;
+            p->ml_doc = NULL;
         }
 
         ~ExtensionClassMethodsTable()
