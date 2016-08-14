@@ -40,9 +40,9 @@
 
 #include "CXX/WrapPython.h"
 #include "CXX/Version.hxx"
-#include "CXX/Python3/Config.hxx"
-#include "CXX/Python3/CxxDebug.hxx"
-#include "CXX/Python3/IndirectPythonInterface.hxx"
+#include "CXX/Config.hxx"
+#include "CXX/CxxDebug.hxx"
+#include "CXX/IndirectPythonInterface.hxx"
 
 #include <string>
 #include <iostream>
@@ -59,27 +59,11 @@ namespace Py
     public:
         BaseException( ExtensionExceptionType &exception, const std::string &reason );
         BaseException( ExtensionExceptionType &exception, Object &reason );
-
-        explicit BaseException()
-        {}
-
-        BaseException( const std::string &reason )
-        {
-            PyErr_SetString( Py::_Exc_RuntimeError(), reason.c_str() );
-        }
-
-        BaseException( PyObject *exception, const std::string &reason )
-        {
-            PyErr_SetString( exception, reason.c_str() );
-        }
-
         BaseException( PyObject *exception, Object &reason );
+        BaseException( PyObject *exception, const std::string &reason );
+        explicit BaseException();
 
-        void clear() // clear the error
-        // technically but not philosophically const
-        {
-            PyErr_Clear();
-        }
+        void clear(); // clear the error
 
         // is the exception this specific exception 'exc'
         bool matches( ExtensionExceptionType &exc );
@@ -88,6 +72,28 @@ namespace Py
     // for user defined exceptions to be made know to pycxx
     typedef void (*throw_exception_func_t)( void );
     void addPythonException( ExtensionExceptionType &py_exc_type, throw_exception_func_t throw_func );
+
+#if defined( PYCXX_6_2_COMPATIBILITY )
+    class Exception : public BaseException
+    {
+    public:
+        Exception( ExtensionExceptionType &exception, const std::string &reason )
+        : BaseException( exception, reason )
+        {}
+
+        Exception( ExtensionExceptionType &exception, Object &reason )
+        : BaseException( exception, reason )
+        {}
+
+        Exception( PyObject *exception, const std::string &reason )
+        : BaseException( exception, reason )
+        {}
+
+        explicit Exception()
+        : BaseException()
+        {}
+    };
+#endif
 
 #define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
     class eclass : public bclass \

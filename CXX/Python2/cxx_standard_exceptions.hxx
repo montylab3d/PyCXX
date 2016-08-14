@@ -5,7 +5,9 @@
 PYCXX_STANDARD_EXCEPTION( SystemExit,       BaseException )
 PYCXX_STANDARD_EXCEPTION( KeyboardInterrupt,BaseException )
 PYCXX_STANDARD_EXCEPTION( GeneratorExit,    BaseException )
+#if !defined( PYCXX_6_2_COMPATIBILITY )
 PYCXX_STANDARD_EXCEPTION( Exception,        BaseException )
+#endif
 PYCXX_STANDARD_EXCEPTION(     StopIteration,    Exception )
 PYCXX_STANDARD_EXCEPTION(     StandardError,    Exception )
 PYCXX_STANDARD_EXCEPTION(         BufferError,      StandardError )

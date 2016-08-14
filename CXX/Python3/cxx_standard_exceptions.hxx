@@ -12,7 +12,9 @@
 PYCXX_STANDARD_EXCEPTION( SystemExit,           BaseException )
 PYCXX_STANDARD_EXCEPTION( KeyboardInterrupt,    BaseException )
 PYCXX_STANDARD_EXCEPTION( GeneratorExit,        BaseException )
+#if !defined( PYCXX_6_2_COMPATIBILITY )
 PYCXX_STANDARD_EXCEPTION( Exception,            BaseException )
+#endif
 PYCXX_STANDARD_EXCEPTION(     StopIteration,        Exception )
 #if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 5
 PYCXX_STANDARD_EXCEPTION(     StopAsyncIteration,       Exception )

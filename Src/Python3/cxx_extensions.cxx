@@ -1780,13 +1780,27 @@ BaseException::BaseException( PyObject *exception, Object &reason )
     PyErr_SetObject( exception, reason.ptr() );
 }
 
+BaseException::BaseException( PyObject *exception, const std::string &reason )
+{
+    PyErr_SetString( exception, reason.c_str() );
+}
+
+BaseException::BaseException()
+{
+}
+
+void BaseException::clear()
+{
+    PyErr_Clear();
+}
+
 // is the exception this specific exception 'exc'
 bool BaseException::matches( ExtensionExceptionType &exc )
 {
     return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
 
-
+//------------------------------------------------------------
 
 #if 1
 //------------------------------------------------------------

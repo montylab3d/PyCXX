@@ -1995,6 +1995,11 @@ ExtensionExceptionType::~ExtensionExceptionType()
 {
 }
 
+// ------------------------------------------------------------
+//
+//  BaseException
+//
+//------------------------------------------------------------
 BaseException::BaseException( ExtensionExceptionType &exception, const std::string &reason )
 {
     PyErr_SetString( exception.ptr(), reason.c_str() );
@@ -2008,6 +2013,19 @@ BaseException::BaseException( ExtensionExceptionType &exception, Object &reason 
 BaseException::BaseException( PyObject *exception, Object &reason )
 {
     PyErr_SetObject( exception, reason.ptr() );
+}
+
+BaseException::BaseException( PyObject *exception, const std::string &reason )
+{
+    PyErr_SetString( exception, reason.c_str() );
+}
+
+BaseException::BaseException()
+{}
+
+void BaseException::clear()
+{
+    PyErr_Clear();
 }
 
 bool BaseException::matches( ExtensionExceptionType &exc )

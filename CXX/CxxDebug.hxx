@@ -34,12 +34,8 @@
 // DAMAGE.
 //
 //-----------------------------------------------------------------------------
-#include "CXX/WrapPython.h"
-
-#define PYCXX_6_2_COMPATIBILITY 1
-
 #if PY_MAJOR_VERSION == 2
-#include "CXX/Python2/Config.hxx"
+#include "CXX/Python2/CxxDebug.hxx"
 #else
-#include "CXX/Python3/Config.hxx"
+#include "CXX/Python3/CxxDebug.hxx"
 #endif
