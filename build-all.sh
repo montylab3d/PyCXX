@@ -18,7 +18,6 @@ esac
 for PYTHON in \
     python2.6 \
     python2.7 \
-    python3.2 \
     python3.3 \
     python3.4 \
     python3.5 \

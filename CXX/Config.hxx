@@ -36,7 +36,11 @@
 //-----------------------------------------------------------------------------
 #include "CXX/WrapPython.h"
 
-#define PYCXX_6_2_COMPATIBILITY 1
+#if defined( PYCXX_6_2_COMPATIBILITY )
+    typedef int PyCxx_ssize_t;
+#else
+    typedef Py_ssize_t PyCxx_ssize_t;
+#endif
 
 #if PY_MAJOR_VERSION == 2
 #include "CXX/Python2/Config.hxx"

@@ -89,7 +89,7 @@ namespace Py
         virtual PyObject *iternext();
 
         // Sequence methods
-        virtual Py_ssize_t sequence_length();
+        virtual PyCxx_ssize_t sequence_length();
         virtual Object sequence_concat( const Object & );
         virtual Object sequence_repeat( Py_ssize_t );
         virtual Object sequence_item( Py_ssize_t );
@@ -102,7 +102,7 @@ namespace Py
         virtual int sequence_contains( const Object & );
 
         // Mapping
-        virtual Py_ssize_t mapping_length();
+        virtual PyCxx_ssize_t mapping_length();
         virtual Object mapping_subscript( const Object & );
 
         virtual int mapping_ass_subscript( const Object &, const Object & );

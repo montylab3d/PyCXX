@@ -117,7 +117,7 @@ class uclass : public Py::BaseException \
 { \
 public: \
     uclass( const std::string &reason ) \
-    : Py::BaseException( reason ) \
+    : Py::BaseException( m_error, reason ) \
     { } \
     ~uclass() {} \
     static void init( Py::ExtensionModuleBase &module ) \

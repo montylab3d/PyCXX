@@ -3,11 +3,11 @@
 <title>PyCXX README</title>
 
 <style>
-H1, H2, H3, H4 {color: #000099;
+h1, h2, h3, h4 {color: #000099;
 	background-color: lightskyblue}
 h3 {position: relative; left: 20px}
 
-p {position: relative; left: 20px; margin-right: 20px}
+p {position: relative; left: 20px; margin-right: 20px; width: 40em;}
 pre {color: #0000cc; background-color: #eeeeee; position: relative; left: 40px; margin-right: 80px;
 	border-style: solid; border-color: black; border-width: thin}
 kbd {color: #990000}
@@ -31,43 +31,41 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 
 <h3>Windows Installation and Demo</h3>
 <ol>
-    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-6.2.7.tar.gz">
-    http://prdownloads.sourceforge.net/cxx/pycxx-6.2.7.tar.gz</a></li>
-    <li>Expand the archive into a directory of your choosing C:\ for example.
-    Note: WinZip can expand .tar.gz files.</li>
+    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-7.0.0.tar.gz">
+    http://prdownloads.sourceforge.net/cxx/pycxx-7.0.0.tar.gz</a></li>
+    <li>Expand the archive into a directory of your choosing C:\ for example.</li>
 
     <li>Install the PyCXX files:
         <ol>
-        <li><pre>C:> cd \pycxx-6.2.7</pre></li>
-        <li><pre>C:\pycxx-6.2.7> python setup.py install</pre></li>
+        <li><pre>C:> cd \pycxx-7.0.0</pre></li>
+        <li><pre>C:\pycxx-7.0.0> python setup.py install</pre></li>
         </ol>
     </li>
     <li>Build and run the demo extensions:
         <ol>
-        <li><pre>C:> cd \pycxx-6.2.7</pre></li>
-        <li><pre>C:\pycxx-6.2.7> python setup_makefile.py win32 win32.mak </pre></li>
-        <li><pre>C:\pycxx-6.2.7> nmake -f win32.mak clean test</pre></li>
+        <li><pre>C:> cd \pycxx-7.0.0</pre></li>
+        <li><pre>C:\pycxx-7.0.0> python setup_makefile.py win32 win32.mak </pre></li>
+        <li><pre>C:\pycxx-7.0.0> nmake -f win32.mak clean test</pre></li>
         </ol>
     </li>
 </ol>
 
 
 <h3>Unix Installation and Demo</h3>
-<p>Note: distutils is not available for Python 1.5.2</p>
 
 <ol>
-    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-6.2.7.tar.gz">
-    http://prdownloads.sourceforge.net/cxx/pycxx-6.2.7.tar.gz</a>
+    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-7.0.0.tar.gz">
+    http://prdownloads.sourceforge.net/cxx/pycxx-7.0.0.tar.gz</a>
     <li>Login as root. root access is typically needed on Unix systems to install the PyCXX files into the Python directories.
     <li>Expand the archive into a directory of your choosing ~\ for example.
     <li>Install the PyCXX files:
         <ol>
-        <li><pre># cd ~/pycxx-6.2.7</pre>
+        <li><pre># cd ~/pycxx-7.0.0</pre>
         <li><pre># python setup.py install</pre>
         </ol>
     <li>Build and run the demo extensions:
         <ol>
-        <li><pre># cd ~/pycxx-6.2.7</pre></li>
+        <li><pre># cd ~/pycxx-7.0.0</pre></li>
         <li><pre># python setup_makefile.py linux linux.mak</pre></li>
         <li><pre># make -f linux.mak clean test</pre></li>
         </ol>
@@ -75,6 +73,33 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 </ol>
 
 <h2>Revision History</h2>
+
+<h3>Version 7.0.0 (15-Aug-2016)</h3>
+<p>Warning: This version fixes a number of problems that require source incompatible changes.</p> 
+
+<p>However by defining PYCXX_6_2_COMPATIBILITY the V6.2.x API is restored.
+This is not recommended for new code.</p>
+
+<p>The first version of python3 that is supported is 3.3.</p>
+
+<p>New source file needs to built: Src/cxx_exceptions.cxx.
+This file implements the new exception handling features.</p>
+
+<p>Fix the type used for lengths and sequence indexes to use Py_ssize_t.
+This will require sources changes for users of PyCXX.</p>
+
+<p>Implement smart handling of Exceptions between C++ and Python. 
+You can now catch exceptions in C++ by type that are raised in C++ or Python.</p>
+
+<p>All builtin exceptions are support and are user defined exceptions.</p>
+
+<p>The base exception type is now BaseException not Exception.
+To upgrade source code replace all use of Exception with BaseException.</p>
+
+<p>The documentation has been updated to describe the new exception features.</p>
+
+<p>The supportSequence, supportMapping, supportNumber etc functions
+now take a bit mask that defines which specific callbacks are handled.</p>
 
 <h3>Version 6.2.8 (10-May-2016)</h3>
 <p>Fix crash when a member function is called via callMemberFunction() and that function raises an expection.</p>
