@@ -64,7 +64,7 @@ Py_ssize_t range::length() const
     return (m_stop - m_start + 1)/m_step;
 }
 
-int range::item( int i ) const
+int range::item( long i ) const
 {
     if( i >= length() )
         // this exception stops a Python for loop over range.
@@ -75,14 +75,14 @@ int range::item( int i ) const
 
 range *range::slice( Py_ssize_t i, Py_ssize_t j ) const
 {
-    int first = m_start + i * m_step;
-    int last = m_start + j * m_step;
+    long first = m_start + static_cast<long>( i ) * m_step;
+    long last = m_start + static_cast<long>( j ) * m_step;
     return new range( first, last, m_step );
 }
 
-range *range::extend( int k ) const
+range *range::extend( Py_ssize_t k ) const
 {
-    return new range( m_start, m_stop + k, m_step);      
+    return new range( m_start, m_stop + static_cast<long>( k ), m_step);
 }
 
 std::string range::asString() const

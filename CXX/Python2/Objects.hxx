@@ -1471,7 +1471,7 @@ namespace Py
             , count( 0 )
             {}
 
-            iterator (SeqBase<T>* s, int where)
+            iterator (SeqBase<T>* s, sequence_index_type where)
             : seq( s )
             , count( where )
             {}
@@ -2961,12 +2961,12 @@ namespace Py
 
             friend class MapBase<T>;
             //
-            MapBase<T>* map;
-            List        keys;       // for iterating over the map
-            int         pos;        // index into the keys
+            MapBase<T>          *map;
+            List                keys;   // for iterating over the map
+            sequence_index_type pos;    // index into the keys
 
         private:
-            iterator( MapBase<T>* m, List k, int p )
+            iterator( MapBase<T>* m, List k, sequence_index_type p )
             : map( m )
             , keys( k )
             , pos( p )
@@ -3064,9 +3064,9 @@ namespace Py
             typedef const std::pair< const T, T > reference;
 
             friend class MapBase<T>;
-            const MapBase<T>* map;
-            List            keys;   // for iterating over the map
-            int             pos;    // index into the keys
+            const MapBase<T>    *map;
+            List                keys;   // for iterating over the map
+            sequence_index_type pos;    // index into the keys
 
         private:
             const_iterator( const MapBase<T>* m, List k, int p )

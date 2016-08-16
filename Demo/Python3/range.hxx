@@ -51,9 +51,9 @@ public:
     static void init_type(void);
 
     Py_ssize_t length() const;
-    int item( int i ) const;
+    int item( long i ) const;
     range *slice( Py_ssize_t i, Py_ssize_t j ) const;
-    range *extend( int k ) const;
+    range *extend( Py_ssize_t k ) const;
     std::string asString() const;
 
     // override functions from PythonExtension
@@ -88,7 +88,7 @@ public:
         validate();
     }
 
-    explicit RangeSequence(int start, int stop, int step = 1) 
+    explicit RangeSequence(long start, long stop, long step = 1) 
     {
         set (new range(start, stop, step), true);
     }

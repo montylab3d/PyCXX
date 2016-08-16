@@ -2829,9 +2829,9 @@ namespace Py
 
             friend class MapBase<T>;
             //
-            MapBase<T>      *map;
-            List            keys;       // for iterating over the map
-            int             pos;        // index into the keys
+            MapBase<T>          *map;
+            List                keys;       // for iterating over the map
+            sequence_index_type pos;        // index into the keys
 
         public:
             ~iterator()
