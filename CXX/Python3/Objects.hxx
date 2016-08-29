@@ -1759,6 +1759,8 @@ namespace Py
     // I'll try having a class Char which is a String of length 1
     //
     typedef std::basic_string<Py_UNICODE> unicodestring;
+    typedef std::basic_string<Py_UCS4> ucs4string;
+
     extern Py_UNICODE unicode_null_string[1];
 
     class Byte: public Object
@@ -1768,8 +1770,7 @@ namespace Py
         virtual bool accepts( PyObject *pyob ) const
         {
             return pyob != NULL
-// QQQ _Unicode_Check for a Byte???
-                && Py::_Unicode_Check( pyob )
+                && Py::_Bytes_Check( pyob )
                 && PySequence_Length( pyob ) == 1;
         }
 
@@ -2084,6 +2085,22 @@ namespace Py
             validate();
         }
 
+#if !defined( Py_UNICODE_WIDE )
+        // Need these c'tors becuase Py_UNICODE is 2 bytes
+        // User may use "int" or "unsigned int" as the unicode type
+        String( const unsigned int *s, int length )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( s ), length ), true )
+        {
+            validate();
+        }
+
+        String( const int *s, int length )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( s ), length ), true )
+        {
+            validate();
+        }
+#endif
+
         String( const Py_UNICODE *s, int length )
         : SeqBase<Char>( PyUnicode_FromUnicode( s, length ), true )
         {
@@ -2109,6 +2126,13 @@ namespace Py
             return *this;
         }
 
+#if !defined( Py_UNICODE_WIDE )
+        String &operator=( const ucs4string &v )
+        {
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( v.data() ), v.length() ), true );
+            return *this;
+        }
+#endif
         // Encode
         Bytes encode( const char *encoding, const char *error="strict" ) const
         {
@@ -2121,9 +2145,27 @@ namespace Py
             return PyUnicode_GET_SIZE( ptr() );
         }
 
+        const Py_UNICODE *unicode_data() const
+        {
+            return PyUnicode_AS_UNICODE( ptr() );
+        }
+
         unicodestring as_unicodestring() const
         {
-            return unicodestring( PyUnicode_AS_UNICODE( ptr() ), PyUnicode_GET_SIZE( ptr() ) );
+            return unicodestring( unicode_data(), size() );
+        }
+
+        ucs4string as_ucs4string() const
+        {
+            Py_UCS4 *buf = new Py_UCS4[ size() ];
+            if( PyUnicode_AsUCS4( ptr(), buf, size(), 0 ) == NULL )
+            {
+                ifPyErrorThrowCxxException();
+            }
+            ucs4string ucs4( buf, size() );
+            delete[] buf;
+
+            return ucs4;
         }
 
         operator std::string() const
@@ -2136,11 +2178,6 @@ namespace Py
         {
             Bytes b( encode( encoding, error ) );
             return b.as_std_string();
-        }
-
-        const Py_UNICODE *unicode_data() const
-        {
-            return PyUnicode_AS_UNICODE( ptr() );
         }
     };
 
