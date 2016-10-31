@@ -77,6 +77,36 @@ static std::string test_String()
         return "failed (3)";
     }
 
+    // ord tests
+    Py::Char c3 = r2[2];
+    long v3 = c3.ord();
+    if( v3 != '3' )
+    {
+        std::cout << "string ord value < 2^7 " << v3 << " vs. " << '3' << std::endl;
+        return "failed (4)";
+    }
+
+    std::cout << "sizeof( Py_UNICODE ) " << sizeof( Py_UNICODE ) << std::endl;
+
+    // python2 only handles unicode < 2^16.
+    Py_UNICODE u4( 0x20ac );
+    Py::Char c4( u4 );
+    long v4 = c4.ord();
+    if( v4 != 0x20ac )
+    {
+        std::cout << "string ord value > 2^16 " << v4 << " vs. " << 0x20ac << std::endl;
+        return "failed (5)";
+    }
+
+    Py::Char c5( '\xd5' );
+    long v5 = c5.ord();
+    if( v5 != 0xd5 )
+    {
+        std::cout << "string ord value < 2^8 " << v5 << " vs. " << 0xd5 << std::endl;
+        return "failed (6)";
+    }
+
+    // convert tests
     Py::Char c7 = r2.front();
     Py::Char c8 = r2.back();
 

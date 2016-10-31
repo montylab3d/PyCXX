@@ -1853,6 +1853,20 @@ namespace Py
             return *this;
         }
 
+        long ord()
+        {
+            if( Py::_Unicode_Check( ptr() ) )
+            {
+                Py_UNICODE *unicode = PyUnicode_AS_UNICODE( ptr() );
+                return static_cast<long>( unicode[0] );
+            }
+            else
+            {
+                unsigned char *str = reinterpret_cast<unsigned char *>( PyString_AS_STRING( ptr() ) );
+                return static_cast<long>( str[0] );
+            }
+        }
+
         // Conversion
         operator String() const;
 

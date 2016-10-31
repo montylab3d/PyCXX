@@ -115,6 +115,21 @@ void test_String()
     test_assert( "string convert to std::string", w, w2 );
 
     Py::String r2( "12345 789" );
+
+    // ord tests
+    Py::Char c3 = r2[2];
+    long v3 = c3.ord();
+    test_assert( "string ord value < 2^7", v3, '3' );
+
+    Py::Char c4( 0x10ff00 );
+    long v4 = c4.ord();
+    test_assert( "string ord value > 2^16", v4, 0x10ff00 );
+
+    Py::Char c5( 0xd5 );
+    long v5 = c5.ord();
+    test_assert( "string ord value < 2^8", v5, 0xd5 );
+
+    // convert tests
     Py::Char c6 = r2[5];
     test_assert( "string convert to std::string", c6, blank );
 

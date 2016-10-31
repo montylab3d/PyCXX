@@ -1996,6 +1996,15 @@ namespace Py
             return *this;
         }
 
+        long ord()
+        {
+            if( PyUnicode_READY( ptr() ) == -1 )
+            {
+                throw RuntimeError( "Char::ord() PyUnicode_READY() failed." );
+            }
+            return static_cast<long>( PyUnicode_READ_CHAR( ptr(), 0 ) );
+        }
+
         // Conversion
         operator String() const;
     };
