@@ -1653,7 +1653,7 @@ PyObject *PythonExtensionBase::iternext()
 }
 
 // Sequence methods
-Sequence::size_type PythonExtensionBase::sequence_length()
+PyCxx_ssize_t PythonExtensionBase::sequence_length()
 {
     missing_method( sequence_length );
 }

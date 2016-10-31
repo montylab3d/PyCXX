@@ -1498,7 +1498,7 @@ int PythonExtensionBase::sequence_contains( const Object & )
 }
 
 // Mapping
-Sequence::size_type PythonExtensionBase::mapping_length()
+PyCxx_ssize_t PythonExtensionBase::mapping_length()
 {
     missing_method( mapping_length );
 }

@@ -2151,7 +2151,7 @@ namespace Py
         // Queries
         virtual size_type size() const
         {
-            return PyUnicode_GET_SIZE( ptr() );
+            return PyUnicode_GET_LENGTH( ptr() );
         }
 
         const Py_UNICODE *unicode_data() const
@@ -2161,7 +2161,7 @@ namespace Py
 
         unicodestring as_unicodestring() const
         {
-            return unicodestring( unicode_data(), size() );
+            return unicodestring( unicode_data(), PyUnicode_GET_SIZE( ptr() ) );
         }
 
         ucs4string as_ucs4string() const
