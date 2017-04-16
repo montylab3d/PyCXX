@@ -74,13 +74,16 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 
 <h2>Revision History</h2>
 
-<h3>Version: 7.0.2 (31-Oct-2016)</h3>
+<h3>Version: 7.0.2 (16-April-2017)</h3>
 
 <p>Add Py::Char ord() method to return the long value of a character.<p>
 
 <p>Fix String::size() that could return twice the actual length.
 This affected as_ucs4string() which would return a string with
 its second half as uninitialised memory.</p>
+
+<p>Fix setup.py for the Demo code to build all the required C++
+code.</p>
 
 <h3>Version: 7.0.1 (29-Aug-2016)</h3>
 <p>Add extra methods to Py::String that as needed on Windows to support full unicode range of code points.</p>
