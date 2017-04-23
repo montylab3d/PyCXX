@@ -54,6 +54,13 @@ static void test_assert( const char *description, int benchmark, int value )
     test_assert_scaler( description, "int", benchmark, value );
 }
 
+#ifdef HAVE_LONG_LONG
+static void test_assert( const char *description, long long benchmark, long long value )
+{
+    test_assert_scaler( description, "long long", benchmark, value );
+}
+#endif
+
 static void test_assert( const char *description, double benchmark, double value )
 {
     test_assert_scaler( description, "double", benchmark, value );

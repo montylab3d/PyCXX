@@ -236,7 +236,6 @@ void test_long()
     py_long1 = cxx_long1;
     py_long2 = cxx_long2;
     py_long3 = cxx_long3;
-   
 
     // ------------------------------------------------------------
     test_assert( "long operator ==", cxx_long2 == cxx_long3, py_long2  == py_long3 );
@@ -303,6 +302,21 @@ void test_long()
     // ------------------------------------------------------------
     test_assert( "long operator long", cxx_long2, long( py_long2 ) );
     test_assert( "long operator int", int( cxx_long2 ), int( py_long2 ) );
+
+#ifdef HAVE_LONG_LONG
+    long long cxx_long_long11 = 1152921504616856976ll;
+    long long cxx_long_long12 = 6152921504616856976ll;
+    Py::Long py_long11( cxx_long_long11 );
+    Py::Long py_long12( 100 );
+
+    test_assert( "long long constructor 1", cxx_long_long11, py_long11.as_long_long() );
+    test_assert( "long long constructor 2", 1152921504616856976ll, py_long11.as_long_long() );
+    test_assert( "long long constructor 4", 100ll, py_long12.as_long_long() );
+
+    py_long12 = cxx_long_long12;
+
+    test_assert( "long long operator=", cxx_long_long12, py_long12.as_long_long() );
+#endif
 }
 
 void test_float()
@@ -573,7 +587,7 @@ void test_Dict()
     test_assert( "dict iterator not end != [2]", true, it1 != dict1.end() );
     test_assert( "dict iterator not end == [2]", false, it1 == dict1.end() );
     ++it1;
-    
+
     Py::Dict::iterator it2 = dict1.end();
     bool x = it1 != it2;
     test_assert( "x", false, x );

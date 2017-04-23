@@ -693,11 +693,6 @@ namespace Py
         }
 #endif
 
-        //operator bool() const
-        //{
-        //    return as_bool();
-        //}
-
         // convert to long
         long as_long() const
         {
@@ -720,6 +715,7 @@ namespace Py
             return PyLong_AsUnsignedLong( ptr() );
         }
 
+        // convert to unsigned
         operator unsigned long() const
         {
             return as_unsigned_long();

@@ -218,6 +218,21 @@ test_numbers()
         return "failed 9";
     }
 
+#ifdef HAVE_LONG_LONG
+    long long cxx_long_long11 = 1152921504616856976ll;
+    long long cxx_long_long12 = 6152921504616856976ll;
+    Py::Long py_long11( cxx_long_long11 );
+    Py::Long py_long12( 100 );
+
+    if( !(cxx_long_long11 == py_long11.as_long_long() )) return "failed (100)";
+    if( !(1152921504616856976ll == py_long11.as_long_long() )) return "failed (101)";
+    if( !(100ll == py_long12.as_long_long() )) return "failed (101)";
+
+    py_long12 = cxx_long_long12;
+
+    if( !(cxx_long_long12 == py_long12.as_long_long() )) return "failed (101)";
+#endif
+
     return "ok";
 }
 

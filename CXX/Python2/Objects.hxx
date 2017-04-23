@@ -711,60 +711,115 @@ namespace Py
     {
     public:
         // Constructor
-        explicit Long (PyObject *pyob, bool owned = false): Object (pyob, owned)
+        explicit Long (PyObject *pyob, bool owned = false)
+        : Object (pyob, owned)
         {
             validate();
         }
 
-        Long (const Long& ob): Object(ob.ptr())
+        Long (const Long& ob)
+        : Object(ob.ptr())
+        {
+            validate();
+        }
+
+        // try to create from any object
+        explicit Long (const Object& ob)
+        : Object(PyNumber_Long(*ob), true)
         {
             validate();
         }
 
         // create from long
         explicit Long (long v = 0L)
-            : Object(PyLong_FromLong(v), true)
+        : Object(PyLong_FromLong(v), true)
         {
             validate();
         }
+
         // create from unsigned long
         explicit Long (unsigned long v)
-            : Object(PyLong_FromUnsignedLong(v), true)
+        : Object(PyLong_FromUnsignedLong(v), true)
         {
             validate();
         }
+
         // create from int
         explicit Long (int v)
-            : Object(PyLong_FromLong(static_cast<long>(v)), true)
+        : Object(PyLong_FromLong(static_cast<long>(v)), true)
         {
             validate();
         }
 
-        // try to create from any object
-        Long (const Object& ob)
-            : Object(PyNumber_Long(*ob), true)
+#ifdef HAVE_LONG_LONG
+        // create from long long
+        explicit Long( PY_LONG_LONG v )
+        : Object( PyLong_FromLongLong( v ), true )
         {
             validate();
         }
 
-        // Assignment acquires new ownership of pointer
-
-        Long& operator= (const Object& rhs)
+        // create from unsigned long long
+        explicit Long( unsigned PY_LONG_LONG v )
+        : Object( PyLong_FromUnsignedLongLong( v ), true )
         {
-            return (*this = *rhs);
+            validate();
         }
+#endif
 
-        Long& operator= (PyObject* rhsp)
-        {
-            if(ptr() == rhsp) return *this;
-            set (PyNumber_Long(rhsp), true);
-            return *this;
-        }
         // Membership
         virtual bool accepts (PyObject *pyob) const
         {
             return pyob && Py::_Long_Check (pyob);
         }
+
+        // Assignment acquires new ownership of pointer
+        Long& operator= (const Object& rhs)
+        {
+            return *this = *rhs;
+        }
+
+        Long& operator= (PyObject* rhsp)
+        {
+            if(ptr() != rhsp)
+                set (PyNumber_Long(rhsp), true);
+            return *this;
+        }
+
+        // assign from an int
+        Long& operator= (int v)
+        {
+            set(PyLong_FromLong (long(v)), true);
+            return *this;
+        }
+
+        // assign from long
+        Long& operator= (long v)
+        {
+            set(PyLong_FromLong (v), true);
+            return *this;
+        }
+
+        // assign from unsigned long
+        Long& operator= (unsigned long v)
+        {
+            set(PyLong_FromUnsignedLong (v), true);
+            return *this;
+        }
+
+#ifdef HAVE_LONG_LONG
+        Long &operator=( PY_LONG_LONG v )
+        {
+            set( PyLong_FromLongLong( v ), true );
+            return *this;
+        }
+
+        Long &operator=( unsigned PY_LONG_LONG v )
+        {
+            set( PyLong_FromUnsignedLongLong( v ), true );
+            return *this;
+        }
+#endif
 
         // convert to long
         long as_long() const
@@ -772,38 +827,88 @@ namespace Py
             return PyLong_AsLong( ptr() );
         }
 
-        // convert to long
         operator long() const
         {
             return as_long();
         }
 
+        operator int() const
+        {
+            return static_cast<int>( as_long() );
+        }
+
+        // convert to unsigned
+        long as_unsigned_long() const
+        {
+            return PyLong_AsUnsignedLong( ptr() );
+        }
+
         // convert to unsigned
         operator unsigned long() const
         {
-            return PyLong_AsUnsignedLong (ptr());
+            return as_unsigned_long();
         }
+
+        double as_double() const
+        {
+            return PyLong_AsDouble( ptr() );
+        }
+
         operator double() const
         {
-            return PyLong_AsDouble (ptr());
+            return as_double();
         }
-        // assign from an int
-        Long& operator= (int v)
+
+#ifdef HAVE_LONG_LONG
+        PY_LONG_LONG as_long_long() const
         {
-            set(PyLong_FromLong (long(v)), true);
+            return PyLong_AsLongLong( ptr() );
+        }
+
+        operator PY_LONG_LONG() const
+        {
+           return as_long_long();
+        }
+
+        unsigned PY_LONG_LONG as_unsigned_long_long() const
+        {
+            return PyLong_AsUnsignedLongLong( ptr() );
+        }
+
+        operator unsigned PY_LONG_LONG() const
+        {
+            return as_unsigned_long_long();
+        }
+#endif
+
+        // prefix ++
+        Long operator++()
+        {
+            set( PyNumber_Add( ptr(), *Long( 1 ) ) );
             return *this;
         }
-        // assign from long
-        Long& operator= (long v)
+
+        // postfix ++
+        Long operator++( int )
         {
-            set(PyLong_FromLong (v), true);
+            Long a = *this;
+            set( PyNumber_Add( ptr(), *Long( 1 ) ) );
+            return a;
+        }
+
+        // prefix --
+        Long operator--()
+        {
+            set( PyNumber_Subtract( ptr(), *Long( 1 ) ) );
             return *this;
         }
-        // assign from unsigned long
-        Long& operator= (unsigned long v)
+
+        // postfix --
+        Long operator--( int )
         {
-            set(PyLong_FromUnsignedLong (v), true);
-            return *this;
+            Long a = *this;
+            set( PyNumber_Subtract( ptr(), *Long( 1 ) ) );
+            return a;
         }
     };
 
