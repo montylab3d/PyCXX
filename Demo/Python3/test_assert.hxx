@@ -66,12 +66,14 @@ static void test_assert( const char *description, double benchmark, double value
     test_assert_scaler( description, "double", benchmark, value );
 }
 
-#if SIZEOF_INT != SIZEOF_SIZE_T
+#if SIZEOF_INT != SIZEOF_SIZE_T && SIZEOF_LONG_LONG != SIZEOF_SIZE_T
 static void test_assert( const char *description, Py_ssize_t benchmark, Py_ssize_t value )
 {
     test_assert_scaler( description, "Py_ssize_t", benchmark, value );
 }
+#endif
 
+#if SIZEOF_INT != SIZEOF_SIZE_T
 static void test_assert( const char *description, int benchmark, Py_ssize_t value )
 {
     test_assert_scaler( description, "Py_ssize_t", Py_ssize_t( benchmark ), value );
