@@ -81,6 +81,10 @@ namespace Py
         : BaseException( exception, reason )
         {}
 
+        Exception( PyObject *exception, Object &reason  )
+        : BaseException ( exception, reason  )
+        {}
+
         Exception( PyObject *exception, const std::string &reason )
         : BaseException( exception, reason )
         {}
