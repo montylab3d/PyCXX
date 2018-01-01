@@ -35,8 +35,14 @@ do
         make -f tmp-$PYTHON-full-api.mak clean 2>&1 | tee tmp-$PYTHON-full-api.log
         make -f tmp-$PYTHON-full-api.mak test 2>&1 | tee -a tmp-$PYTHON-full-api.log
 
-        ${PYTHON} setup_makefile.py ${OS} tmp-$PYTHON-limited-api.mak --limited-api
-        make -f tmp-$PYTHON-limited-api.mak clean 2>&1 | tee tmp-$PYTHON-limited-api.log
-        make -f tmp-$PYTHON-limited-api.mak test 2>&1 | tee -a tmp-$PYTHON-limited-api.log
+        case "$PYTHON" in
+        python3.3)
+            ;;
+        python3.*)
+            ${PYTHON} setup_makefile.py ${OS} tmp-$PYTHON-limited-api.mak --limited-api=0x03040000
+            make -f tmp-$PYTHON-limited-api.mak clean 2>&1 | tee tmp-$PYTHON-limited-api.log
+            make -f tmp-$PYTHON-limited-api.mak test 2>&1 | tee -a tmp-$PYTHON-limited-api.log
+            ;;
+        esac
     fi
 done

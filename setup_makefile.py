@@ -22,7 +22,7 @@ class Setup:
 
         self.opt_debug = False
         self.opt_pycxx_debug = False
-        self.opt_limited_api = False
+        self.opt_limited_api = None
 
         self.platform = args[0]
         del args[0]
@@ -35,12 +35,16 @@ class Setup:
                 self.opt_debug = True
                 del args[0]
 
-            if args[0] == '--pycxx-debug':
+            elif args[0] == '--pycxx-debug':
                 self.opt_pycxx_debug = True
                 del args[0]
 
-            if args[0] == '--limited-api':
-                self.opt_limited_api = True
+            elif args[0] == '--limited-api':
+                self.opt_limited_api = '0x03030000'
+                del args[0]
+
+            elif args[0].startswith( '--limited-api=' ):
+                self.opt_limited_api = args[0][len('--limited-api='):]
                 del args[0]
 
             else:
@@ -284,7 +288,7 @@ class Win32CompilerMSVC90(Compiler):
         self._addVar( 'DEMO_DIR',       'Demo\Python%d' % (sys.version_info[0],) )
 
         self._addVar( 'PYCXX_DEBUG',    '-DPYCXX_DEBUG=1' if self.setup.opt_pycxx_debug else '' )
-        self._addVar( 'PYCXX_API',      '-DPy_LIMITED_API=1' if self.setup.opt_limited_api else '' )
+        self._addVar( 'PYCXX_API',      ('-DPy_LIMITED_API=%s' % (self.setup.opt_limited_api,)) if self.setup.opt_limited_api else '' )
 
         self._addVar( 'CCCFLAGS',
                                         r'/Zi /MT /EHsc '
@@ -422,7 +426,7 @@ class MacOsxCompilerGCC(CompilerGCC):
         self._addVar( 'DEMO_DIR',       'Demo/Python%d' % (sys.version_info[0],) )
 
         self._addVar( 'PYCXX_DEBUG',    '-DPYCXX_DEBUG=1' if self.setup.opt_pycxx_debug else '' )
-        self._addVar( 'PYCXX_API',      '-DPy_LIMITED_API=1' if self.setup.opt_limited_api else '' )
+        self._addVar( 'PYCXX_API',      ('-DPy_LIMITED_API=%s' % (self.setup.opt_limited_api,)) if self.setup.opt_limited_api else '' )
 
         self._addVar( 'CCCFLAGS',
                                         '-g '
@@ -451,7 +455,7 @@ class LinuxCompilerGCC(CompilerGCC):
         self._addVar( 'PYTHON_VERSION', '%d.%d' % (sys.version_info[0], sys.version_info[1]) )
         self._addVar( 'PYTHON_INCLUDE', distutils.sysconfig.get_python_inc() )
         self._addVar( 'PYCXX_DEBUG',    '-DPYCXX_DEBUG=1' if self.setup.opt_pycxx_debug else '' )
-        self._addVar( 'PYCXX_API',      '-DPy_LIMITED_API=1' if self.setup.opt_limited_api else '' )
+        self._addVar( 'PYCXX_API',      ('-DPy_LIMITED_API=%s' % (self.setup.opt_limited_api,)) if self.setup.opt_limited_api else '' )
         self._addVar( 'CCCFLAGS',
                                         '-g '
                                         '-Wall -fPIC -fexceptions -frtti '
