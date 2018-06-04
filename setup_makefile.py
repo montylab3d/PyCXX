@@ -1,4 +1,4 @@
-
+#
 #   Copyright (c) 2010-2011 Barry A. Scott
 #
 import os
@@ -40,7 +40,7 @@ class Setup:
                 del args[0]
 
             elif args[0] == '--limited-api':
-                self.opt_limited_api = '0x03030000'
+                self.opt_limited_api = '0x03040000'
                 del args[0]
 
             elif args[0].startswith( '--limited-api=' ):
