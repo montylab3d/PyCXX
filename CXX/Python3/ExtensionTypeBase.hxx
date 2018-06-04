@@ -70,7 +70,7 @@ namespace Py
         virtual void reinit( Tuple &args, Dict &kwds );
 
         // object basics
-#ifdef PYCXX_PYTHON_2TO3
+#if defined( PYCXX_PYTHON_2TO3 ) && !defined( Py_LIMITED_API )
         virtual int print( FILE *, int );
 #endif
         virtual Object getattr( const char * );
