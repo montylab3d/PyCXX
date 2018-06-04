@@ -1,20 +1,7 @@
 #!/bin/bash
-set -e
 set -x
+set -e
 set -o pipefail
-
-case "$( uname )" in
-Darwin)
-    OS=macosx
-    ;;
-Linux):
-    OS=linux
-    ;;
-*)
-    echo Unknown OS assuming Linux
-    OS=linux
-    ;;
-esac
 
 for PYTHON in \
     python2.6 \
@@ -31,17 +18,13 @@ do
     if which $PYTHON >/dev/null
     then
         echo "Info: Found ${PYTHON}"
-        ${PYTHON} setup_makefile.py ${OS} tmp-$PYTHON-full-api.mak
-        make -f tmp-$PYTHON-full-api.mak clean 2>&1 | tee tmp-$PYTHON-full-api.log
-        make -f tmp-$PYTHON-full-api.mak test 2>&1 | tee -a tmp-$PYTHON-full-api.log
+        ./build-unlimited-api.sh ${PYTHON}
 
-        case "$PYTHON" in
+        case "${PYTHON}" in
         python3.3)
             ;;
         python3.*)
-            ${PYTHON} setup_makefile.py ${OS} tmp-$PYTHON-limited-api.mak --limited-api=0x03040000
-            make -f tmp-$PYTHON-limited-api.mak clean 2>&1 | tee tmp-$PYTHON-limited-api.log
-            make -f tmp-$PYTHON-limited-api.mak test 2>&1 | tee -a tmp-$PYTHON-limited-api.log
+            ./build-limited-api.sh ${PYTHON} ${PYTHON#python}
             ;;
         esac
     fi

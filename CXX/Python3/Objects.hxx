@@ -967,6 +967,7 @@ namespace Py
     bool operator<=( double a, const Float &b );
     bool operator<=( const Float &a, double b );
 
+#if !defined( Py_LIMITED_API )
     // ===============================================
     // class Complex
     class Complex: public Object
@@ -1054,6 +1055,8 @@ namespace Py
             return PyComplex_ImagAsDouble( ptr() );
         }
     };
+#endif // Py_LIMITED_API
+
     // Sequences
     // Sequences are here represented as sequences of items of type T.
     // The base class SeqBase<T> represents that.
@@ -1754,10 +1757,12 @@ namespace Py
     // Python strings return strings as individual elements.
     // I'll try having a class Char which is a String of length 1
     //
+#if !defined(Py_LIMITED_API)
     typedef std::basic_string<Py_UNICODE> unicodestring;
-    typedef std::basic_string<Py_UCS4> ucs4string;
-
     extern Py_UNICODE unicode_null_string[1];
+#endif
+    typedef std::basic_string<Py_UCS4> ucs4string;
+    extern Py_UCS4 ucs4_null_string[1];
 
     class Byte: public Object
     {
@@ -1948,17 +1953,21 @@ namespace Py
             validate();
         }
 
+#if !defined( Py_LIMITED_API )
         Char( Py_UNICODE v )
         : Object( PyUnicode_FromOrdinal( v ), true )
         {
             validate();
         }
+#endif
 
+#if !defined( Py_LIMITED_API )
         Char( const unicodestring &v )
         : Object( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ),1 ), true )
         {
             validate();
         }
+#endif
 
         // Assignment acquires new ownership of pointer
         Char &operator=( const Object &rhs )
@@ -1973,32 +1982,33 @@ namespace Py
             return *this;
         }
 
+#if !defined( Py_LIMITED_API )
         Char &operator=( const unicodestring &v )
         {
             set( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
             return *this;
         }
+#endif
 
+#if !defined( Py_LIMITED_API )
         Char &operator=( int v_ )
         {
             Py_UNICODE v( static_cast<Py_UNICODE>( v_ ) );
             set( PyUnicode_FromUnicode( &v, 1 ), true );
             return *this;
         }
+#endif
 
+#if !defined( Py_LIMITED_API )
         Char &operator=( Py_UNICODE v )
         {
             set( PyUnicode_FromUnicode( &v, 1 ), true );
             return *this;
         }
-
+#endif
         long ord()
         {
-            if( PyUnicode_READY( ptr() ) == -1 )
-            {
-                throw RuntimeError( "Char::ord() PyUnicode_READY() failed." );
-            }
-            return static_cast<long>( PyUnicode_READ_CHAR( ptr(), 0 ) );
+            return static_cast<long>( PyUnicode_ReadChar( ptr(), 0 ) );
         }
 
         // Conversion
@@ -2106,11 +2116,13 @@ namespace Py
         }
 #endif
 
+#if !defined( Py_LIMITED_API )
         String( const Py_UNICODE *s, int length )
         : SeqBase<Char>( PyUnicode_FromUnicode( s, length ), true )
         {
             validate();
         }
+#endif
 
         // Assignment acquires new ownership of pointer
         String &operator=( const Object &rhs )
@@ -2125,13 +2137,15 @@ namespace Py
             return *this;
         }
 
+#if !defined( Py_LIMITED_API )
         String &operator=( const unicodestring &v )
         {
             set( PyUnicode_FromUnicode( const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );
             return *this;
         }
+#endif
 
-#if !defined( Py_UNICODE_WIDE )
+#if !defined( Py_UNICODE_WIDE ) && !defined( Py_LIMITED_API )
         String &operator=( const ucs4string &v )
         {
             set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, reinterpret_cast<const Py_UCS4 *>( v.data() ), v.length() ), true );
@@ -2147,19 +2161,22 @@ namespace Py
         // Queries
         virtual size_type size() const
         {
-            return PyUnicode_GET_LENGTH( ptr() );
+            return PyUnicode_GetLength( ptr() );
         }
 
+#if !defined( Py_LIMITED_API )
         const Py_UNICODE *unicode_data() const
         {
             return PyUnicode_AS_UNICODE( ptr() );
         }
+#endif
 
+#if !defined( Py_LIMITED_API )
         unicodestring as_unicodestring() const
         {
-            return unicodestring( unicode_data(), PyUnicode_GET_SIZE( ptr() ) );
+            return unicodestring( unicode_data(), PyUnicode_GetLength( ptr() ) );
         }
-
+#endif
         ucs4string as_ucs4string() const
         {
             Py_UCS4 *buf = new Py_UCS4[ size() ];

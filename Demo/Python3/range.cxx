@@ -88,7 +88,7 @@ range *range::extend( Py_ssize_t k ) const
 std::string range::asString() const
 {
     std::OSTRSTREAM s;
-    s << "range(" << m_start << ", " << m_stop << ", " << m_step << ")" << std::ends;
+    s << "range(" << m_start << ", " << m_stop << ", " << m_step << ")";
 
     return std::string( s.str() );
 }
@@ -185,7 +185,7 @@ Py::Object range::assign( const Py::Tuple &t )
 
 void range::init_type()
 {
-    behaviors().name( "range" );
+    behaviors().name( "example.range" );
     behaviors().doc( "range objects: start, stop, step" );
     behaviors().supportRepr();
     behaviors().supportGetattr();
@@ -195,4 +195,6 @@ void range::init_type()
     add_varargs_method( "assign", &range::assign );
     add_varargs_method( "value", &range::value );
     add_varargs_method( "reference_count", &range::reference_count );
+
+    behaviors().readyType();
 }

@@ -3,13 +3,14 @@
 
 void IterT::init_type()
 {
-    behaviors().name( "IterT" );
+    behaviors().name( "pycxx_iter.IterT" );
     behaviors().doc( "IterT( ini_count )" );
     // you must have overwritten the virtual functions
     // Py::Object iter() and Py::Object iternext()
     behaviors().supportIter();    // set entries in the Type Table
     behaviors().supportRepr();
     add_varargs_method( "reversed", &IterT::reversed, "reversed()" );
+    behaviors().readyType();
 }
 
 class MyIterModule : public Py::ExtensionModule<MyIterModule>

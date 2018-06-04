@@ -11,8 +11,3 @@ for i in IT:
     print i, IT
 
 print "refcount of IT:",sys.getrefcount(IT)
-
-for i in IT.reversed():
-    print i
-print "refcount of IT:",sys.getrefcount(IT)
-

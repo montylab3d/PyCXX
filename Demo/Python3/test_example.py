@@ -37,5 +37,8 @@
 import sys
 sys.path.insert( 0, 'pyds%d%d' % (sys.version_info[0], sys.version_info[1]) )
 
+sys.stdout.write( 'Info: ---- %s ----' % (sys.argv[0],) )
+sys.stdout.flush()
+
 import example
 example.test()

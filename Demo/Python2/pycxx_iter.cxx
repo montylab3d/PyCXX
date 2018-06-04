@@ -10,6 +10,8 @@ void IterT::init_type()
     behaviors().supportIter();    // set entries in the Type Table
     behaviors().supportRepr();
     add_varargs_method("reversed",&IterT::reversed,"reversed()");
+
+    behaviors().readyType();
 }
 
 class MyIterModule : public Py::ExtensionModule<MyIterModule>

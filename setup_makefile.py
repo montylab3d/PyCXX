@@ -44,7 +44,14 @@ class Setup:
                 del args[0]
 
             elif args[0].startswith( '--limited-api=' ):
-                self.opt_limited_api = args[0][len('--limited-api='):]
+                api = args[0][len('--limited-api='):]
+                if api.startswith( '0x' ):
+                    self.opt_limited_api = api
+                else:
+                    major, minor = [int(s) for s in api.split('.')]
+                    minor *= 0x10000
+                    major *= 0x1000000
+                    self.opt_limited_api = '0x%x' % (major+minor)
                 del args[0]
 
             else:

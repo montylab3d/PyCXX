@@ -47,7 +47,7 @@ public:
 
     static void init_type(void)
     {
-        behaviors().name( "new_style_class" );
+        behaviors().name( "simple.new_style_class" );
         behaviors().doc( "documentation for new_style_class class" );
         behaviors().supportGetattro();
         behaviors().supportSetattro();
@@ -169,13 +169,15 @@ public:
 
     static void init_type(void)
     {
-        behaviors().name( "old_style_class" );
+        behaviors().name( "simple.old_style_class" );
         behaviors().doc( "documentation for old_style_class class" );
         behaviors().supportGetattr();
 
         add_noargs_method( "old_style_class_func_noargs", &old_style_class::old_style_class_func_noargs );
         add_varargs_method( "old_style_class_func_varargs", &old_style_class::old_style_class_func_varargs );
         add_keyword_method( "old_style_class_func_keyword", &old_style_class::old_style_class_func_keyword );
+
+        behaviors().readyType();
     }
 
     // override functions from PythonExtension

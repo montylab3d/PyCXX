@@ -2229,6 +2229,8 @@ support. Then we adds the methods.</p>
     add_varargs_method( &quot;amethod&quot;, &amp;range::amethod, &quot;demonstrate how to document amethod&quot; );
     add_varargs_method( &quot;assign&quot;, &amp;range::assign );
     add_varargs_method( &quot;value&quot;, &amp;range::value );
+
+    behaviors().readyType();
 }</pre>
 
 <p>Do not forget to add the call range::init_type() to some module's init function. You will want

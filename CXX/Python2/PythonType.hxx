@@ -183,11 +183,6 @@ namespace Py
         bool readyType();
 
     protected:
-        void init_sequence();
-        void init_mapping();
-        void init_number();
-        void init_buffer();
-
         PyTypeObject            *table;
         PySequenceMethods       *sequence_table;
         PyMappingMethods        *mapping_table;

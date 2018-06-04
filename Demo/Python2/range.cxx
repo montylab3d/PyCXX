@@ -121,4 +121,6 @@ void range::init_type()
     add_varargs_method("assign", &range::assign);
     add_varargs_method("value", &range::value);
     add_varargs_method("reference_count", &range::reference_count);
+
+    behaviors().readyType();
 }

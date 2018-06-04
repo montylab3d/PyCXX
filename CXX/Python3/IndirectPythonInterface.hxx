@@ -36,9 +36,9 @@
 //-----------------------------------------------------------------------------
 
 #ifndef __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
-#define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
+# define __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
 
-#include "CXX/WrapPython.h"
+# include "CXX/WrapPython.h"
 
 namespace Py
 {
@@ -49,11 +49,11 @@ bool InitialisePythonIndirectInterface();
 //
 PyObject * _Exc_BaseException();
 
-#define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
+# define PYCXX_STANDARD_EXCEPTION( eclass, bclass ) \
     PyObject * _Exc_##eclass();
 
-#include "CXX/Python3/cxx_standard_exceptions.hxx"
-#undef PYCXX_STANDARD_EXCEPTION
+# include "CXX/Python3/cxx_standard_exceptions.hxx"
+# undef PYCXX_STANDARD_EXCEPTION
 
 //
 //    Wrap Object variables as function calls
@@ -78,8 +78,13 @@ bool _Class_Check( PyObject *op );
 PyTypeObject * _Instance_Type();
 bool _Instance_Check( PyObject *op );
 
+# if !defined( Py_LIMITED_API )
 PyTypeObject * _Method_Type();
 bool _Method_Check( PyObject *op );
+
+PyTypeObject * _Function_Type();
+bool _Function_Check( PyObject *op );
+# endif
 
 PyTypeObject * _Complex_Type();
 bool _Complex_Check( PyObject *op );
@@ -95,9 +100,6 @@ bool _Float_Check( PyObject *op );
 
 PyTypeObject * _Frame_Type();
 bool _Frame_Check( PyObject *op );
-
-PyTypeObject * _Function_Type();
-bool _Function_Check( PyObject *op );
 
 PyTypeObject * _Bool_Type();
 bool _Boolean_Check( PyObject *op );
@@ -138,18 +140,23 @@ bool _TraceBack_Check( PyObject *v );
 PyTypeObject * _Tuple_Type();
 bool _Tuple_Check( PyObject *op );
 
+# if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
 int &_Py_DebugFlag();
 int &_Py_InteractiveFlag();
 int &_Py_OptimizeFlag();
 int &_Py_NoSiteFlag();
 int &_Py_TabcheckFlag();
 int &_Py_VerboseFlag();
-int &_Py_UnicodeFlag();
+
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+const char *__Py_PackageContext();
+#  else
+char *__Py_PackageContext();
+#  endif
+# endif
 
 void _XINCREF( PyObject *op );
 void _XDECREF( PyObject *op );
-
-char *__Py_PackageContext();
 };
 
 #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__

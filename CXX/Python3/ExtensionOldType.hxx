@@ -119,15 +119,19 @@ namespace Py
         {
             std::string name( _name );
 
+#if !defined( Py_LIMITED_API )
             if( name == "__name__" && type_object()->tp_name != NULL )
             {
                 return Py::String( type_object()->tp_name );
             }
+#endif
 
+#if !defined( Py_LIMITED_API )
             if( name == "__doc__" && type_object()->tp_doc != NULL )
             {
                 return Py::String( type_object()->tp_doc );
             }
+#endif
 
 // trying to fake out being a class for help()
 //            else if( name == "__bases__"  )
