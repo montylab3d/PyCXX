@@ -121,20 +121,24 @@ void test_String()
     long v3 = c3.ord();
     test_assert( "string ord value < 2^7", v3, long( 0x33 ) );
 
-    Py::Char c4( 0x10ff00 );
+    Py::Char c4( 0xd5 );
     long v4 = c4.ord();
-    test_assert( "string ord value > 2^16", v4, long( 0x10ff00 ) );
+    test_assert( "string ord value < 2^8", v4, long( 0xd5 ) );
 
-    Py::Char c5( 0xd5 );
+    Py::Char c5( 0x10437 );
     long v5 = c5.ord();
-    test_assert( "string ord value < 2^8", v5, long( 0xd5 ) );
+    test_assert( "string ord value > 2^16", v5, long( 0x10437 ) );
+
+    Py::Char c6( 0x10ff00 );
+    long v6 = c6.ord();
+    test_assert( "string ord value > 2^16", v6, long( 0x10ff00 ) );
 
     // convert tests
-    Py::Char c6 = r2[5];
-    test_assert( "string convert to std::string", c6, blank );
+    Py::Char c7 = r2[5];
+    test_assert( "string convert to std::string", c7, blank );
 
-    Py::Char c7 = r2.front();
-    Py::Char c8 = r2.back();
+    Py::Char c8 = r2.front();
+    Py::Char c9 = r2.back();
 }
 
 void test_boolean()

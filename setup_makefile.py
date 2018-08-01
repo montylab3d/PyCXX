@@ -200,12 +200,16 @@ class Compiler:
             raise ValueError( 'Cannot translate string (%s)' % (e,) )
 
 
+# MSVC 9.0 and later versions
 class Win32CompilerMSVC90(Compiler):
     def __init__( self, setup ):
         Compiler.__init__( self, setup )
 
         self._addVar( 'PYTHONDIR',      sys.exec_prefix )
-        self._addVar( 'PYTHON_LIBNAME', 'python%d%d' % (sys.version_info[0], sys.version_info[1]) )
+        if setup.opt_limited_api is None:
+            self._addVar( 'PYTHON_LIBNAME', 'python%d%d' % (sys.version_info[0], sys.version_info[1]) )
+        else:
+            self._addVar( 'PYTHON_LIBNAME', 'python3' )
         self._addVar( 'PYTHON_INCLUDE', r'%(PYTHONDIR)s\include' )
         self._addVar( 'PYTHON_LIB',     r'%(PYTHONDIR)s\libs' )
         self._addVar( 'PYTHON',         sys.executable )

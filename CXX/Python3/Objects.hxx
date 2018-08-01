@@ -2006,9 +2006,31 @@ namespace Py
             return *this;
         }
 #endif
+
         long ord()
         {
+#if !defined( Py_LIMITED_API )
             return static_cast<long>( PyUnicode_ReadChar( ptr(), 0 ) );
+#else
+            // we know that a Char() is 1 unicode code point
+            // that fits in 2 wchar_t on windows at worst
+            wchar_t buf[2];
+            Py_ssize_t num_elements = PyUnicode_AsWideChar( ptr(), buf, 2 );
+
+            // just one wchar_t that easy
+            if( num_elements == 1 )
+            {
+                return static_cast<long>( buf[0] );
+            }
+            // must be a pair of utf-16 surragates - convert to a code point
+            if( num_elements == 2 )
+            {
+                // convert from utf-16 to a code-point
+                return static_cast<long>( ((buf[0]-0xd800)*0x400) + (buf[1]-0xdc00) + 0x10000);
+            }
+            return 0;
+#endif
+
         }
 
         // Conversion
@@ -2100,7 +2122,7 @@ namespace Py
             validate();
         }
 
-#if !defined( Py_UNICODE_WIDE )
+#if !defined( Py_LIMITED_API ) && !defined( Py_UNICODE_WIDE )
         // Need these c'tors becuase Py_UNICODE is 2 bytes
         // User may use "int" or "unsigned int" as the unicode type
         String( const unsigned int *s, int length )
@@ -2158,11 +2180,13 @@ namespace Py
             return Bytes( PyUnicode_AsEncodedString( ptr(), encoding, error ), true );
         }
 
+#if !defined( Py_LIMITED_API )
         // Queries
         virtual size_type size() const
         {
             return PyUnicode_GetLength( ptr() );
         }
+#endif
 
 #if !defined( Py_LIMITED_API )
         const Py_UNICODE *unicode_data() const
