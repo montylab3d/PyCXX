@@ -1,3 +1,5 @@
-Version: 7.0.3 (23-April-2017)
+Version: 7.1.0 (04-August-2018)
 
-Update Py::Long to support long long consitently between Python2 and Python3.
+Can now build with Py_LIMITED_API, requires Python 3.4 or later.
+
+Support Python 3.7, 
