@@ -967,7 +967,6 @@ namespace Py
     bool operator<=( double a, const Float &b );
     bool operator<=( const Float &a, double b );
 
-#if !defined( Py_LIMITED_API )
     // ===============================================
     // class Complex
     class Complex: public Object
@@ -1009,6 +1008,8 @@ namespace Py
         {
             return pyob && Py::_Complex_Check( pyob );
         }
+
+#if !defined( Py_LIMITED_API )
         // convert to Py_complex
         operator Py_complex() const
         {
@@ -1020,6 +1021,8 @@ namespace Py
             set( PyComplex_FromCComplex( v ), true );
             return *this;
         }
+#endif // Py_LIMITED_API
+
         // assign from a double
         Complex &operator=( double v )
         {
@@ -1055,7 +1058,6 @@ namespace Py
             return PyComplex_ImagAsDouble( ptr() );
         }
     };
-#endif // Py_LIMITED_API
 
     // Sequences
     // Sequences are here represented as sequences of items of type T.
