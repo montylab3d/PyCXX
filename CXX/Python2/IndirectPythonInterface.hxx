@@ -153,7 +153,9 @@ int &_Py_VerboseFlag();
 void _XINCREF( PyObject *op );
 void _XDECREF( PyObject *op );
 
+# if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
 char *__Py_PackageContext();
+#endif
 }
 
 #endif    // __CXX_INDIRECT_PYTHON_INTERFACE__HXX__
