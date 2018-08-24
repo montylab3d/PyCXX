@@ -20,6 +20,7 @@
     <li class="contents_h2"><a href="#h2_Overview">Overview</a></li>
     <li class="contents_h2"><a href="#h2_download">Download and Installation</a></li>
     <li class="contents_h2"><a href="#h2_example_code">Example code</a></li>
+    <li class="contents_h2"><a href="#limited_api">PyCXX - Supporting Python 3 limited API (PEP-384)</a></li>
     <li class="contents_h2"><a href="#h2_2to3">PyCXX - Supporting Python 2 and Python 3</a></li>
     <li class="contents_h2"><a href="#h2_namespaces">Use of namespaces</a></li>
     <li class="contents_h2"><a href="#h2_objects">Wrapper for standard objects: &lt;CXX/Objects.hxx&gt;</a></li>
@@ -89,6 +90,8 @@ PyCXX Paul. -- Barry Scott.</p>
 
 <p>PyCXX Version 6.1 and later supports both Python 2 and Python 3.</p>
 
+<p>PyCXX Version 7.1 and later support the <a href="https://www.python.org/dev/peps/pep-0384/">Python 3 limited API (PEP-384).</a></p>
+
 <p>PyCXX is a set of C++ facilities to make it easier to write Python extensions.
 The chief way in which PyCXX makes it easier to write Python extensions is that it greatly
 increases the probability that your program will not make a reference-counting error and
@@ -155,6 +158,26 @@ can be used to build and run the example code.</p>
 <tr><td>Demo/test_example.py, Demo/example.cxx</td><td>The original PyCXX example code. It is now the main test suite for PyCXX.</td></tr>
 <tr><td>Demo/range.hxx, Demo/range.cxx</td><td>Impliments the range object use by example.cxx.</td></tr>
 </table>
+
+<h2><a name="limited_api">PyCXX - Supporting Python 3 limited API (PEP-384)</a></h2>
+
+<p>Starting with Python 3.4 and PyCXX 7.1.0 it is possible to create extensions that use
+the Python limited API. (It was not possible to support Python 3.3)</p>
+
+<p>Choose the oldest version of python that you want support and the binary
+extension will run in that version and all the newer versions.</p>
+
+<p>Define Py_LIMITED_API when compiling all your code and the PyCXX code.</p>
+<p>The value of Py_LIMITED_API is the first python version that you want to support.</p>
+<p>
+<ul>
+<li>Python 3.4 or later: Defined Py_LIMITED_API as 0x03040000
+<li>Python 3.5 or later: Defined Py_LIMITED_API as 0x03050000
+<li>etc.
+</ul>
+
+<p>Note: Some of the PyCXX API cannot be supported in the Py_LIMITED_API mode.
+The header files only include classes and functions that can be supported.</p>
 
 <h2><a name="h2_2to3">PyCXX - Supporting Python 2 and Python 3</a></h2>
 
