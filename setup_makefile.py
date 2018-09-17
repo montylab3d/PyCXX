@@ -24,6 +24,8 @@ class Setup:
         self.opt_pycxx_debug = False
         self.opt_limited_api = None
 
+        self.is_pypy = hasattr( sys, 'pypy_version_info' )
+
         self.platform = args[0]
         del args[0]
 
@@ -432,7 +434,10 @@ class MacOsxCompilerGCC(CompilerGCC):
         self._addVar( 'PYTHON_FRAMEWORK', '%(PYTHONDIR)s/Python' )
 
         self._addVar( 'PYTHON',         sys.executable )
-        self._addVar( 'PYTHON_INCLUDE', '%(PYTHONDIR)s/Headers' )
+        if self.setup.is_pypy:
+            self._addVar( 'PYTHON_INCLUDE', '%(PYTHONDIR)s/include' )
+        else:
+            self._addVar( 'PYTHON_INCLUDE', '%(PYTHONDIR)s/Headers' )
 
         self._addVar( 'DEMO_DIR',       'Demo/Python%d' % (sys.version_info[0],) )
 

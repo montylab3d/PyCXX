@@ -18,6 +18,8 @@ Linux):
     ;;
 esac
 
-${PYTHON} setup_makefile.py ${OS} tmp-$PYTHON-unlimited-api.mak
-make -f tmp-$PYTHON-unlimited-api.mak clean 2>&1 | tee tmp-$PYTHON-unlimited-api.log
-make -f tmp-$PYTHON-unlimited-api.mak test 2>&1 | tee -a tmp-$PYTHON-unlimited-api.log
+PYTHON_BASE=$(basename ${PYTHON})
+
+${PYTHON} setup_makefile.py ${OS} tmp-${PYTHON_BASE}-unlimited-api.mak
+make -f tmp-${PYTHON_BASE}-unlimited-api.mak clean 2>&1 | tee tmp-${PYTHON_BASE}-unlimited-api.log
+make -f tmp-${PYTHON_BASE}-unlimited-api.mak test 2>&1 | tee -a tmp-${PYTHON_BASE}-unlimited-api.log
