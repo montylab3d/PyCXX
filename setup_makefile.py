@@ -431,13 +431,16 @@ class MacOsxCompilerGCC(CompilerGCC):
         self._addVar( 'PYTHON_VERSION', '%d.%d' % (sys.version_info[0], sys.version_info[1]) )
 
         self._addVar( 'PYTHONDIR',      sys.exec_prefix )
-        self._addVar( 'PYTHON_FRAMEWORK', '%(PYTHONDIR)s/Python' )
 
         self._addVar( 'PYTHON',         sys.executable )
+
         if self.setup.is_pypy:
             self._addVar( 'PYTHON_INCLUDE', '%(PYTHONDIR)s/include' )
+            self._addVar( 'PYTHON_FRAMEWORK', '%(PYTHONDIR)s/bin/libpypy-c.dylib' )
+
         else:
             self._addVar( 'PYTHON_INCLUDE', '%(PYTHONDIR)s/Headers' )
+            self._addVar( 'PYTHON_FRAMEWORK', '%(PYTHONDIR)s/Python' )
 
         self._addVar( 'DEMO_DIR',       'Demo/Python%d' % (sys.version_info[0],) )
 
