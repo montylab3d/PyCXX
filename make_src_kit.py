@@ -33,7 +33,8 @@ def main( argv ):
 
     print( 'Info: Creating %s.tar.gz' % kit_dir )
     os.chdir( tmp_dir )
-    os.system( 'tar czf %s.tar.gz %s' % (kit_dir, kit_name) )
+    cmd = 'tar czf %s.tar.gz --exclude=%s/SourceForge %s' % (kit_dir, kit_name, kit_name)
+    os.system( cmd )
 
     return 0
     
