@@ -1909,6 +1909,29 @@ bool BaseException::matches( ExtensionExceptionType &exc )
     return PyErr_ExceptionMatches( exc.ptr() ) != 0;
 }
 
+Object BaseException::errorType()
+{
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    Object result( type );
+
+    PyErr_Restore( type, value, traceback );
+    return result;
+}
+
+Object BaseException::errorValue()
+{
+    PyObject *type, *value, *traceback;
+    PyErr_Fetch( &type, &value, &traceback );
+
+    Object result( value );
+
+    PyErr_Restore( type, value, traceback );
+    return result;
+}
+
+
 //------------------------------------------------------------
 
 #if 1
