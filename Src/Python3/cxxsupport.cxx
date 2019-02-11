@@ -69,7 +69,7 @@ List Object::dir() const
 }
 
 bool Object::isType( const Type &t ) const
-{ 
+{
     return type().ptr() == t.ptr();
 }
 

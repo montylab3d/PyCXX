@@ -2837,7 +2837,7 @@ namespace Py
 
         T getItem( const std::string &s ) const
         {
-            return T( asObject( PyMapping_GetItemString( ptr(),const_cast<char*>( s.c_str() ) ) ) );
+            return T( asObject( PyMapping_GetItemString( ptr(), const_cast<char*>( s.c_str() ) ) ) );
         }
 
         T getItem( const Object &s ) const
