@@ -40,3 +40,9 @@ if not "%1%2" == "" goto :eof
     call build-limited-api.cmd 37 win64 14.0 3.4
     call build-limited-api.cmd 37 win64 14.0 3.7
 if not "%1%2" == "" goto :eof
+
+:build_38_64
+    call build-unlimited-api.cmd 38 win64 14.0
+    call build-limited-api.cmd 38 win64 14.0 3.4
+    call build-limited-api.cmd 38 win64 14.0 3.7
+if not "%1%2" == "" goto :eof
