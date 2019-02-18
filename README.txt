@@ -1,5 +1,4 @@
-Version: 7.1.0 (24-August-2018)
+Version: 7.1.1 (18-Feb-2019)
 
-Can now build with Py_LIMITED_API, requires Python 3.4 or later.
-
-Changes to support Python 3.7
+Add exception errorType() and errorValue() functon to access
+the type and value of an exception.
