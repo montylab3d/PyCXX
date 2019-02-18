@@ -1894,7 +1894,7 @@ converted to a standard string which is passed to std::ostream &amp;operator&lt;
 <h1><a name="h1_exceptions">Exceptions</a></h1>
 
 <p>All the standard python exceptions have a C++ equivilent that can to caught and thrown.</p>
-<p>In addition new expections can be defined using PyCXX as well.</p>
+<p>In addition new exceptions can be defined using PyCXX as well.</p>
 
 <p>Exceptions thrown from C++ will be converted into Python exceptions when returning to Python code.</p>
 <p>Python exceptions are converted into C++ exceptions when returning from Python code back into C++ code.</p>
@@ -1924,26 +1924,41 @@ classes are shown here. With ValueError being the pattern for all the other expe
 <tr>
 <th>Type</th>
 <th>Interface for class Exception</th>
+<th>Comment</th>
 </tr>
 <tr>
 <td class="code">explicit </td>
 <td class="code">BaseException()</td>
+<td></td>
 </tr>
 <tr>
 <td class="code"> </td>
 <td class="code">BaseException( const std::string &amp;reason ) </td>
+<td></td>
 </tr>
 <tr>
 <td class="code"> </td>
 <td class="code">BaseException( PyObject *exception, const std::string &amp;reason ) </td>
+<td></td>
 </tr>
 <tr>
 <td class="code">void </td>
 <td class="code">clear()</td>
+<td>Clear the exception.</td>
+</tr>
+<tr>
+<td class="code">Object </td>
+<td class="code">errorType()</td>
+<td>Returns the type of the exception</td>
+</tr>
+<tr>
+<td class="code">Object </td>
+<td class="code">errorValue()</td>
+<td>Returns the value of the exception</td>
 </tr>
 </table>
 
-<table>
+<table cellspacing="0" cellpadding="3px">
 <caption>Python Standard Exceptions</caption>
 <tr>
 <th>Type</th>
@@ -1990,6 +2005,8 @@ some_method( Object &args )
 <p>And in this example the call_python method is calling back into python and handling ArithmeticError from the "func". 
 Any other expections will be passed back to Python.</p>
 
+<p>The exceptions error type and error value can be obtained with the errorType() and errorValue() functions.</p>
+
 <pre>Object
 cal_python( Object &args )
 {
@@ -2005,10 +2022,15 @@ cal_python( Object &args )
     }
     catch( ArithmeticError &e )
     {
+        Object err_type = e.errorType();
+        Object err_value = e.errorValue();
+
+        // get the text of the error for reporting
+        String message = err_value.str();
+
         // handle error
         e.clear();
     }
-
 
     return result;
 }
