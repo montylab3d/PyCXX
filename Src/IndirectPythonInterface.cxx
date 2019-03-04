@@ -123,7 +123,11 @@ static int *ptr_Py_OptimizeFlag = NULL;
 static int *ptr_Py_NoSiteFlag = NULL;
 static int *ptr_Py_VerboseFlag = NULL;
 
+#   if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+static const char **ptr__Py_PackageContext = NULL;
+#   else
 static char **ptr__Py_PackageContext = NULL;
+#   endif
 #  endif
 
 #  ifdef Py_REF_DEBUG
@@ -198,6 +202,17 @@ static char **GetCharPointer_as_CharPointerPointer( const char *name )
     return (char **)addr;
 }
 
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+static char **GetConstCharPointer_as_ConstCharPointerPointer( const char *name )
+{
+    FARPROC addr = GetProcAddress( python_dll, name );
+    if( addr == NULL )
+        throw GetAddressException( name );
+
+    return (const char **)addr;
+}
+#endif
+
 
 #  ifdef _DEBUG
 static const char python_dll_name_format[] = "PYTHON%1.1d%1.1d_D.DLL";
@@ -227,7 +242,12 @@ bool InitialisePythonIndirectInterface()
     ptr_Py_OptimizeFlag         = GetInt_as_IntPointer( "Py_OptimizeFlag" );
     ptr_Py_NoSiteFlag           = GetInt_as_IntPointer( "Py_NoSiteFlag" );
     ptr_Py_VerboseFlag          = GetInt_as_IntPointer( "Py_VerboseFlag" );
+
+#    if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+    ptr__Py_PackageContext      = GetConstCharPointer_as_ConstCharPointerPointer( "_Py_PackageContext" );
+#    else
     ptr__Py_PackageContext      = GetCharPointer_as_CharPointerPointer( "_Py_PackageContext" );
+#    endif
 #  endif
 
 #  define PYCXX_STANDARD_EXCEPTION( eclass, bclass )
@@ -379,7 +399,11 @@ int &_Py_NoSiteFlag()                   { return *ptr_Py_NoSiteFlag; }
 int &_Py_VerboseFlag()                  { return *ptr_Py_VerboseFlag; }
 #  endif
 
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+const char *__Py_PackageContext()       { return *ptr__Py_PackageContext; }
+#  else
 char *__Py_PackageContext()             { return *ptr__Py_PackageContext; }
+#  endif
 
 #  if 0
 #   define Py_INCREF(op) (                         \

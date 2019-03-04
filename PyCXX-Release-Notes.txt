@@ -1,4 +1,4 @@
-Version: 7.1.1 (18-Feb-2019)
+Version: 7.1.2 (4-Mar-2019)
 
-Add exception errorType() and errorValue() functon to access
-the type and value of an exception.
+Fix problem with compiling for Python 2 and
+the _Py_PackageContext symbol.
