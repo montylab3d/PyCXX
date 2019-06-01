@@ -33,6 +33,10 @@ public:
             Py::String name( names[i] );
             std::cout << "    " << name << std::endl;
         }
+        if( args.length() >= 1 )
+        {
+            m_value = args[0];
+        }
     }
 
     virtual ~new_style_class()
@@ -60,9 +64,20 @@ public:
 
         PYCXX_ADD_VARARGS_METHOD( func_varargs_call_member, new_style_class_call_member, "docs for func_varargs_call_member" );
 
+        PYCXX_ADD_NOARGS_METHOD( __reduce__, reduce_func, "__reduce__ function" );
+
         // Call to make the type ready for use
         behaviors().readyType();
     }
+
+    Py::Object reduce_func( void )
+    {
+        Py::TupleN ctor_args( m_value );
+        Py::TupleN result( new_style_class::type(), ctor_args );
+
+        return result;
+    }
+    PYCXX_NOARGS_METHOD_DECL( new_style_class, reduce_func )
 
     Py::Object new_style_class_func_noargs( void )
     {
