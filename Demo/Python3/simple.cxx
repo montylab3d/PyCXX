@@ -244,6 +244,7 @@ public:
         add_keyword_method("func_with_callback_catch_simple_error", &simple_module::func_with_callback_catch_simple_error, "documentation for func_with_callback_catch_simple_error()");
         add_keyword_method("make_instance", &simple_module::make_instance, "documentation for make_instance()");
 
+        add_keyword_method("str_test", &simple_module::str_test, "documentation for str_test()");
         add_keyword_method("decode_test", &simple_module::decode_test, "documentation for decode_test()");
         add_keyword_method("encode_test", &simple_module::encode_test, "documentation for encode_test()");
         add_keyword_method("derived_class_test", &simple_module::derived_class_test, "documentation for derived_class_test()");
@@ -273,6 +274,15 @@ private:
     {
         Py::String s( args[0] );
         return s.encode("utf-8");
+    }
+
+    Py::Object str_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
+    {
+        char buffer[64*1024+1];
+        memset( &buffer, ' ', sizeof( buffer )-1 );
+        buffer[sizeof( buffer )-1] = 0;
+
+        return Py::String( buffer );
     }
 
     Py::Object derived_class_test( const Py::Tuple &args, const Py::Dict &/*kwds*/ )
