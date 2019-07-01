@@ -1,6 +1,4 @@
-Version: 7.1.2 (4-Mar-2019)
+Version: 7.1.3 (1-Jul-2019)
 
-Fix problem with compiling for Python 2 and
-the _Py_PackageContext symbol.
-
-Merge Fedora's patch for setup.py
+Fix for https://sourceforge.net/p/cxx/bugs/43/
+memory leak caused by wrong ref count on python3 Py::String objects.
