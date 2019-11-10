@@ -39,33 +39,38 @@
 
 namespace Py
 {
-bool _CFunction_Check( PyObject *op )   { return op->ob_type == _CFunction_Type(); }
-bool _Complex_Check( PyObject *op )     { return op->ob_type == _Complex_Type(); }
-bool _Dict_Check( PyObject *op )        { return op->ob_type == _Dict_Type(); }
-bool _Float_Check( PyObject *op )       { return op->ob_type == _Float_Type(); }
+static int _IsInstance( PyObject *op, PyTypeObject *type )
+{
+    return PyObject_IsInstance( op, reinterpret_cast<PyObject *>( type ) );
+}
+
+bool _CFunction_Check( PyObject *op )   { return _IsInstance( op, _CFunction_Type() ) > 0; }
+bool _Complex_Check( PyObject *op )     { return _IsInstance( op, _Complex_Type() ) > 0; }
+bool _Dict_Check( PyObject *op )        { return _IsInstance( op, _Dict_Type() ) > 0; }
+bool _Float_Check( PyObject *op )       { return _IsInstance( op, _Float_Type() ) > 0; }
 #if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
-bool _Function_Check( PyObject *op )    { return op->ob_type == _Function_Type(); }
+bool _Function_Check( PyObject *op )    { return _IsInstance( op, _Function_Type() ) > 0; }
 #endif
-bool _Boolean_Check( PyObject *op )     { return op->ob_type == _Bool_Type(); }
-bool _List_Check( PyObject *op )        { return op->ob_type == _List_Type(); }
-bool _Long_Check( PyObject *op )        { return op->ob_type == _Long_Type(); }
+bool _Boolean_Check( PyObject *op )     { return _IsInstance( op, _Bool_Type() ) > 0; }
+bool _List_Check( PyObject *op )        { return _IsInstance( op, _List_Type() ) > 0; }
+bool _Long_Check( PyObject *op )        { return _IsInstance( op, _Long_Type() ) > 0; }
 #if PY_MAJOR_VERSION == 2 || !defined( Py_LIMITED_API )
-bool _Method_Check( PyObject *op )      { return op->ob_type == _Method_Type(); }
+bool _Method_Check( PyObject *op )      { return _IsInstance( op, _Method_Type() ) > 0; }
 #endif
-bool _Module_Check( PyObject *op )      { return op->ob_type == _Module_Type(); }
-bool _Range_Check( PyObject *op )       { return op->ob_type == _Range_Type(); }
-bool _Slice_Check( PyObject *op )       { return op->ob_type == _Slice_Type(); }
-bool _TraceBack_Check( PyObject *op )   { return op->ob_type == _TraceBack_Type(); }
-bool _Tuple_Check( PyObject *op )       { return op->ob_type == _Tuple_Type(); }
-bool _Type_Check( PyObject *op )        { return op->ob_type == _Type_Type(); }
-bool _Unicode_Check( PyObject *op )     { return op->ob_type == _Unicode_Type(); }
+bool _Module_Check( PyObject *op )      { return _IsInstance( op, _Module_Type() ) > 0; }
+bool _Range_Check( PyObject *op )       { return _IsInstance( op, _Range_Type() ) > 0; }
+bool _Slice_Check( PyObject *op )       { return _IsInstance( op, _Slice_Type() ) > 0; }
+bool _TraceBack_Check( PyObject *op )   { return _IsInstance( op, _TraceBack_Type() ) > 0; }
+bool _Tuple_Check( PyObject *op )       { return _IsInstance( op, _Tuple_Type() ) > 0; }
+bool _Type_Check( PyObject *op )        { return _IsInstance( op, _Type_Type() ) > 0; }
+bool _Unicode_Check( PyObject *op )     { return _IsInstance( op, _Unicode_Type() ) > 0; }
 #if PY_MAJOR_VERSION == 2
-bool _String_Check( PyObject *op )      { return op->ob_type == _String_Type(); }
-bool _Int_Check( PyObject *op )         { return op->ob_type == _Int_Type(); }
-bool _CObject_Check( PyObject *op )     { return op->ob_type == _CObject_Type(); }
+bool _String_Check( PyObject *op )      { return _IsInstance( op, _String_Type() ) > 0; }
+bool _Int_Check( PyObject *op )         { return _IsInstance( op, _Int_Type() ) > 0; }
+bool _CObject_Check( PyObject *op )     { return _IsInstance( op, _CObject_Type() ) > 0; }
 #endif
 #if PY_MAJOR_VERSION >= 3
-bool _Bytes_Check( PyObject *op )       { return op->ob_type == _Bytes_Type(); }
+bool _Bytes_Check( PyObject *op )       { return _IsInstance( op, _Bytes_Type() ) > 0; }
 #endif
 
 #if defined(PY_WIN32_DELAYLOAD_PYTHON_DLL)
