@@ -55,6 +55,7 @@ public:
         behaviors().doc( "documentation for new_style_class class" );
         behaviors().supportGetattro();
         behaviors().supportSetattro();
+        behaviors().supportNumberType( Py::PythonType::support_number_add, Py::PythonType::support_number_inplace_add );
 
         PYCXX_ADD_NOARGS_METHOD( func_noargs, new_style_class_func_noargs, "docs for func_noargs" );
         PYCXX_ADD_VARARGS_METHOD( func_varargs, new_style_class_func_varargs, "docs for func_varargs" );
@@ -68,6 +69,21 @@ public:
 
         // Call to make the type ready for use
         behaviors().readyType();
+    }
+
+    Py::Object number_add( const Py::Object &other )
+    {
+        std::cout << "new_style_class.number_add called" << std::endl;
+        Py::Long num_to_add( other );
+        return Py::Long( 5 + num_to_add );
+    }
+
+    Py::Object number_inplace_add( const Py::Object &other )
+    {
+        std::cout << "new_style_class.number_inplace_add called..." << std::endl;
+        Py::Long num_to_add( other );
+        std::cout << "... with " << num_to_add << std::endl;
+        return self();
     }
 
     Py::Object reduce_func( void )
