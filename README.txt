@@ -1,7 +1,7 @@
-Version: 7.1.3 (8-Jul-2019)
+Version: 7.1.4 (18-May-2020)
 
-Fix for https://sourceforge.net/p/cxx/bugs/43/
-memory leak caused by wrong ref count on python3 Py::String objects.
+Add support for more number methods, like matrix and the inplace versions.
 
-Remove support for supportPrint() etc as the tp_print field is
-being removed from python either in 3.8 or 3.9.
+Use IsInstance checking so that derived classes of builtin types can be used.
+
+Update Docs with recent changes.

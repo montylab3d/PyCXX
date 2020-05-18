@@ -2413,10 +2413,38 @@ void supportStr( void );
 void supportHash( void );
 void supportCall( void );
 
-void supportSequenceType( bool support_assignment=true, bool support_inplace=false, bool support_contains=false );
-void supportMappingType( bool support_assignment=true );
-void supportNumberType( void );
-void supportBufferType( void );</pre>
+void supportSequenceType( int methods_to_support=
+                        support_sequence_length |
+                        support_sequence_repeat |
+                        support_sequence_item |
+                        support_sequence_slice |
+                        support_sequence_concat );
+void supportMappingType( int methods_to_support=
+                        support_mapping_length |
+                        support_mapping_subscript );
+void supportNumberType( int methods_to_support=
+                support_number_add |
+                support_number_subtract |
+                support_number_multiply |
+                support_number_remainder |
+                support_number_divmod |
+                support_number_power |
+                support_number_negative |
+                support_number_positive |
+                support_number_absolute |
+                support_number_invert |
+                support_number_lshift |
+                support_number_rshift |
+                support_number_and |
+                support_number_xor |
+                support_number_or |
+                support_number_int |
+                support_number_float,
+            int inplace_methods_to_support=0
+             );
+void supportBufferType(  int methods_to_support=
+                    support_buffer_getbuffer |
+                    support_buffer_releasebuffer );</pre>
 
 <p>Then call add_varargs_method or add_keyword_method to add any methods desired to the
 object.</p>
