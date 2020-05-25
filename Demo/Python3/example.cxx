@@ -690,6 +690,7 @@ public:
         add_varargs_method( "sum", &example_module::ex_sum, "sum( arglist ) = sum of arguments" );
         add_varargs_method( "test", &example_module::ex_test, "test( arglist ) runs a test suite" );
         add_varargs_method( "range", &example_module::new_r, "range( start, stop, step )" );
+        add_varargs_method( "return_arg", &example_module::ex_return_arg, "return_arg( arg )" );
         add_keyword_method( "kw", &example_module::ex_keyword, "kw()" );
 
         initialize( "documentation for the example module" );
@@ -720,9 +721,9 @@ private:
         return Py::Long(0);
     }
 
-    Py::Object new_r (const Py::Tuple &rargs)
+    Py::Object new_r( const Py::Tuple &rargs )
     {
-        if (rargs.length() < 2 || rargs.length() > 3)
+        if( rargs.length() < 2 || rargs.length() > 3 )
         {
             throw Py::RuntimeError("Incorrect # of args to range(start,stop [,step]).");
         }
@@ -775,7 +776,12 @@ private:
         }
     }
 
-    Py::Object ex_sum (const Py::Tuple &a)
+    Py::Object ex_return_arg( const Py::Tuple &a )
+    {
+        return a[0];
+    }
+
+    Py::Object ex_sum( const Py::Tuple &a )
     {
         // this is just to test the function verify_length:
         try
@@ -792,12 +798,29 @@ private:
 
         Py::Float f(0.0);
         for( Py::Sequence::size_type i = 0; i < a.length(); i++ )
-        {    
+        {
             Py::Float g (a[i]);
             f = f + g;
         }
 
         return f;
+    }
+
+    void test_apply()
+    {
+        Py::Module m("example");
+        Py::Callable fn = m.getAttr("return_arg");
+        Py::String s("test_apply string");
+
+        int start_ref = s.reference_count();
+
+        for( int i=0; i<10; ++i )
+        {
+            Py::String result = fn.apply( Py::TupleN( s ) );
+        }
+
+        int end_ref = s.reference_count();
+        test_assert( "apply ref check", start_ref, end_ref );
     }
 
     Py::Object ex_test( const Py::Tuple &/*args*/ )
@@ -861,6 +884,10 @@ private:
             std::cout << "Start: test_extension_object" << std::endl;
             test_extension_object();
             debug_check_ref_queue();
+
+            std::cout << "Start: test_apply" << std::endl;
+            test_apply();
+            debug_check_ref_queue();
         }
         catch( TestError &e )
         {
@@ -869,8 +896,9 @@ private:
 
         Py::Module m("sys");
         Py::Object s = m.getAttr("stdout");
-        Py::Object nun;
-        nun = PyObject_CallMethod(s.ptr(), "write", "s", "Module test ok.\n");
+        Py::Object fd  = s.callMemberFunction( "fileno" );
+        test_assert( "stdout fileno() is 1", fd, Py::Long( 1 ) );
+        Py::Object num = s.callMemberFunction( "write", Py::TupleN( Py::String("PASS: Module test ok.\n") ) );
         return Py::None();
     }
 };
@@ -894,6 +922,6 @@ extern "C" EXPORT_SYMBOL PyObject *PyInit_example()
 
 // symbol required for the debug version
 extern "C" EXPORT_SYMBOL PyObject *PyInit_example_d()
-{ 
+{
     return PyInit_example();
 }
