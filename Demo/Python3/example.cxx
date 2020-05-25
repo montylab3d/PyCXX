@@ -346,7 +346,7 @@ void test_float()
     py_float2 = cxx_float2;
     py_float3 = cxx_float3;
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator ==", cxx_float2 == cxx_float3, py_float2  == py_float3 );
     test_assert( "float operator ==", cxx_float2 == cxx_float3, cxx_float2 == py_float3 );
     test_assert( "float operator ==", cxx_float2 == cxx_float3, py_float2  == cxx_float3 );
@@ -355,7 +355,7 @@ void test_float()
     test_assert( "float operator ==", cxx_float1 == cxx_float3, cxx_float1 == py_float3 );
     test_assert( "float operator ==", cxx_float1 == cxx_float3, py_float1  == cxx_float3 );
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator !=", cxx_float1 != cxx_float2, py_float1  != py_float2 );
     test_assert( "float operator !=", cxx_float1 != cxx_float2, cxx_float1 != py_float2 );
     test_assert( "float operator !=", cxx_float1 != cxx_float2, py_float1  != cxx_float2 );
@@ -364,7 +364,7 @@ void test_float()
     test_assert( "float operator !=", cxx_float2 != cxx_float3, cxx_float2 != py_float3 );
     test_assert( "float operator !=", cxx_float2 != cxx_float3, py_float2  != cxx_float3 );
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator < ", cxx_float1 <  cxx_float2, py_float1  <  py_float2 );
     test_assert( "float operator < ", cxx_float1 <  cxx_float2, cxx_float1 <  py_float2 );
     test_assert( "float operator < ", cxx_float1 <  cxx_float2, py_float1  <  cxx_float2 );
@@ -373,7 +373,7 @@ void test_float()
     test_assert( "float operator < ", cxx_float2 <  cxx_float1, cxx_float2 <  py_float1 );
     test_assert( "float operator < ", cxx_float2 <  cxx_float1, py_float2  <  cxx_float1 );
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator > ", cxx_float2 >  cxx_float1, py_float2  >  py_float1 );
     test_assert( "float operator > ", cxx_float2 >  cxx_float1, cxx_float2 >  py_float1 );
     test_assert( "float operator > ", cxx_float2 >  cxx_float1, py_float2  >  cxx_float1 );
@@ -382,7 +382,7 @@ void test_float()
     test_assert( "float operator > ", cxx_float1 >  cxx_float2, cxx_float1 >  py_float2 );
     test_assert( "float operator > ", cxx_float1 >  cxx_float2, py_float1  >  cxx_float2 );
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator <=", cxx_float1 <= cxx_float2, py_float1  <= py_float2 );
     test_assert( "float operator <=", cxx_float1 <= cxx_float2, cxx_float2 <= py_float2 );
     test_assert( "float operator <=", cxx_float1 <= cxx_float2, py_float1  <= cxx_float2 );
@@ -395,7 +395,7 @@ void test_float()
     test_assert( "float operator <=", cxx_float2 <= cxx_float1, cxx_float2 <= py_float1 );
     test_assert( "float operator <=", cxx_float2 <= cxx_float1, py_float2  <= cxx_float1 );
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator >=", cxx_float2 >= cxx_float1, py_float2  >= py_float1 );
     test_assert( "float operator >=", cxx_float2 >= cxx_float1, cxx_float2 >= py_float1 );
     test_assert( "float operator >=", cxx_float2 >= cxx_float1, py_float2  >= cxx_float1 );
@@ -408,7 +408,7 @@ void test_float()
     test_assert( "float operator >=", cxx_float1 >= cxx_float2, cxx_float1 >= py_float2 );
     test_assert( "float operator >=", cxx_float1 >= cxx_float2, py_float1  >= cxx_float2 );
 
-    //------------------------------------------------------------   
+    //------------------------------------------------------------
     test_assert( "float operator float", cxx_float2, float( py_float2 ) );
 }
 
@@ -670,7 +670,7 @@ void debug_check_ref_queue()
         p_slow = p_slow->_ob_next;
         p_fast = p_slow->_ob_next->_ob_next;
 
-        assert( p_slow != p_fast );    
+        assert( p_slow != p_fast );
     }
     while( p_slow != list_element.ptr() );
 

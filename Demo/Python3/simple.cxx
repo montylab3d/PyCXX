@@ -264,7 +264,7 @@ public:
         add_keyword_method("decode_test", &simple_module::decode_test, "documentation for decode_test()");
         add_keyword_method("encode_test", &simple_module::encode_test, "documentation for encode_test()");
         add_keyword_method("derived_class_test", &simple_module::derived_class_test, "documentation for derived_class_test()");
- 
+
         // after initialize the moduleDictionary will exist
         initialize( "documentation for the simple module" );
 
@@ -420,6 +420,6 @@ extern "C" EXPORT_SYMBOL PyObject *PyInit_simple()
 
 // symbol required for the debug version
 extern "C" EXPORT_SYMBOL PyObject *PyInit_simple_d()
-{ 
+{
     return PyInit_simple();
 }

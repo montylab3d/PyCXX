@@ -55,7 +55,7 @@ Py_ssize_t range::sequence_length()
     return length();
 }
 
-Py::Object range::sequence_item( Py_ssize_t i ) 
+Py::Object range::sequence_item( Py_ssize_t i )
 {
     return Py::Int( item( static_cast<int>( i ) ) );
 }
@@ -83,7 +83,7 @@ Py::Object range::getattr( const char *name )
 }
 
 // "regular" methods...
-Py::Object range::amethod( const Py::Tuple &t ) 
+Py::Object range::amethod( const Py::Tuple &t )
 {
     t.verify_length(1);
     Py::List result;
@@ -98,7 +98,7 @@ Py::Object range::value( const Py::Tuple &t )
     return c_value(t);
 }
 
-Py::Object range::assign( const Py::Tuple &t ) 
+Py::Object range::assign( const Py::Tuple &t )
 {
     t.verify_length(2);
 

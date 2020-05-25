@@ -331,7 +331,7 @@ extern "C" EXPORT_SYMBOL PyObject *PyInit_simple()
 
 // symbol required for the debug version
 extern "C" EXPORT_SYMBOL PyObject *PyInit_simple_d()
-{ 
+{
     return PyInit_simple();
 }
 
@@ -350,7 +350,7 @@ extern "C" EXPORT_SYMBOL void initsimple()
 
 // symbol required for the debug version
 extern "C" EXPORT_SYMBOL void initsimple_d()
-{ 
+{
     initsimple();
 }
 #endif

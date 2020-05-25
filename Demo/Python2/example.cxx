@@ -236,7 +236,7 @@ test_numbers()
     return "ok";
 }
 
-static std::string 
+static std::string
 test_List_iterators (const Py::List& x, Py::List& y)
 {
     std::vector<Py::Object> v;
@@ -275,7 +275,7 @@ test_List_iterators (const Py::List& x, Py::List& y)
     {
         std::cout << "About to raise exception int(\"Howdy\")" << std::endl;
         o2 = o1;
-    } 
+    }
     catch (Py::BaseException &e)
     {
         std::cout << "Catch o.k." << std::endl;
@@ -317,7 +317,7 @@ test_List()
     a.append(i);
     a.append(x);
     a.append(Py::Float(0.0));
-    b = a[0]; 
+    b = a[0];
     a[2] = b;
     a.append(c+d);
     a.append(aux);
@@ -332,7 +332,7 @@ test_List()
     Py::List::iterator l1, l2;
     for(l1= a.begin(), l2 = ans.begin();
         l1 != a.end() && l2 != ans.end();
-        ++l1, ++l2) 
+        ++l1, ++l2)
     {
         if(*l1 != *l2) return "failed 1" + a.as_string();
     }
@@ -436,7 +436,7 @@ test_Tuple()
     return "ok";
 }
 
-static std::string 
+static std::string
 test_STL()
 {
     int ans1;
@@ -508,7 +508,7 @@ void debug_check_ref_queue()
         p_slow = p_slow->_ob_next;
         p_fast = p_slow->_ob_next->_ob_next;
 
-        assert( p_slow != p_fast );    
+        assert( p_slow != p_fast );
     }
     while( p_slow != list_element.ptr() );
 
@@ -623,7 +623,7 @@ private:
 
         Py::Float f(0.0);
         for( Py::Sequence::size_type i = 0; i < a.length(); i++ )
-        {    
+        {
             Py::Float g (a[i]);
             f = f + g;
         }
@@ -631,7 +631,7 @@ private:
         return f;
     }
 
-    Py::Object ex_test( const Py::Tuple &a) 
+    Py::Object ex_test( const Py::Tuple &a)
     {
         debug_check_ref_queue();
 

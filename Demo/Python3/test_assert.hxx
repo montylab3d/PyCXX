@@ -15,7 +15,7 @@
 // DAMAGE.
 //
 //  test_assert.hxx
-//  
+//
 class TestError
 {
 public:

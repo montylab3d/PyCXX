@@ -1858,7 +1858,7 @@ namespace Py
     template <TEMPLATE_TYPENAME T> bool operator< (const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right);
     template <TEMPLATE_TYPENAME T> bool operator> (const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right);
     template <TEMPLATE_TYPENAME T> bool operator<=(const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right);
-    template <TEMPLATE_TYPENAME T> bool operator>=(const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right); 
+    template <TEMPLATE_TYPENAME T> bool operator>=(const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator& right);
 
     extern bool operator==(const Sequence::iterator& left, const Sequence::iterator& right);
     extern bool operator!=(const Sequence::iterator& left, const Sequence::iterator& right);
@@ -1872,7 +1872,7 @@ namespace Py
     extern bool operator< (const Sequence::const_iterator& left, const Sequence::const_iterator& right);
     extern bool operator> (const Sequence::const_iterator& left, const Sequence::const_iterator& right);
     extern bool operator<=(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
-    extern bool operator>=(const Sequence::const_iterator& left, const Sequence::const_iterator& right); 
+    extern bool operator>=(const Sequence::const_iterator& left, const Sequence::const_iterator& right);
 
     // ==================================================
     // class Char

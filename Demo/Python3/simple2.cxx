@@ -78,7 +78,7 @@ private:
         m_string_to_enum[string] = value;
         m_enum_to_string[value] = string;
     }
- 
+
     std::string             m_type_name;
     std::map<std::string,T> m_string_to_enum;
     std::map<T,std::string> m_enum_to_string;
@@ -181,7 +181,7 @@ public:
             return Py::asObject( new pysvn_enum_value<T>( value ) );
         }
 
-        return this->getattr_methods( _name );    
+        return this->getattr_methods( _name );
     }
 
     static void init_type(void);
@@ -224,7 +224,7 @@ Py::List memberList( T value )
         members.append( Py::String( (*it).first ) );
         ++it;
     }
-    
+
     return members;
 }
 
@@ -238,7 +238,7 @@ typedef enum {
 
 template <> EnumString< xxx_t >::EnumString()
 : m_type_name( "xxx" )
-{ 
+{
     add( xxx_first, "first" );
     add( xxx_second, "second" );
     add( xxx_third, "third" );
@@ -362,6 +362,6 @@ extern "C" PyObject *PyInit_simple2()
 
 // symbol required for the debug version
 extern "C" PyObject *PyInit_simple2_d()
-{ 
+{
     return PyInit_simple2();
 }

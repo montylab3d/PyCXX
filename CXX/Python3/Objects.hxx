@@ -1737,7 +1737,7 @@ namespace Py
     template <TEMPLATE_TYPENAME T> bool operator< ( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
     template <TEMPLATE_TYPENAME T> bool operator> ( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
     template <TEMPLATE_TYPENAME T> bool operator<=( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
-    template <TEMPLATE_TYPENAME T> bool operator>=( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right ); 
+    template <TEMPLATE_TYPENAME T> bool operator>=( const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &left, const EXPLICIT_TYPENAME SeqBase<T>::const_iterator &right );
 
 
     extern bool operator==( const Sequence::iterator &left, const Sequence::iterator &right );
@@ -1752,7 +1752,7 @@ namespace Py
     extern bool operator< ( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
     extern bool operator> ( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
     extern bool operator<=( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
-    extern bool operator>=( const Sequence::const_iterator &left, const Sequence::const_iterator &right ); 
+    extern bool operator>=( const Sequence::const_iterator &left, const Sequence::const_iterator &right );
 
     // ==================================================
     // class Char
@@ -2093,7 +2093,7 @@ namespace Py
 
            Many of these APIs take two arguments encoding and errors. These
            parameters encoding and errors have the same semantics as the ones
-           of the builtin unicode() API. 
+           of the builtin unicode() API.
 
            Setting encoding to NULL causes the default encoding to be used.
 
@@ -2999,7 +2999,7 @@ namespace Py
 
             // postfix --
             iterator operator--( int )
-            { 
+            {
                 return iterator( map, keys, pos-- );
             }
 

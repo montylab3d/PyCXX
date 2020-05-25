@@ -47,7 +47,7 @@
 
 // This test also illustrates using the Py namespace explicitly
 
-void test_extension_object() 
+void test_extension_object()
 {
     Py::List a; // just something that is not a range...
 

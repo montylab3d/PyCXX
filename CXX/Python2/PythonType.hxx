@@ -44,7 +44,7 @@ namespace Py
     {
     public:
 #define B(n) (1<<(n))
-        // if you define one sequence method you must define 
+        // if you define one sequence method you must define
         // all of them except the assigns
 
         PythonType( size_t base_size, int itemsize, const char *default_name );
@@ -161,7 +161,7 @@ namespace Py
                         support_number_oct |
                         support_number_hex
                         );
- 
+
         enum {
             support_buffer_getreadbuffer =      B(0),
             support_buffer_getwritebuffer =     B(1),

@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 
-class IterT : public Py::PythonExtension<IterT> 
+class IterT : public Py::PythonExtension<IterT>
 {
     int from, count, last;
     int fwd_iter;
@@ -43,7 +43,7 @@ public:
             fwd_iter = 1;    // indicate forward iteration
         return Py::Object(this,false);    // increment the refcount
     }
-    
+
     PyObject* iternext()
     {
         int ct;
@@ -58,7 +58,7 @@ public:
                     fwd_iter=2;
                 }
             else if( count <= last )
-                ct= count++; 
+                ct= count++;
             else
                 return NULL;    // signal StopIteration
         }

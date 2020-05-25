@@ -38,7 +38,7 @@
 #include "CXX/WrapPython.h"
 
 #ifdef __cplusplus
-extern "C" 
+extern "C"
 {
 #endif
 

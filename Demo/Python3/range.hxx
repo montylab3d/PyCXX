@@ -88,7 +88,7 @@ public:
         validate();
     }
 
-    explicit RangeSequence(long start, long stop, long step = 1) 
+    explicit RangeSequence(long start, long stop, long step = 1)
     {
         set (new range(start, stop, step), true);
     }

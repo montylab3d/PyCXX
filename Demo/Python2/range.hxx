@@ -50,7 +50,7 @@ public:
     long    stop;
     long    step;
 
-    range(long start_, long stop_, long step_ = 1L) 
+    range(long start_, long stop_, long step_ = 1L)
     {
         start = start_;
         stop = stop_;
@@ -87,7 +87,7 @@ public:
 
     range* extend(int k) const
     {
-        return new range(start, stop + k, step);      
+        return new range(start, stop + k, step);
     }
 
     std::string asString() const
@@ -109,7 +109,7 @@ public:
     // define python methods of this object
     Py::Object amethod (const Py::Tuple& args);
     Py::Object value (const Py::Tuple& args);
-    Py::Object assign (const Py::Tuple& args); 
+    Py::Object assign (const Py::Tuple& args);
     Py::Object reference_count (const Py::Tuple& /*args*/)
     {
         return Py::LongLong(this->ob_refcnt);
@@ -144,7 +144,7 @@ public:
         validate();
     }
 
-    explicit RangeSequence(int start, int stop, int step = 1) 
+    explicit RangeSequence(int start, int stop, int step = 1)
     {
         set (new range(start, stop, step), true);
     }

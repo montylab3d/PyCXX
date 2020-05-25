@@ -49,8 +49,8 @@
 extern void debug_check_ref_queue();
 
 
-std::string test_extension_object() 
-{ 
+std::string test_extension_object()
+{
     debug_check_ref_queue();
 
     Py::Tuple a; // just something that isn't an range...
