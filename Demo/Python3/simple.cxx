@@ -364,9 +364,9 @@ private:
         }
         catch( SimpleError &e )
         {
-            Py::String value = Py::value( e );
+            Py::Object value = e.errorValue();
             e.clear();
-            std::cout << "PASS caught SimpleError( \"" << value << "\"" << std::endl;
+            std::cout << "PASS caught SimpleError( \"" << value.repr() << "\"" << std::endl;
 
             return Py::String("Error");
         }
