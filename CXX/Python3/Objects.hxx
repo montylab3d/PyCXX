@@ -1965,7 +1965,7 @@ namespace Py
 
 #if !defined( Py_LIMITED_API )
         Char( const unicodestring &v )
-        : Object( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ),1 ), true )
+        : Object( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ),1 ), true )
         {
             validate();
         }
@@ -1987,7 +1987,7 @@ namespace Py
 #if !defined( Py_LIMITED_API )
         Char &operator=( const unicodestring &v )
         {
-            set( PyUnicode_FromUnicode( const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE*>( v.data() ), 1 ), true );
             return *this;
         }
 #endif
@@ -1996,7 +1996,7 @@ namespace Py
         Char &operator=( int v_ )
         {
             Py_UNICODE v( static_cast<Py_UNICODE>( v_ ) );
-            set( PyUnicode_FromUnicode( &v, 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
             return *this;
         }
 #endif
@@ -2004,7 +2004,7 @@ namespace Py
 #if !defined( Py_LIMITED_API )
         Char &operator=( Py_UNICODE v )
         {
-            set( PyUnicode_FromUnicode( &v, 1 ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, &v, 1 ), true );
             return *this;
         }
 #endif
@@ -2142,7 +2142,7 @@ namespace Py
 
 #if !defined( Py_LIMITED_API )
         String( const Py_UNICODE *s, int length )
-        : SeqBase<Char>( PyUnicode_FromUnicode( s, length ), true )
+        : SeqBase<Char>( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, s, length ), true )
         {
             validate();
         }
@@ -2164,7 +2164,7 @@ namespace Py
 #if !defined( Py_LIMITED_API )
         String &operator=( const unicodestring &v )
         {
-            set( PyUnicode_FromUnicode( const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );
+            set( PyUnicode_FromKindAndData( PyUnicode_4BYTE_KIND, const_cast<Py_UNICODE *>( v.data() ), v.length() ), true );
             return *this;
         }
 #endif
@@ -2190,6 +2190,7 @@ namespace Py
         }
 #endif
 
+#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION < 9
 #if !defined( Py_LIMITED_API )
         const Py_UNICODE *unicode_data() const
         {
@@ -2203,6 +2204,8 @@ namespace Py
             return unicodestring( unicode_data(), PyUnicode_GetLength( ptr() ) );
         }
 #endif
+#endif
+
         ucs4string as_ucs4string() const
         {
             Py_UCS4 *buf = new Py_UCS4[ size() ];
