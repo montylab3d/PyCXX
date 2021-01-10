@@ -67,7 +67,7 @@ void test_extension_object()
     Py::List answer( w.apply( args ) );
 
     test_assert( "extension object amethod 1 q1", answer[0], r2 );
-    test_assert( "extension object amethod 1q2", answer[1], args[0] );
+    test_assert( "extension object amethod 1 q2", answer[1], args[0] );
     }
 
     {
