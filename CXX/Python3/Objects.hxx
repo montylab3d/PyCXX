@@ -3256,7 +3256,7 @@ namespace Py
             }
             return asObject( result );
         }
-#if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9
+#if (!defined( Py_LIMITED_API ) && PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 9) || (defined( Py_LIMITED_API ) && Py_LIMITED_API+0 >= 0x03090000)
         Object apply() const
         {
             PyObject *result = PyObject_CallNoArgs( ptr() );

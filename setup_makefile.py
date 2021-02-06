@@ -18,7 +18,7 @@ class Setup:
     def __init__( self, argv ):
         args = argv[1:]
         if len(args) < 2:
-            raise ValueError( 'Usage: setup.py win32|win64|macosx|linux> <makefile>' )
+            raise ValueError( 'Usage: setup_makefile.py win32|win64|macosx|linux> <makefile>' )
 
         self.opt_debug = False
         self.opt_pycxx_debug = False

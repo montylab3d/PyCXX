@@ -38,8 +38,8 @@ if %PYTHON_ARCH% == win64 (
 if exist c:\python%PYTHON_VER%.%PYTHON_ARCH%\python.exe (
     c:\python%PYTHON_VER%.%PYTHON_ARCH%\python setup_makefile.py %PYTHON_ARCH% tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.mak
     if errorlevel 1 exit /b 1
-    nmake -f tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.mak clean all 2>&1 | c:\UnxUtils\usr\local\wbin\tee.exe tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.log
+    nmake -f tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.mak clean all 2>&1 | py -3 build_tee tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.log
     if not exist obj\pycxx_iter.pyd exit /b 1
-    nmake -f tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.mak test 2>&1 | c:\UnxUtils\usr\local\wbin\tee.exe tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-test.log
+    nmake -f tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-build.mak test 2>&1 | py -3 build_tee -a tmp-%PYTHON_ARCH%-python%PYTHON_VER%-unlimited-test.log
 )
 endlocal

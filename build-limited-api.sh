@@ -21,6 +21,6 @@ esac
 
 PYTHON_BASE=$(basename ${PYTHON})
 
-${PYTHON} setup_makefile.py ${OS} tmp-${PYTHON_BASE}-limited-api.mak --limited-api=${API}
-make -f tmp-${PYTHON_BASE}-limited-api.mak clean 2>&1 | tee tmp-${PYTHON_BASE}-limited-api.log
-make -f tmp-${PYTHON_BASE}-limited-api.mak test 2>&1 | tee -a tmp-${PYTHON_BASE}-limited-api.log
+${PYTHON} setup_makefile.py ${OS} tmp-${PYTHON_BASE}-limited-api-${API}.mak --limited-api=${API}
+make -f tmp-${PYTHON_BASE}-limited-api-${API}.mak clean 2>&1 | tee tmp-${PYTHON_BASE}-limited-api-${API}.log
+make -f tmp-${PYTHON_BASE}-limited-api-${API}.mak test 2>&1 | tee -a tmp-${PYTHON_BASE}-limited-api-${API}.log
