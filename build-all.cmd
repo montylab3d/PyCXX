@@ -1,1 +1,1 @@
-py -3 python-all.py
+py -3 build-all.py
