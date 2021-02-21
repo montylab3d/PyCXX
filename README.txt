@@ -1,9 +1,16 @@
-Version: 7.1.4 (31-May-2020)
+Version: 7.1.5 (6-feb-2021)
 
-Add support for more number methods, like matrix and the inplace versions.
+Replace use of deprecated PyUnicode APIs with the supported version.
 
-Use IsInstance checking so that derived classes of builtin types can be used.
+The class Py::String functions that used deprecated PyUnicode APIs
+that have no replacements are not available for python 3.9 and later:
 
-Update Docs with recent changes.
+    const Py_UNICODE *unicode_data() const;
+    unicodestring as_unicodestring() const;
 
-Add support for python 3.9 beta 1 changes.
+Replace build-all.sh and build-all.cmd with build-all.py that can handle the build matrix.
+Add limited API builds for all possible combinations.
+
+Note: Python 3.9 has a bug that prevents use of the limited API until this bug is fix and shipped:
+https://bugs.python.org/issue43155 for details.
+The worksround is to set Py_LIMITED_API to use python 3.8.

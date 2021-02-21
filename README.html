@@ -31,21 +31,21 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 
 <h3>Windows Installation and Demo</h3>
 <ol>
-    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-7.1.4.tar.gz">
-    http://prdownloads.sourceforge.net/cxx/pycxx-7.1.4.tar.gz</a></li>
+    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-7.1.5.tar.gz">
+    http://prdownloads.sourceforge.net/cxx/pycxx-7.1.5.tar.gz</a></li>
     <li>Expand the archive into a directory of your choosing C:\ for example.</li>
 
     <li>Install the PyCXX files:
         <ol>
-        <li><pre>C:> cd \pycxx-7.1.4</pre></li>
-        <li><pre>C:\pycxx-7.1.4> python setup.py install</pre></li>
+        <li><pre>C:> cd \pycxx-7.1.5</pre></li>
+        <li><pre>C:\pycxx-7.1.5> python setup.py install</pre></li>
         </ol>
     </li>
     <li>Build and run the demo extensions:
         <ol>
-        <li><pre>C:> cd \pycxx-7.1.4</pre></li>
-        <li><pre>C:\pycxx-7.1.4> python setup_makefile.py win32 win32.mak </pre></li>
-        <li><pre>C:\pycxx-7.1.4> nmake -f win32.mak clean test</pre></li>
+        <li><pre>C:> cd \pycxx-7.1.5</pre></li>
+        <li><pre>C:\pycxx-7.1.5> python setup_makefile.py win32 win32.mak </pre></li>
+        <li><pre>C:\pycxx-7.1.5> nmake -f win32.mak clean test</pre></li>
         </ol>
     </li>
 </ol>
@@ -54,18 +54,18 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 <h3>Unix Installation and Demo</h3>
 
 <ol>
-    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-7.1.4.tar.gz">
-    http://prdownloads.sourceforge.net/cxx/pycxx-7.1.4.tar.gz</a>
+    <li>Fetch <a href="http://prdownloads.sourceforge.net/cxx/pycxx-7.1.5.tar.gz">
+    http://prdownloads.sourceforge.net/cxx/pycxx-7.1.5.tar.gz</a>
     <li>Login as root. root access is typically needed on Unix systems to install the PyCXX files into the Python directories.
     <li>Expand the archive into a directory of your choosing ~\ for example.
     <li>Install the PyCXX files:
         <ol>
-        <li><pre># cd ~/pycxx-7.1.4</pre>
+        <li><pre># cd ~/pycxx-7.1.5</pre>
         <li><pre># python setup.py install</pre>
         </ol>
     <li>Build and run the demo extensions:
         <ol>
-        <li><pre># cd ~/pycxx-7.1.4</pre></li>
+        <li><pre># cd ~/pycxx-7.1.5</pre></li>
         <li><pre># python setup_makefile.py linux linux.mak</pre></li>
         <li><pre># make -f linux.mak clean test</pre></li>
         </ol>
@@ -73,6 +73,23 @@ p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
 </ol>
 
 <h2>Revision History</h2>
+
+<h3>Version: 7.1.5 (21-Feb-2021)</h3>
+
+<p>Replace use of deprecated PyUnicode APIs with the supported version.</p>
+
+<p>The class Py::String functions that used deprecated PyUnicode APIs
+that have no replacements are not available for python 3.9 and later:</p>
+
+<pre>
+    const Py_UNICODE *unicode_data() const;
+    unicodestring as_unicodestring() const;
+</pre>
+
+<p>Replace build-all.sh and build-all.cmd with build-all.py that can handle the build matrix.</p>
+<p>Add limited API builds for all possible combinations.</p>
+<p>Note: Python 3.9 has a bug that prevents use of the limited API until this bug is fix and shipped:
+<a href="https://bugs.python.org/issue43155">BPO 43155</a>. The worksround is to set Py_LIMITED_API to use python 3.8.</p>
 
 <h3>Version: 7.1.4 (31-May-2020)</h3>
 
