@@ -72,7 +72,7 @@ def main( argv ):
         else:
             # Only windows needs to build both 32 and 64 bit
             # for the mac and linux only build once
-            if bits == 64:
+            if bits == 32:
                 continue
 
             fmt = './%s.sh'
