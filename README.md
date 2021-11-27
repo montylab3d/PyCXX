@@ -1,31 +1,16 @@
-<html>
-<head>
-<title>PyCXX README</title>
-
-<style>
-h1, h2, h3, h4 {color: #000099;
-	background-color: lightskyblue}
-h3 {position: relative; left: 20px}
-
-p {position: relative; left: 20px; margin-right: 20px; width: 40em;}
-pre {color: #0000cc; background-color: #eeeeee; position: relative; left: 40px; margin-right: 80px;
-	border-style: solid; border-color: black; border-width: thin}
-kbd {color: #990000}
-p cite, ol cite, ul cite {font-family: monospace; font-style: normal; font-size: normal}
-li var, pre var, p var, kbd var {color: #009900; font-style: italic}
-li samp, pre samp, p samp, kbd samp {color: #009900; font-weight: bold}
-li p {position: relative; left: 0}
-table { position: relative; left: 20px; border: solid #888888 1px; background-color: #eeeeee}
-table th {border: solid #888888 1px; background-color: #88dd88; color: black}
-table td {border: solid #888888 1px}
-table td.code {border: solid #888888 1px;font-family: monospace; font-style: normal; font-size: normal}
-p.param {background-color: #eeeeee; border-top: lightskyblue solid 4}
-</style>
-</head>
-
-<body>
-
 <h1>PyCXX -- README</h1>
+
+<h2>Just another mirror of the official repository</h2>
+
+<p>Montylab's PyCXX is a downstream mirror of the <a
+href="https://sourceforge.net/p/cxx/code/HEAD/tree/trunk/CXX/">official
+upstream SVN repository</a> for the <a
+href="http://cxx.sourceforge.net/"> CXX Python C++ Connector</a>,
+commonly known as python-cxx or just pycxx.  This mirror is exists to assist automated packaging by integrating source code and packing into a single repo.
+
+<p>Upstream is tracked without modification on the primary 'trunk'
+branch.  Downstream packaging files and patches are on the 'main'
+branch), which is rebased as necessary.
 
 <h2>Installation using distutils</h2>
 
@@ -214,6 +199,3 @@ now take a bit mask that defines which specific callbacks are handled.</p>
 
 <h3>Version 6.1.0 (19-Jul-2009)</h3>
 <p>Support Python 3 and Python 2</p>
-
-</body>
-</html>
