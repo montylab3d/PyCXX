@@ -6,7 +6,7 @@
 href="https://sourceforge.net/p/cxx/code/HEAD/tree/trunk/CXX/">official
 upstream SVN repository</a> for the <a
 href="http://cxx.sourceforge.net/"> CXX Python C++ Connector</a>,
-commonly known as python-cxx or just pycxx.  This mirror is exists to assist automated packaging by integrating source code and packing into a single repo.
+commonly known as python-cxx or just pycxx.  This mirror exists to assist automated packaging by integrating source code and packaging configuration into a single repo.
 
 <p>Upstream is tracked without modification on the primary 'trunk'
 branch.  Downstream packaging files and patches are on the 'main'
